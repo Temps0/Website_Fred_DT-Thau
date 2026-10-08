@@ -1,7 +1,8 @@
 import { defineCollection } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { trainingNeedIds } from './data/training-needs';
+import { surveySchema } from './lib/survey';
 
 /**
  * Training courses, one Markdown file each. Adding a course only takes a new file.
@@ -30,4 +31,10 @@ const formations = defineCollection({
   }),
 });
 
-export const collections = { formations };
+/** Questionnaires, defined as data so questions can change without code changes. */
+const surveys = defineCollection({
+  loader: file('src/content/surveys.json'),
+  schema: surveySchema,
+});
+
+export const collections = { formations, surveys };
