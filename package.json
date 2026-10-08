@@ -1,0 +1,23 @@
+{
+  "name": "dt-thau-website",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Website of DT-THAU, a sustainability and CSR training provider in the Thau basin.",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^7.3.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}
