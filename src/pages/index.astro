@@ -1,9 +1,206 @@
 ---
+import LinkButton from '../components/LinkButton.astro';
+import ToComplete from '../components/ToComplete.astro';
+import WireNote from '../components/WireNote.astro';
+import WirePlaceholder from '../components/WirePlaceholder.astro';
+import { area, contactNav, surveyNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const steps = [
+  {
+    title: 'Comprendre les enjeux',
+    text: 'Des explications simples et précises sur ce que la transition écologique change pour votre activité.',
+  },
+  {
+    title: 'Identifier vos priorités',
+    text: 'Partir de votre situation pour repérer ce qui compte vraiment, sans vouloir tout faire à la fois.',
+  },
+  {
+    title: 'Passer à l’action',
+    text: 'Repartir avec des premières actions réalistes, adaptées à vos moyens.',
+  },
+];
 ---
 
-<BaseLayout description="DT-THAU, formations à la transition écologique et à la RSE pour les PME et TPE du Bassin de Thau.">
-  <div class="container section">
-    <h1>DT-THAU</h1>
-  </div>
+<BaseLayout
+  title="Formations transition écologique et RSE, Bassin de Thau"
+  description="Formations courtes et concrètes à la transition écologique et à la RSE pour les dirigeants et les équipes des PME et TPE du Bassin de Thau."
+>
+  <section class="section hero" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+      <div class="flow flow--m">
+        <p class="eyebrow">Organisme de formation · {area}</p>
+        <h1 id="hero-title">
+          Comprendre la transition écologique pour mieux agir dans votre vie et dans votre
+          entreprise
+        </h1>
+        <p class="lead">
+          Des formations courtes et concrètes pour les dirigeants et les équipes des PME et TPE du
+          {area}.
+        </p>
+        <div class="actions">
+          <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+          <LinkButton href="/formations/" variant="secondary">Découvrir les formations</LinkButton>
+        </div>
+        <WireNote>
+          Premier écran&nbsp;: ce que propose DT-THAU, pour qui, où, et l’action principale. La
+          promesse est celle du brief.
+        </WireNote>
+      </div>
+      <div class="flow">
+        <WirePlaceholder label="Photo du Bassin de Thau (lagune, tables conchylicoles, côte) – à fournir" />
+        <WireNote proposal>
+          Une photo réelle du territoire ancre le site localement dès le premier regard. Pas de
+          photo de banque d’images.
+        </WireNote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="audience-title">
+    <div class="container flow">
+      <h2 id="audience-title">Pour qui&nbsp;?</h2>
+      <p class="lead">
+        Vous dirigez une PME ou une TPE du {area}, ou vous faites partie de son équipe. Vous
+        entendez parler de transition écologique et de RSE, et vous vous demandez par où commencer.
+      </p>
+      <WireNote proposal>Texte rédigé à partir du brief, à faire valider.</WireNote>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="value-title">
+    <div class="container flow flow--l">
+      <div class="flow">
+        <h2 id="value-title">Ce que nous apportons</h2>
+        <p class="lead">
+          Rendre les enjeux compréhensibles, identifier les priorités et passer à l’action grâce à
+          la formation.
+        </p>
+      </div>
+      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+      <ol class="steps" role="list">
+        {
+          steps.map((step, index) => (
+            <li class="steps__item">
+              <span class="steps__number" aria-hidden="true">
+                {index + 1}
+              </span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <WireNote proposal>
+        Trois étapes tirées de la phrase du brief&nbsp;; les descriptions sont à faire valider.
+      </WireNote>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="difference-title">
+    <div class="container flow">
+      <h2 id="difference-title">Notre différence</h2>
+      <p class="lead">
+        Une approche pédagogique, pragmatique et ancrée dans les réalités locales du {area}, sans
+        culpabiliser ni simplifier à l’excès.
+      </p>
+      <p><a href="/approche/">Découvrir notre approche</a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="founder-title">
+    <div class="container founder">
+      <div class="founder__photo">
+        <WirePlaceholder label="Portrait du fondateur – à fournir" ratio="portrait" />
+      </div>
+      <div class="flow">
+        <h2 id="founder-title">Qui porte le projet</h2>
+        <p>
+          <ToComplete>prénom, nom et une ou deux phrases sur le parcours du fondateur</ToComplete>
+        </p>
+        <p><a href="/qui-sommes-nous/">Qui sommes-nous&nbsp;?</a></p>
+        <WireNote proposal>
+          Une structure jeune inspire confiance par la personne qui la porte&nbsp;: un visage et un
+          parcours dès la page d’accueil.
+        </WireNote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="cta-title">
+    <div class="container flow flow--m">
+      <h2 id="cta-title">Vous vous demandez par où commencer&nbsp;?</h2>
+      <p class="lead">Échangeons sur votre situation, vos questions et vos besoins.</p>
+      <div class="actions">
+        <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+      </div>
+      <p>
+        Entreprise du {area}&nbsp;? Aidez-nous à mieux connaître vos besoins&nbsp;:
+        <a href={surveyNav.href}>répondre au questionnaire</a>.
+      </p>
+      <WireNote>
+        L’appel à l’action du brief, répété en fin de page. Le questionnaire est proposé en action
+        secondaire.
+      </WireNote>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .eyebrow {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 56rem) {
+    .hero__grid {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-l);
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps__item > * + * {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .steps__number {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--step-3);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+  }
+
+  .founder {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+  }
+
+  .founder__photo {
+    max-width: 16rem;
+  }
+
+  @media (min-width: 48rem) {
+    .founder {
+      grid-template-columns: 16rem 1fr;
+      gap: var(--space-xl);
+    }
+  }
+</style>

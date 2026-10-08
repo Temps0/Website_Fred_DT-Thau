@@ -172,9 +172,18 @@ a:hover {
   background-color: var(--color-surface);
 }
 
-/* Vertical rhythm between siblings: <div class="flow" style="--flow-space: 2rem"> */
+/* Vertical rhythm between siblings; modifiers pick a step of the spacing scale. */
 .flow > * + * {
   margin-block-start: var(--flow-space, 1em);
+}
+.flow--s {
+  --flow-space: var(--space-s);
+}
+.flow--m {
+  --flow-space: var(--space-m);
+}
+.flow--l {
+  --flow-space: var(--space-l);
 }
 
 .prose {
