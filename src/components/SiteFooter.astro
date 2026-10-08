@@ -1,0 +1,110 @@
+---
+import { area, company, contactNav, legalNav, mainNav, surveyNav } from '../data/site';
+import ToComplete from './ToComplete.astro';
+
+const siteMap = [{ href: '/', label: 'Accueil' }, ...mainNav, contactNav, surveyNav];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__identity">
+      <p class="site-footer__name">{company.name}</p>
+      <p>
+        Formations à la transition écologique et à la RSE pour les PME et TPE du {area}.
+      </p>
+      <address>
+        {company.address.street}<br />
+        {company.address.postalCode}
+        {company.address.city}<br />
+        {
+          company.phone ? (
+            <a href={`tel:${company.phone.replace(/\s/g, '')}`}>{company.phone}</a>
+          ) : (
+            <ToComplete>téléphone</ToComplete>
+          )
+        }<br />
+        {
+          company.email ? (
+            <a href={`mailto:${company.email}`}>{company.email}</a>
+          ) : (
+            <ToComplete>adresse e-mail</ToComplete>
+          )
+        }
+      </address>
+    </div>
+
+    <nav aria-label="Plan du site">
+      <ul class="site-footer__links">
+        {
+          siteMap.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav aria-label="Informations légales">
+      <ul class="site-footer__links">
+        {
+          legalNav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container">
+    <p class="site-footer__copyright">© {year} {company.name}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: var(--space-xl) var(--space-m);
+    border-block-start: var(--border-width) solid var(--color-border-subtle);
+    background-color: var(--color-surface);
+    font-size: var(--step--1);
+  }
+
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-l);
+  }
+
+  .site-footer__identity > * + * {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .site-footer__name {
+    font-size: var(--step-1);
+    font-weight: var(--weight-bold);
+  }
+
+  address {
+    font-style: normal;
+  }
+
+  .site-footer__links {
+    display: grid;
+    gap: var(--space-3xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__links a {
+    display: inline-block;
+    padding-block: var(--space-3xs);
+  }
+
+  .site-footer__copyright {
+    margin-block-start: var(--space-l);
+    color: var(--color-text-muted);
+  }
+</style>
