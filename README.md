@@ -23,3 +23,5 @@ npm ci
 | `npm run build`   | build de production dans `dist/`                      |
 | `npm run preview` | sert le build de production en local                  |
 | `npm run check`   | vérification des types (`astro check`)                |
+| `npm run lint`    | lint et contrôle du formatage (Biome)                 |
+| `npm run format`  | formate le code (Biome)                               |
