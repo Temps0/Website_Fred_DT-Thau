@@ -1,0 +1,140 @@
+[
+  {
+    "id": "besoins-entreprises",
+    "title": "Transition écologique : quels besoins pour les entreprises du Bassin de Thau ?",
+    "intro": "DT-THAU construit son offre de formation à partir des besoins réels des entreprises du territoire. Vos réponses nous aident à proposer des formations utiles.",
+    "duration": "[À COMPLÉTER : durée estimée, par exemple 5 minutes]",
+    "sections": [
+      {
+        "title": "Votre entreprise",
+        "questions": [
+          {
+            "id": "secteur",
+            "type": "single-choice",
+            "label": "Dans quel secteur travaille votre entreprise ?",
+            "required": true,
+            "options": [
+              "Commerce",
+              "Artisanat, bâtiment",
+              "Tourisme, hôtellerie, restauration",
+              "Conchyliculture, pêche, agriculture",
+              "Industrie",
+              "Services",
+              "Autre"
+            ]
+          },
+          {
+            "id": "secteur-autre",
+            "type": "short-text",
+            "label": "Si « Autre », précisez votre secteur"
+          },
+          {
+            "id": "effectif",
+            "type": "single-choice",
+            "label": "Combien de personnes travaillent dans votre entreprise ?",
+            "required": true,
+            "options": ["1 à 9", "10 à 49", "50 à 249", "250 ou plus"]
+          },
+          {
+            "id": "localisation",
+            "type": "single-choice",
+            "label": "Où est située votre entreprise ?",
+            "options": ["Dans le Bassin de Thau", "Ailleurs dans l’Hérault", "Hors de l’Hérault"]
+          },
+          {
+            "id": "fonction",
+            "type": "single-choice",
+            "label": "Quelle est votre fonction ?",
+            "options": ["Direction", "Encadrement", "Salarié ou salariée", "Autre"]
+          }
+        ]
+      },
+      {
+        "title": "Où en êtes-vous ?",
+        "questions": [
+          {
+            "id": "situation",
+            "type": "single-choice",
+            "label": "Pour votre entreprise, la transition écologique est plutôt…",
+            "required": true,
+            "options": [
+              "Un sujet lointain",
+              "Un sujet dont on parle, sans savoir par où commencer",
+              "Une démarche déjà engagée",
+              "Une priorité, avec des actions en place"
+            ]
+          },
+          {
+            "id": "sujets",
+            "type": "multiple-choice",
+            "label": "Quels sujets concernent le plus votre activité ?",
+            "help": "Plusieurs réponses possibles.",
+            "options": [
+              "Énergie",
+              "Déchets",
+              "Eau",
+              "Mobilité et transports",
+              "Achats et fournisseurs",
+              "Attentes des clients ou des donneurs d’ordre",
+              "Réglementation",
+              "Recrutement et attractivité",
+              "Effets du climat (chaleur, sécheresse, submersion)",
+              "Autre"
+            ]
+          },
+          {
+            "id": "niveau-information",
+            "type": "scale",
+            "label": "À quel point vous sentez-vous informé sur ces sujets ?",
+            "min": 1,
+            "max": 5,
+            "minLabel": "Pas du tout",
+            "maxLabel": "Très bien"
+          }
+        ]
+      },
+      {
+        "title": "Vos besoins de formation",
+        "questions": [
+          {
+            "id": "interet",
+            "type": "single-choice",
+            "label": "Une formation sur ces sujets serait-elle utile à votre entreprise ?",
+            "required": true,
+            "options": ["Oui", "Peut-être", "Non"]
+          },
+          {
+            "id": "public",
+            "type": "multiple-choice",
+            "label": "Qui pourrait la suivre ?",
+            "help": "Plusieurs réponses possibles.",
+            "options": ["La direction", "L’encadrement", "Toute l’équipe"]
+          },
+          {
+            "id": "format",
+            "type": "multiple-choice",
+            "label": "Quels formats vous conviendraient ?",
+            "help": "Plusieurs réponses possibles.",
+            "options": [
+              "En présentiel, dans vos locaux",
+              "En présentiel, près de chez vous",
+              "À distance",
+              "Un mélange des deux"
+            ]
+          },
+          {
+            "id": "duree",
+            "type": "single-choice",
+            "label": "Quelle durée vous semble réaliste ?",
+            "options": ["2 heures", "Une demi-journée", "Une journée", "Deux jours ou plus"]
+          },
+          {
+            "id": "attentes",
+            "type": "long-text",
+            "label": "Qu’attendriez-vous d’une telle formation ?"
+          }
+        ]
+      }
+    ]
+  }
+]

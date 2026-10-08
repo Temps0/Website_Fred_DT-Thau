@@ -1,0 +1,178 @@
+---
+import { company, contactNav, mainNav } from '../data/site';
+
+const currentPath = Astro.url.pathname;
+const isCurrent = (href: string) => currentPath === href || currentPath === href.replace(/\/$/, '');
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>
+      {company.name}
+    </a>
+
+    <nav class="site-nav" aria-label="Navigation principale" data-site-nav>
+      <button
+        type="button"
+        class="site-nav__toggle"
+        aria-expanded="false"
+        aria-controls="site-nav-list"
+        data-site-nav-toggle
+      >
+        Menu
+      </button>
+      <ul class="site-nav__list" id="site-nav-list">
+        {
+          mainNav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        class="button button--primary site-nav__cta"
+        href={contactNav.href}
+        aria-current={isCurrent(contactNav.href) ? 'page' : undefined}
+      >
+        {contactNav.label}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile disclosure menu. Without JavaScript the list stays visible (see the .js styles).
+  const nav = document.querySelector<HTMLElement>('[data-site-nav]');
+  const toggle = nav?.querySelector<HTMLButtonElement>('[data-site-nav-toggle]');
+
+  if (nav && toggle) {
+    const setOpen = (isOpen: boolean) => {
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      nav.toggleAttribute('data-open', isOpen);
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    nav.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && nav.hasAttribute('data-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: var(--z-header);
+    border-block-end: var(--border-width) solid var(--color-border-subtle);
+    background-color: var(--color-bg);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    min-height: var(--header-height);
+    padding-block: var(--space-2xs);
+  }
+
+  .site-header__brand {
+    margin-inline-end: auto;
+    color: var(--color-text);
+    font-size: var(--step-1);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2xs) var(--space-s);
+  }
+
+  .site-nav__toggle {
+    display: none;
+    min-height: 2.75rem;
+    padding-inline: var(--space-s);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-s);
+    background-color: var(--color-bg);
+    font-weight: var(--weight-semibold);
+  }
+
+  .site-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav__list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-nav__list a:hover,
+  .site-nav__list a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+
+  .site-nav__list a[aria-current='page'] {
+    font-weight: var(--weight-semibold);
+  }
+
+  .site-nav__cta[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
+  }
+
+  /* Mobile: with JavaScript the list collapses behind the "Menu" button, while the
+     contact call to action stays visible. */
+  @media (max-width: 47.99rem) {
+    :global(.js) .site-nav__toggle {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    :global(.js) .site-nav__list {
+      display: none;
+    }
+
+    :global(.js) .site-nav[data-open] .site-nav__list {
+      position: absolute;
+      inset-inline: 0;
+      inset-block-start: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: var(--space-2xs) var(--gutter) var(--space-s);
+      border-block-end: var(--border-width) solid var(--color-border-subtle);
+      background-color: var(--color-bg);
+    }
+
+    :global(.js) .site-nav[data-open] .site-nav__list a {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 22rem) {
+    .site-header__brand {
+      font-size: var(--step-0);
+    }
+  }
+</style>

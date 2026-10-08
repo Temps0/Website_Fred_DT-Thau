@@ -1,0 +1,19 @@
+---
+/**
+ * Visible placeholder for information the client still has to provide.
+ * Renders "[À COMPLÉTER : <slot>]" highlighted, so missing content cannot go unnoticed.
+ */
+---
+
+<mark class="to-complete">[À COMPLÉTER&nbsp;: <slot />]</mark>
+
+<style>
+  .to-complete {
+    padding-inline: 0.2em;
+    border-radius: var(--radius-s);
+    background-color: var(--color-todo-bg);
+    color: var(--color-todo-text);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+</style>

@@ -1,0 +1,205 @@
+---
+import LinkButton from '../components/LinkButton.astro';
+import ToComplete from '../components/ToComplete.astro';
+import WireNote from '../components/WireNote.astro';
+import { area, company, surveyNav } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact : échangeons sur votre projet"
+  description="Une question, un besoin de formation, un projet de transition écologique ? Contactez DT-THAU, organisme de formation à Mèze, au service des entreprises du Bassin de Thau."
+>
+  <div class="container section flow flow--l">
+    <header class="flow flow--m">
+      <p class="eyebrow">Contact</p>
+      <h1>Échangeons sur votre projet</h1>
+      <p class="lead">
+        Vos besoins, vos questions, votre projet de transition écologique&nbsp;: écrivez-nous, nous
+        vous recontactons pour en parler.
+      </p>
+    </header>
+
+    <div class="contact-grid">
+      <section aria-labelledby="form-title" class="flow flow--m">
+        <h2 id="form-title" class="contact-subtitle">Votre message</h2>
+        <p id="form-hint">Tous les champs sont obligatoires, sauf mention «&nbsp;facultatif&nbsp;».</p>
+
+        <form class="form" method="post" aria-describedby="form-hint">
+          <div class="field">
+            <label for="contact-name">Nom</label>
+            <input id="contact-name" name="name" type="text" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="contact-company">Entreprise</label>
+            <input
+              id="contact-company"
+              name="company"
+              type="text"
+              autocomplete="organization"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="contact-email">E-mail</label>
+            <input id="contact-email" name="email" type="email" autocomplete="email" required />
+          </div>
+
+          <div class="field">
+            <label for="contact-phone">Téléphone (facultatif)</label>
+            <p class="field__hint" id="contact-phone-hint">Si vous préférez être rappelé.</p>
+            <input
+              id="contact-phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              aria-describedby="contact-phone-hint"
+            />
+          </div>
+
+          <div class="field">
+            <label for="contact-message">Message</label>
+            <p class="field__hint" id="contact-message-hint">
+              Votre situation, vos questions, ce que vous aimeriez mettre en place.
+            </p>
+            <textarea
+              id="contact-message"
+              name="message"
+              rows="6"
+              required
+              aria-describedby="contact-message-hint"></textarea>
+          </div>
+
+          <p class="form__privacy">
+            Vos données servent uniquement à répondre à votre demande et ne sont jamais cédées.
+            Elles sont conservées <ToComplete>durée de conservation</ToComplete>.
+            <a href="/confidentialite/">En savoir plus sur vos données et vos droits</a>.
+          </p>
+
+          <div class="flow">
+            <button type="submit" class="button button--primary" disabled>Envoyer ma demande</button>
+            <p>Nous vous répondons sous <ToComplete>délai de réponse</ToComplete>.</p>
+          </div>
+        </form>
+
+        <WireNote>
+          Formulaire court du brief&nbsp;; le téléphone est facultatif pour limiter les données
+          collectées. L’envoi (enregistrement du message, notification par e-mail, protection
+          anti-spam) sera branché à l’étape suivante&nbsp;: le bouton est désactivé dans le
+          wireframe.
+        </WireNote>
+      </section>
+
+      <aside class="contact-aside flow flow--l" aria-label="Coordonnées et questionnaire">
+        <section aria-labelledby="details-title" class="flow">
+          <h2 id="details-title" class="contact-subtitle">Coordonnées</h2>
+          <address class="flow">
+            <p>
+              <strong>{company.name}</strong><br />
+              {company.address.street}<br />
+              {company.address.postalCode} {company.address.city}
+            </p>
+            <p>
+              Téléphone&nbsp;:
+              {
+                company.phone ? (
+                  <a href={`tel:${company.phone.replace(/\s/g, '')}`}>{company.phone}</a>
+                ) : (
+                  <ToComplete>téléphone</ToComplete>
+                )
+              }<br />
+              E-mail&nbsp;:
+              {
+                company.email ? (
+                  <a href={`mailto:${company.email}`}>{company.email}</a>
+                ) : (
+                  <ToComplete>adresse e-mail</ToComplete>
+                )
+              }
+            </p>
+          </address>
+          <p>Nous intervenons auprès des entreprises du {area}.</p>
+          <WireNote>
+            Adresse du siège à confirmer ici&nbsp;: si c’est une adresse personnelle, elle reste
+            obligatoire dans les mentions légales, mais pas sur cette page.
+          </WireNote>
+        </section>
+
+        <section aria-labelledby="survey-title" class="survey-teaser flow">
+          <h2 id="survey-title" class="contact-subtitle">Entreprise du {area}&nbsp;?</h2>
+          <p>Aidez-nous à mieux connaître vos besoins en répondant à notre questionnaire.</p>
+          <LinkButton href={surveyNav.href} variant="secondary">Répondre au questionnaire</LinkButton>
+        </section>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 56rem) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      align-items: start;
+    }
+  }
+
+  .contact-subtitle {
+    font-size: var(--step-2);
+  }
+
+  .form {
+    display: grid;
+    gap: var(--space-m);
+    max-width: 40rem;
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .field label {
+    font-weight: var(--weight-semibold);
+  }
+
+  .field__hint {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-s);
+    background-color: var(--color-bg);
+  }
+
+  .field input[type='tel'] {
+    max-width: 16rem;
+  }
+
+  .form__privacy {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+
+  address {
+    font-style: normal;
+  }
+
+  .survey-teaser {
+    padding: var(--space-m);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-m);
+  }
+</style>

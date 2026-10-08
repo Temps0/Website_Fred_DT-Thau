@@ -1,0 +1,12 @@
+---
+/** A link styled as a button: navigation that deserves the weight of a call to action. */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary';
+}
+
+const { href, variant = 'primary' } = Astro.props;
+---
+
+{/* biome-ignore lint/a11y/useAnchorContent: the accessible name comes from the slot */}
+<a href={href} class:list={['button', `button--${variant}`]}><slot /></a>

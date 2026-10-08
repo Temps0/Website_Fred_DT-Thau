@@ -1,0 +1,93 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { company } from '../data/site';
+import { frenchSpacing } from '../lib/text';
+
+interface Props {
+  /** Page title, without the site name (omit on the home page). */
+  title?: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const fullTitle = frenchSpacing(title ? `${title} | ${company.name}` : company.name);
+const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={frenchSpacing(description)} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Aller au contenu</a>
+
+    <aside class="wire-banner" aria-label="Maquette">
+      <div class="container wire-banner__inner">
+        <p>
+          <strong>Wireframe</strong>&nbsp;: structure et contenus du site, sans graphisme. Les textes
+          sont ceux du brief ou des propositions à valider.
+        </p>
+        <label class="wire-banner__toggle">
+          <input type="checkbox" id="wire-notes-toggle" checked />
+          Afficher les notes
+        </label>
+      </div>
+    </aside>
+
+    <SiteHeader />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .wire-banner {
+    background-color: var(--color-note-text);
+    color: #ffffff;
+    font-size: var(--step--1);
+  }
+
+  .wire-banner__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3xs) var(--space-m);
+    padding-block: var(--space-2xs);
+  }
+
+  .wire-banner__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    min-height: 2.75rem;
+    font-weight: var(--weight-semibold);
+    cursor: pointer;
+  }
+
+  .wire-banner__toggle input {
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: #ffffff;
+  }
+
+  .wire-banner :focus-visible {
+    outline-color: #ffffff;
+  }
+</style>

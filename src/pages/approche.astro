@@ -1,0 +1,112 @@
+---
+import LinkButton from '../components/LinkButton.astro';
+import ToComplete from '../components/ToComplete.astro';
+import WireNote from '../components/WireNote.astro';
+import WirePlaceholder from '../components/WirePlaceholder.astro';
+import { area, contactNav } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const principles = [
+  {
+    id: 'pedagogique',
+    title: 'Une approche pédagogique',
+    text: 'Rendre les enjeux de la transition écologique compréhensibles, avec des explications simples, précises et adaptées aux réalités des PME.',
+  },
+  {
+    id: 'pragmatique',
+    title: 'Une approche pragmatique',
+    text: 'Partir des problématiques concrètes de l’entreprise pour identifier les priorités et les premières actions réellement pertinentes.',
+  },
+  {
+    id: 'locale',
+    title: 'Une approche locale et collective',
+    text: `Intégrer les spécificités du ${area} et favoriser une compréhension commune, pour permettre à chacun de contribuer à la transition.`,
+  },
+];
+---
+
+<BaseLayout
+  title="Notre approche : pédagogique, pragmatique et locale"
+  description="Une approche de la transition écologique pédagogique, pragmatique et ancrée dans les réalités des entreprises du Bassin de Thau."
+>
+  <div class="container section flow flow--m">
+    <h1>Notre approche</h1>
+    <p class="lead">
+      Comprendre avant d’agir, partir de votre réalité, avancer ensemble&nbsp;: trois principes
+      guident chaque formation.
+    </p>
+    <WireNote>
+      Page courte, dont le but est de créer la confiance malgré la jeunesse de la structure
+      (brief). Les trois principes sont ceux du brief&nbsp;; la phrase d’introduction est une
+      proposition.
+    </WireNote>
+  </div>
+
+  {
+    principles.map((principle, index) => (
+      <section
+        class:list={['section', { 'section--alt': index % 2 === 0 }]}
+        aria-labelledby={`${principle.id}-title`}
+      >
+        <div class="container principle">
+          <p class="principle__number" aria-hidden="true">
+            {index + 1}
+          </p>
+          <div class="flow">
+            <h2 id={`${principle.id}-title`}>{principle.title}</h2>
+            <p class="lead">{principle.text}</p>
+            <p>
+              <strong>Concrètement&nbsp;:</strong>
+              <ToComplete>un exemple tiré d’une formation ou d’une situation d’entreprise</ToComplete>
+            </p>
+            {index === 0 && (
+              <WireNote proposal>
+                Un exemple concret par principe rend l’approche crédible&nbsp;; à fournir par le
+                fondateur.
+              </WireNote>
+            )}
+          </div>
+          {principle.id === 'locale' && (
+            <WirePlaceholder label="Photo d’une intervention en entreprise ou du territoire – à fournir" />
+          )}
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section" aria-labelledby="next-title">
+    <div class="container flow flow--m">
+      <h2 id="next-title">Et pour votre entreprise&nbsp;?</h2>
+      <p class="lead">Parlons de votre situation, ou découvrez d’abord nos formations.</p>
+      <div class="actions">
+        <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+        <LinkButton href="/formations/" variant="secondary">Découvrir les formations</LinkButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .principle {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  @media (min-width: 48rem) {
+    .principle {
+      grid-template-columns: 4rem minmax(0, 1fr);
+    }
+
+    .principle > :global(.wire-placeholder) {
+      grid-column: 2;
+      max-width: 32rem;
+    }
+  }
+
+  .principle__number {
+    color: var(--color-text-muted);
+    font-size: var(--step-4);
+    font-weight: var(--weight-bold);
+    line-height: 1;
+  }
+</style>

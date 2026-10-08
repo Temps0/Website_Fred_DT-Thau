@@ -1,0 +1,205 @@
+---
+/**
+ * Renders one survey question as accessible form controls: grouped choices in a fieldset
+ * with a legend, free text with a label. Field names are the question ids.
+ */
+
+import type { SurveyQuestion } from '../lib/survey';
+import { frenchSpacing } from '../lib/text';
+
+interface Props {
+  question: SurveyQuestion;
+}
+
+const { question } = Astro.props;
+// Suffixes use "__", which question ids cannot contain, so derived DOM ids never collide.
+const fieldId = `q-${question.id}`;
+const helpId = question.help ? `${fieldId}__help` : undefined;
+const label = frenchSpacing(question.label);
+const help = question.help ? frenchSpacing(question.help) : undefined;
+const requiredMark = question.required ? ' (obligatoire)' : '';
+
+const scaleSteps =
+  question.type === 'scale'
+    ? Array.from({ length: question.max - question.min + 1 }, (_, index) => {
+        const value = question.min + index;
+        const hint =
+          value === question.min
+            ? question.minLabel
+            : value === question.max
+              ? question.maxLabel
+              : undefined;
+        return { value, hint };
+      })
+    : [];
+---
+
+{
+  (question.type === 'short-text' || question.type === 'long-text') && (
+    <div class="question">
+      <label class="question__label" for={fieldId}>
+        {label}
+        {requiredMark}
+      </label>
+      {help && (
+        <p class="question__help" id={helpId}>
+          {help}
+        </p>
+      )}
+      {question.type === 'short-text' ? (
+        <input
+          id={fieldId}
+          name={question.id}
+          type="text"
+          required={question.required}
+          aria-describedby={helpId}
+        />
+      ) : (
+        <textarea
+          id={fieldId}
+          name={question.id}
+          rows="5"
+          required={question.required}
+          aria-describedby={helpId}
+        />
+      )}
+    </div>
+  )
+}
+
+{
+  (question.type === 'single-choice' || question.type === 'multiple-choice') && (
+    <fieldset class="question" aria-describedby={helpId}>
+      <legend class="question__label">
+        {label}
+        {requiredMark}
+      </legend>
+      {help && (
+        <p class="question__help" id={helpId}>
+          {help}
+        </p>
+      )}
+      <div class="question__options">
+        {question.options.map((option, index) => (
+          <label class="option" for={`${fieldId}__${index}`}>
+            <input
+              id={`${fieldId}__${index}`}
+              type={question.type === 'single-choice' ? 'radio' : 'checkbox'}
+              name={question.id}
+              value={option}
+              required={question.required}
+            />
+            {frenchSpacing(option)}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )
+}
+
+{
+  question.type === 'scale' && (
+    <fieldset class="question" aria-describedby={helpId}>
+      <legend class="question__label">
+        {label}
+        {requiredMark}
+      </legend>
+      {help && (
+        <p class="question__help" id={helpId}>
+          {help}
+        </p>
+      )}
+      <div class="question__scale">
+        {scaleSteps.map((step) => (
+          <label class="option option--scale" for={`${fieldId}__${step.value}`}>
+            <input
+              id={`${fieldId}__${step.value}`}
+              type="radio"
+              name={question.id}
+              value={step.value}
+              required={question.required}
+            />
+            <span>
+              {step.value}
+              {step.hint && <span class="option__hint">{frenchSpacing(step.hint)}</span>}
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )
+}
+
+<style>
+  .question {
+    display: grid;
+    gap: var(--space-2xs);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .question__label {
+    padding: 0;
+    font-weight: var(--weight-semibold);
+  }
+
+  .question__help {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+
+  .question input[type='text'],
+  .question textarea {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-s);
+    background-color: var(--color-bg);
+  }
+
+  .question__options {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 2.75rem;
+    cursor: pointer;
+  }
+
+  .option input {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: var(--color-primary);
+  }
+
+  .question__scale {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: var(--space-2xs);
+    max-width: 32rem;
+  }
+
+  .option--scale {
+    flex-direction: column;
+    gap: var(--space-3xs);
+    text-align: center;
+  }
+
+  .option--scale > span {
+    display: grid;
+  }
+
+  .option__hint {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+</style>
