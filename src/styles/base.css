@@ -201,6 +201,15 @@ a:hover {
   max-width: var(--measure);
 }
 
+/* Short label above a page title, e.g. the page or section name. */
+.eyebrow {
+  color: var(--color-text-muted);
+  font-size: var(--step--1);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
 /* ---- Buttons -------------------------------------------------------------- */
 .button {
   display: inline-flex;
