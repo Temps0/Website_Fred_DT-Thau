@@ -1,0 +1,155 @@
+---
+import { getCollection } from 'astro:content';
+import FormationCard from '../components/FormationCard.astro';
+import LinkButton from '../components/LinkButton.astro';
+import ToComplete from '../components/ToComplete.astro';
+import WireNote from '../components/WireNote.astro';
+import { contactNav } from '../data/site';
+import { trainingNeeds } from '../data/training-needs';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const formations = (await getCollection('formations')).sort(
+  (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title, 'fr'),
+);
+
+const needsWithFormations = trainingNeeds.map((need) => ({
+  ...need,
+  formations: formations.filter((formation) => formation.data.need === need.id),
+}));
+---
+
+<BaseLayout
+  title="Nos formations à la transition écologique et à la RSE"
+  description="Des formations courtes et concrètes pour comprendre les enjeux écologiques et leurs conséquences sur l’entreprise : enjeux, démarche RSE, priorités, passage à l’action."
+>
+  <div class="container section flow flow--l">
+    <header class="flow flow--m">
+      <h1>Nos formations</h1>
+      <p class="lead">
+        Des formations courtes et concrètes pour comprendre les enjeux écologiques et leurs
+        conséquences sur l’entreprise.
+      </p>
+      <WireNote>
+        Offre en construction&nbsp;: les formations affichées sont des exemples à remplacer.
+        Chaque formation est un fichier de <code>src/content/formations</code>&nbsp;; en ajouter une
+        ne demande aucun développement.
+      </WireNote>
+    </header>
+
+    <nav class="needs-nav" aria-labelledby="needs-nav-title">
+      <h2 id="needs-nav-title" class="needs-nav__title">Les formations par besoin</h2>
+      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+      <ul role="list">
+        {
+          trainingNeeds.map((need) => (
+            <li>
+              <a href={`#${need.id}`}>{need.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  {
+    needsWithFormations.map((need, index) => (
+      <section
+        class:list={['section', { 'section--alt': index % 2 === 0 }]}
+        id={need.id}
+        aria-labelledby={`${need.id}-title`}
+      >
+        <div class="container flow flow--l">
+          <div class="flow">
+            <h2 id={`${need.id}-title`}>{need.title}</h2>
+            <p class="lead">{need.intro}</p>
+          </div>
+          {need.formations.length > 0 ? (
+            <div class="formations-grid">
+              {need.formations.map((formation) => (
+                <FormationCard formation={formation} />
+              ))}
+            </div>
+          ) : (
+            <p>Formations en préparation. Contactez-nous pour en parler.</p>
+          )}
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section section--alt" aria-labelledby="custom-title">
+    <div class="container closing">
+      <div class="flow flow--m">
+        <h2 id="custom-title">Un besoin spécifique&nbsp;?</h2>
+        <p class="lead">Parlons de votre situation pour trouver la formation adaptée.</p>
+        <div class="actions">
+          <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+        </div>
+        <WireNote proposal>
+          Une sortie pour les visiteurs qui ne se reconnaissent dans aucune formation.
+        </WireNote>
+      </div>
+      <aside class="funding" aria-labelledby="funding-title">
+        <h2 id="funding-title" class="funding__title">Financement</h2>
+        <p>
+          <ToComplete>prise en charge possible (OPCO…), selon la certification Qualiopi</ToComplete>
+        </p>
+        <WireNote>
+          Sans certification Qualiopi, les formations ne peuvent pas être financées par les OPCO.
+          Ce bloc n’apparaît qu’une fois la question tranchée.
+        </WireNote>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .needs-nav__title,
+  .funding__title {
+    font-size: var(--step-1);
+  }
+
+  .needs-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-m);
+    margin-block-start: var(--space-xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .needs-nav a {
+    display: inline-block;
+    padding-block: var(--space-2xs);
+  }
+
+  .closing {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .closing {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+  }
+
+  .funding {
+    max-width: var(--measure);
+    background-color: var(--color-bg);
+    padding: var(--space-m);
+    border: var(--border-width) solid var(--color-border-subtle);
+    border-radius: var(--radius-m);
+  }
+
+  .funding > * + * {
+    margin-block-start: var(--space-xs);
+  }
+
+  .formations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-m);
+  }
+</style>

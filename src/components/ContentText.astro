@@ -1,0 +1,17 @@
+---
+/**
+ * Renders a text value coming from a content file: "[À COMPLÉTER : …]" values become a
+ * highlighted placeholder, other values get French typographic spacing.
+ */
+import { frenchSpacing, placeholderText } from '../lib/text';
+import ToComplete from './ToComplete.astro';
+
+interface Props {
+  value: string;
+}
+
+const { value } = Astro.props;
+const placeholder = placeholderText(value);
+---
+
+{placeholder ? <ToComplete>{frenchSpacing(placeholder)}</ToComplete> : frenchSpacing(value)}
