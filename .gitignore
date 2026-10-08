@@ -6,7 +6,7 @@ dist/
 .astro/
 
 # local data (SQLite databases, uploads)
-data/
+/data/
 
 # environment
 .env
