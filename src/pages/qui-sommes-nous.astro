@@ -1,0 +1,182 @@
+---
+import LinkButton from '../components/LinkButton.astro';
+import ToComplete from '../components/ToComplete.astro';
+import WireNote from '../components/WireNote.astro';
+import WirePlaceholder from '../components/WirePlaceholder.astro';
+import { area, company, contactNav } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const values = [
+  { title: 'Pédagogie', text: 'Rendre les sujets complexes accessibles, sans jargon.' },
+  { title: 'Pragmatisme', text: 'Privilégier ce qui est utile et faisable pour votre entreprise.' },
+  {
+    title: 'Responsabilité',
+    text: 'Agir avec exigence et honnêteté, sans culpabiliser ni promettre l’impossible.',
+  },
+];
+---
+
+<BaseLayout
+  title="Qui sommes-nous ? L’origine du projet et son fondateur"
+  description="DT-THAU, organisme de formation créé à Mèze en 2026 pour rendre la transition écologique compréhensible et aider les entreprises du Bassin de Thau à passer à l’action."
+>
+  <div class="container section flow flow--m">
+    <h1>Qui sommes-nous&nbsp;?</h1>
+    <p class="lead">
+      {company.name} est née d’une conviction&nbsp;: rendre la transition écologique compréhensible
+      et permettre aux entreprises de passer de la réflexion à l’action.
+    </p>
+    <WireNote>
+      Le brief hésite entre «&nbsp;Qui sommes-nous&nbsp;?&nbsp;» et «&nbsp;Qui suis-je&nbsp;?&nbsp;».
+      Avec un fondateur seul, le «&nbsp;je&nbsp;» est plus direct et plus humain&nbsp;: à choisir
+      avec lui.
+    </WireNote>
+  </div>
+
+  <section class="section section--alt" aria-labelledby="origin-title">
+    <div class="container flow">
+      <h2 id="origin-title">L’origine du projet</h2>
+      <p class="lead">
+        <ToComplete>l’histoire du projet en quelques phrases&nbsp;: le déclic, le constat, l’envie</ToComplete>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="founder-title">
+    <div class="container founder">
+      <div class="founder__photo">
+        <WirePlaceholder label="Portrait du fondateur – à fournir" ratio="portrait" />
+      </div>
+      <div class="flow flow--m">
+        <h2 id="founder-title">Qui porte le projet</h2>
+        <p class="lead"><ToComplete>prénom et nom du fondateur</ToComplete></p>
+        <dl class="founder__facts">
+          <div>
+            <dt>Parcours</dt>
+            <dd><ToComplete>expériences professionnelles marquantes</ToComplete></dd>
+          </div>
+          <div>
+            <dt>Expertise</dt>
+            <dd><ToComplete>compétences en transition écologique, RSE et formation</ToComplete></dd>
+          </div>
+          <div>
+            <dt>Formations et certifications</dt>
+            <dd><ToComplete>diplômes, certifications, références vérifiables</ToComplete></dd>
+          </div>
+        </dl>
+        <WireNote>
+          Mettre l’accent sur ce qui légitime l’expertise plutôt que sur l’ancienneté de
+          l’entreprise (brief).
+        </WireNote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="values-title">
+    <div class="container flow flow--l">
+      <div class="flow">
+        <h2 id="values-title">Notre engagement</h2>
+        <p class="lead">
+          Une approche fondée sur trois valeurs, avec un ancrage particulier dans les réalités du
+          {area}.
+        </p>
+      </div>
+      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+      <ul class="values" role="list">
+        {
+          values.map((value) => (
+            <li>
+              <h3>{value.title}</h3>
+              <p>{value.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <WireNote proposal>
+        Les trois valeurs sont celles du brief&nbsp;; leurs descriptions sont à faire valider.
+      </WireNote>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="facts-title">
+    <div class="container flow">
+      <h2 id="facts-title">{company.name} en bref</h2>
+      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+      <ul class="facts" role="list">
+        <li>Organisme de formation et de conseil en développement durable et RSE</li>
+        <li>Créée en 2026, basée à {company.address.city}</li>
+        <li>Au service des PME et TPE du {area}</li>
+      </ul>
+      <WireNote proposal>
+        Des faits tirés de l’immatriculation de la société&nbsp;: une structure jeune gagne à les
+        afficher franchement.
+      </WireNote>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="next-title">
+    <div class="container flow flow--m">
+      <h2 id="next-title">Faisons connaissance</h2>
+      <div class="actions">
+        <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+        <LinkButton href="/approche/" variant="secondary">Découvrir notre approche</LinkButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .founder {
+    display: grid;
+    gap: var(--space-l);
+    align-items: start;
+  }
+
+  .founder__photo {
+    max-width: 16rem;
+  }
+
+  @media (min-width: 48rem) {
+    .founder {
+      grid-template-columns: 16rem 1fr;
+      gap: var(--space-xl);
+    }
+  }
+
+  .founder__facts {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .founder__facts dt {
+    font-weight: var(--weight-semibold);
+  }
+
+  .founder__facts dd {
+    margin: 0;
+  }
+
+  .values {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-l);
+    padding: 0;
+    list-style: none;
+  }
+
+  .values li > * + * {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-2xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .facts li {
+    padding-inline-start: var(--space-s);
+    border-inline-start: 3px solid var(--color-border-subtle);
+  }
+</style>
