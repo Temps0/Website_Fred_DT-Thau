@@ -4,6 +4,7 @@ import '../styles/base.css';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { company } from '../data/site';
+import { frenchSpacing } from '../lib/text';
 
 interface Props {
   /** Page title, without the site name (omit on the home page). */
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const fullTitle = title ? `${title} | ${company.name}` : company.name;
+const fullTitle = frenchSpacing(title ? `${title} | ${company.name}` : company.name);
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 
@@ -22,7 +23,7 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href :
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={frenchSpacing(description)} />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
