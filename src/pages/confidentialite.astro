@@ -1,0 +1,156 @@
+---
+import ToComplete from '../components/ToComplete.astro';
+import WireNote from '../components/WireNote.astro';
+import { company } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { frenchSpacing } from '../lib/text';
+
+const processings = [
+  {
+    id: 'contact',
+    title: 'Formulaire de contact',
+    data: 'Nom, entreprise, adresse e-mail, téléphone (facultatif) et message.',
+    purpose: 'Répondre à votre demande et, si vous le souhaitez, échanger sur une formation.',
+    legalBasis: 'Intérêt légitime de DT-THAU à répondre aux demandes qu’elle reçoit.',
+    requirement:
+      'Nom, entreprise, adresse e-mail et message sont nécessaires pour vous répondre : sans eux, nous ne pouvons pas traiter votre demande. Le téléphone est facultatif.',
+    retention: 'durée de conservation, par exemple 3 ans après le dernier contact (CNIL)',
+  },
+  {
+    id: 'questionnaire',
+    title: 'Questionnaire entreprises',
+    data: 'Vos réponses, sans nom ni entreprise. Votre adresse e-mail uniquement si vous demandez à être recontacté.',
+    purpose: 'Adapter l’offre de formation aux besoins des entreprises et, si vous l’avez demandé, vous recontacter.',
+    legalBasis: 'Intérêt légitime pour les réponses, consentement pour l’adresse e-mail.',
+    requirement:
+      'Seules les questions marquées « obligatoire » doivent être remplies : sans elles, vos réponses ne peuvent pas être exploitées. L’adresse e-mail est facultative.',
+    retention: 'durée de conservation des réponses et des adresses e-mail',
+  },
+  {
+    id: 'logs',
+    title: 'Journaux du serveur',
+    data: 'Adresse IP, date et heure, page demandée, navigateur.',
+    purpose: 'Assurer la sécurité et le bon fonctionnement du site.',
+    legalBasis: 'Intérêt légitime.',
+    requirement:
+      'Ces données sont enregistrées automatiquement à chaque visite : elles sont nécessaires au fonctionnement du site.',
+    retention: 'durée de conservation des journaux, de 6 mois à 1 an selon la CNIL',
+  },
+];
+---
+
+<BaseLayout
+  title="Politique de confidentialité"
+  description="Quelles données personnelles DT-THAU collecte sur son site, pourquoi, combien de temps, et comment exercer vos droits."
+>
+  <div class="container section">
+    <article class="prose">
+      <h1>Politique de confidentialité</h1>
+      <p class="lead">
+        Cette page explique quelles données personnelles {company.name} collecte sur ce site,
+        pourquoi, combien de temps elles sont conservées et comment exercer vos droits.
+      </p>
+
+      <WireNote>
+        Proposition de texte à faire valider par le responsable du site, idéalement avec un
+        professionnel du droit. Elle devra suivre les choix techniques réels (hébergement,
+        messagerie, envoi des e-mails).
+      </WireNote>
+
+      <h2>Responsable du traitement</h2>
+      <p>
+        {company.name}, {company.address.street}, {company.address.postalCode}
+        {company.address.city}. Contact&nbsp;:
+        {company.email ?? <ToComplete>adresse e-mail</ToComplete>}.
+      </p>
+
+      <h2>Données collectées</h2>
+      {
+        processings.map((processing) => (
+          <section aria-labelledby={`processing-${processing.id}`}>
+            <h3 id={`processing-${processing.id}`}>{processing.title}</h3>
+            <dl class="processing">
+              <div>
+                <dt>Données</dt>
+                <dd>{frenchSpacing(processing.data)}</dd>
+              </div>
+              <div>
+                <dt>Finalité</dt>
+                <dd>{frenchSpacing(processing.purpose)}</dd>
+              </div>
+              <div>
+                <dt>Base légale</dt>
+                <dd>{frenchSpacing(processing.legalBasis)}</dd>
+              </div>
+              <div>
+                <dt>Caractère obligatoire</dt>
+                <dd>{frenchSpacing(processing.requirement)}</dd>
+              </div>
+              <div>
+                <dt>Durée de conservation</dt>
+                <dd>
+                  <ToComplete>{processing.retention}</ToComplete>
+                </dd>
+              </div>
+            </dl>
+          </section>
+        ))
+      }
+
+      <h2>Destinataires</h2>
+      <p>
+        Vos données sont destinées à {company.name} uniquement. Elles ne sont ni vendues ni cédées.
+        Elles transitent par les prestataires techniques suivants&nbsp;:
+      </p>
+      <ul>
+        <li>hébergement du site&nbsp;: <ToComplete>hébergeur</ToComplete></li>
+        <li>messagerie et envoi des e-mails&nbsp;: <ToComplete>fournisseur</ToComplete></li>
+      </ul>
+      <p>
+        Transferts hors de l’Union européenne&nbsp;:
+        <ToComplete>à vérifier selon les prestataires retenus</ToComplete>
+      </p>
+
+      <h2>Cookies et traceurs</h2>
+      <p>
+        Ce site ne dépose aucun cookie de mesure d’audience ou de publicité et n’utilise aucun
+        traceur soumis à votre consentement.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Vous pouvez accéder à vos données, les faire rectifier ou effacer, demander la limitation
+        de leur traitement, vous y opposer, demander leur portabilité et retirer votre
+        consentement à tout moment. Écrivez-nous à
+        {company.email ?? <ToComplete>adresse e-mail</ToComplete>} ou à l’adresse postale
+        ci-dessus.
+      </p>
+      <p>
+        Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation
+        à la <a href="https://www.cnil.fr/fr/plaintes">CNIL</a>.
+      </p>
+
+      <p><small>Dernière mise à jour&nbsp;: <ToComplete>date</ToComplete></small></p>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .processing {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-xs);
+  }
+
+  .processing dt {
+    font-weight: var(--weight-semibold);
+  }
+
+  .processing dd {
+    margin: 0;
+  }
+
+  .prose section {
+    margin-block-start: var(--space-l);
+  }
+</style>
