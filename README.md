@@ -7,7 +7,7 @@ Construit avec [Astro](https://astro.build) en TypeScript.
 
 ## Prérequis
 
-- Node.js 26 (version indiquée dans `.nvmrc` ; minimum 22.12)
+- Node.js 26 (version indiquée dans `.nvmrc` ; minimum 24, pour le module `node:sqlite`)
 
 ## Installation
 
@@ -84,3 +84,16 @@ domaine pour l’hôte, le protocole et l’adresse IP transmis :
 ```bash
 SITE_DOMAIN=dt-thau.fr npm run build
 ```
+
+## Formulaires et données
+
+Le formulaire de contact enregistre les messages dans une base SQLite
+(`submissions.db`), dans le dossier indiqué par la variable `DATA_DIR` (par défaut
+`./data`, ignoré par git). Voir [.env.example](.env.example).
+
+Protections : validation côté serveur, champ piège et délai minimal contre les robots,
+5 messages valides au plus par adresse IP et par tranche de 10 minutes, contrôle de
+l’origine des envois (Astro), corps de requête limité à 100 Ko.
+
+En local, ouvrir le site sur <http://localhost:4321> (et non `127.0.0.1`) : sans
+`SITE_DOMAIN`, Astro n’accepte les envois que depuis `localhost`.

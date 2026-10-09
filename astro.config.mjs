@@ -1,6 +1,6 @@
 // @ts-check
 import node from '@astrojs/node';
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 
 /**
  * Public domain of the site (e.g. "dt-thau.fr"), read at build time. Behind the reverse
@@ -42,6 +42,14 @@ export default defineConfig({
         "base-uri 'self'",
         "form-action 'self'",
       ],
+    },
+  },
+  env: {
+    schema: {
+      // Directory of the SQLite database holding form submissions (a volume in production).
+      // Declared "secret" so that it is read when the server starts: "public" server
+      // variables are frozen into the bundle at build time.
+      DATA_DIR: envField.string({ context: 'server', access: 'secret', default: './data' }),
     },
   },
   // HTML whitespace semantics: a line break between text and a tag or expression renders as

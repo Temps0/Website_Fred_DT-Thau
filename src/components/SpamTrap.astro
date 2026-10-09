@@ -1,0 +1,34 @@
+---
+/**
+ * Hidden anti-spam fields: a honeypot that people never see nor reach with the keyboard,
+ * and the time the form was first rendered, checked on submission (see lib/server/spam.ts).
+ */
+import { HONEYPOT_FIELD, STARTED_AT_FIELD } from '../lib/server/spam';
+
+interface Props {
+  /** Prefix that keeps the honeypot id unique on the page. */
+  formId: string;
+  /** Render time of the first display, kept when the form is shown again after errors. */
+  startedAt?: number | null;
+}
+
+const { formId, startedAt } = Astro.props;
+const fieldId = `${formId}-${HONEYPOT_FIELD}`;
+---
+
+<div class="spam-trap" aria-hidden="true">
+  <label for={fieldId}>Ne pas remplir ce champ</label>
+  <input id={fieldId} name={HONEYPOT_FIELD} type="text" tabindex="-1" autocomplete="off" />
+</div>
+<input type="hidden" name={STARTED_AT_FIELD} value={startedAt ?? Date.now()} />
+
+<style>
+  .spam-trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

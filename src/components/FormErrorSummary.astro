@@ -1,0 +1,55 @@
+---
+/**
+ * Lists the errors of a submitted form, with links to the fields. It receives focus when
+ * the page loads, so screen reader and keyboard users land on it after a failed post.
+ */
+interface Props {
+  errors: { fieldId: string; message: string }[];
+}
+
+const { errors } = Astro.props;
+const count = errors.length;
+---
+
+{
+  count > 0 && (
+    <div class="error-summary" tabindex="-1" autofocus>
+      <h2 class="error-summary__title">
+        {count === 1 ? 'Le formulaire contient une erreur' : `Le formulaire contient ${count} erreurs`}
+      </h2>
+      <ul>
+        {errors.map((error) => (
+          <li>
+            <a href={`#${error.fieldId}`}>{error.message}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .error-summary {
+    padding: var(--space-m);
+    border: 3px solid var(--color-danger);
+    border-radius: var(--radius-m);
+  }
+
+  .error-summary:focus-visible {
+    outline-offset: 4px;
+  }
+
+  .error-summary__title {
+    font-size: var(--step-1);
+  }
+
+  .error-summary ul {
+    margin-block-start: var(--space-xs);
+    padding-inline-start: var(--space-m);
+  }
+
+  .error-summary a {
+    color: var(--color-danger);
+    font-weight: var(--weight-semibold);
+  }
+</style>

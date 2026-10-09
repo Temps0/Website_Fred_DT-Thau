@@ -1,0 +1,127 @@
+---
+/**
+ * Labelled text input or textarea, with optional hint and server-side error. The error is
+ * announced with the field (aria-describedby) and flagged with aria-invalid.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  value?: string;
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  multiline?: boolean;
+  type?: 'text' | 'email' | 'tel';
+  autocomplete?: HTMLAttributes<'input'>['autocomplete'];
+  maxlength?: number;
+  size?: 'short' | 'full';
+}
+
+const {
+  id,
+  name,
+  label,
+  value = '',
+  hint,
+  error,
+  required = false,
+  multiline = false,
+  type = 'text',
+  autocomplete,
+  maxlength,
+  size = 'full',
+} = Astro.props;
+
+const hintId = hint ? `${id}__hint` : undefined;
+const errorId = error ? `${id}__error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+---
+
+<div class:list={['text-field', { 'text-field--invalid': error }]}>
+  <label for={id}>{label}</label>
+  {
+    hint && (
+      <p class="text-field__hint" id={hintId}>
+        {hint}
+      </p>
+    )
+  }
+  {
+    error && (
+      <p class="text-field__error" id={errorId}>
+        <span class="visually-hidden">Erreur&nbsp;:</span> {error}
+      </p>
+    )
+  }
+  {
+    multiline ? (
+      <textarea
+        id={id}
+        name={name}
+        rows="6"
+        required={required}
+        maxlength={maxlength}
+        aria-describedby={describedBy}
+        aria-invalid={error ? 'true' : undefined}
+      >{value}</textarea>
+    ) : (
+      <input
+        id={id}
+        name={name}
+        type={type}
+        value={value}
+        required={required}
+        autocomplete={autocomplete}
+        maxlength={maxlength}
+        aria-describedby={describedBy}
+        aria-invalid={error ? 'true' : undefined}
+        class:list={[{ 'text-field__input--short': size === 'short' }]}
+      />
+    )
+  }
+</div>
+
+<style>
+  .text-field {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .text-field label {
+    font-weight: var(--weight-semibold);
+  }
+
+  .text-field__hint {
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+
+  .text-field__error {
+    color: var(--color-danger);
+    font-weight: var(--weight-semibold);
+  }
+
+  .text-field input,
+  .text-field textarea {
+    /* Keep the label in view when an error summary link jumps to the field. */
+    scroll-margin-block-start: 6rem;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-s);
+    background-color: var(--color-bg);
+  }
+
+  .text-field--invalid input,
+  .text-field--invalid textarea {
+    border: 2px solid var(--color-danger);
+  }
+
+  .text-field__input--short {
+    max-width: 16rem;
+  }
+</style>

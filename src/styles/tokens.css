@@ -78,6 +78,8 @@
   --color-on-primary: #ffffff;
   --color-link: var(--neutral-900);
   --color-focus: var(--neutral-900);
+  --color-success: #12723f;
+  --color-danger: #b42318;
 
   /* ---- Colour: wireframe annotations (removed with the wireframe) ---------- */
   --color-note-bg: #e8f0fb;

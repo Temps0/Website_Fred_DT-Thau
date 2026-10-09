@@ -1,0 +1,44 @@
+---
+/**
+ * Outcome message shown above a form after a post (success or failure that is not tied to
+ * a field). It receives focus on page load so the result is announced.
+ */
+interface Props {
+  tone: 'success' | 'error';
+  title: string;
+}
+
+const { tone, title } = Astro.props;
+---
+
+{/* biome-ignore lint/a11y/noAutofocus: without JavaScript, autofocus is the only way to move focus to the outcome after a post */}
+<div class:list={['form-notice', `form-notice--${tone}`]} tabindex="-1" autofocus>
+  <p class="form-notice__title">{title}</p>
+  <slot />
+</div>
+
+<style>
+  .form-notice {
+    padding: var(--space-m);
+    border-inline-start: 6px solid;
+    border-radius: var(--radius-s);
+    background-color: var(--color-surface);
+  }
+
+  .form-notice > * + * {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .form-notice--success {
+    border-color: var(--color-success);
+  }
+
+  .form-notice--error {
+    border-color: var(--color-danger);
+  }
+
+  .form-notice__title {
+    font-size: var(--step-1);
+    font-weight: var(--weight-bold);
+  }
+</style>
