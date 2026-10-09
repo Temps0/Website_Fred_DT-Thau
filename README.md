@@ -116,7 +116,8 @@ node scripts/export-submissions.mjs survey > reponses.csv
 
 Les cellules qui commencent par `=`, `+`, `-` ou `@` sont préfixées d’une apostrophe, pour
 qu’un tableur n’exécute jamais une formule saisie par un visiteur. Ces exports contiennent
-des données personnelles : à ne pas laisser traîner ni envoyer en clair.
+des données personnelles : à ne pas laisser traîner ni envoyer en clair. Les fichiers
+`.csv` et `.db` sont ignorés par git, pour qu’ils ne finissent jamais dans le dépôt.
 
 ### Supprimer des envois
 

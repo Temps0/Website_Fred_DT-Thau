@@ -8,6 +8,10 @@ dist/
 # local data (SQLite databases, uploads)
 /data/
 
+# exports and backups of form submissions: personal data, never committed
+*.csv
+*.db
+
 # environment
 .env
 .env.*
