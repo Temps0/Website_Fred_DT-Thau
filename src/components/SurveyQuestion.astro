@@ -1,42 +1,50 @@
 ---
 /**
  * Renders one survey question as accessible form controls: grouped choices in a fieldset
- * with a legend, free text with a label. Field names are the question ids.
+ * with a legend, free text with a label. Field names are the question ids. After a failed
+ * post it shows the previous answer and the error, linked to the controls.
  */
 
-import type { SurveyQuestion } from '../lib/survey';
+import { questionFieldId, type SurveyAnswer, type SurveyQuestion } from '../lib/survey';
 import { frenchSpacing } from '../lib/text';
 
 interface Props {
   question: SurveyQuestion;
+  value?: SurveyAnswer;
+  error?: string;
 }
 
-const { question } = Astro.props;
-// Suffixes use "__", which question ids cannot contain, so derived DOM ids never collide.
-const fieldId = `q-${question.id}`;
+const { question, value = '', error } = Astro.props;
+const fieldId = questionFieldId(question);
 const helpId = question.help ? `${fieldId}__help` : undefined;
+const errorId = error ? `${fieldId}__error` : undefined;
+const describedBy = [helpId, errorId].filter(Boolean).join(' ') || undefined;
+const invalid = error ? 'true' : undefined;
 const label = frenchSpacing(question.label);
 const help = question.help ? frenchSpacing(question.help) : undefined;
 const requiredMark = question.required ? ' (obligatoire)' : '';
 
+const isChecked = (option: string) =>
+  Array.isArray(value) ? value.includes(option) : value === option;
+
 const scaleSteps =
   question.type === 'scale'
     ? Array.from({ length: question.max - question.min + 1 }, (_, index) => {
-        const value = question.min + index;
+        const step = question.min + index;
         const hint =
-          value === question.min
+          step === question.min
             ? question.minLabel
-            : value === question.max
+            : step === question.max
               ? question.maxLabel
               : undefined;
-        return { value, hint };
+        return { step, hint };
       })
     : [];
 ---
 
 {
   (question.type === 'short-text' || question.type === 'long-text') && (
-    <div class="question">
+    <div class:list={['question', { 'question--invalid': error }]}>
       <label class="question__label" for={fieldId}>
         {label}
         {requiredMark}
@@ -46,22 +54,32 @@ const scaleSteps =
           {help}
         </p>
       )}
+      {error && (
+        <p class="question__error" id={errorId}>
+          <span class="visually-hidden">Erreur&nbsp;:</span> {error}
+        </p>
+      )}
       {question.type === 'short-text' ? (
         <input
           id={fieldId}
           name={question.id}
           type="text"
+          value={value}
+          maxlength={300}
           required={question.required}
-          aria-describedby={helpId}
+          aria-describedby={describedBy}
+          aria-invalid={invalid}
         />
       ) : (
         <textarea
           id={fieldId}
           name={question.id}
           rows="5"
+          maxlength={3000}
           required={question.required}
-          aria-describedby={helpId}
-        />
+          aria-describedby={describedBy}
+          aria-invalid={invalid}
+        >{value}</textarea>
       )}
     </div>
   )
@@ -69,7 +87,10 @@ const scaleSteps =
 
 {
   (question.type === 'single-choice' || question.type === 'multiple-choice') && (
-    <fieldset class="question" aria-describedby={helpId}>
+    <fieldset
+      class:list={['question', { 'question--invalid': error }]}
+      aria-describedby={describedBy}
+    >
       <legend class="question__label">
         {label}
         {requiredMark}
@@ -77,6 +98,11 @@ const scaleSteps =
       {help && (
         <p class="question__help" id={helpId}>
           {help}
+        </p>
+      )}
+      {error && (
+        <p class="question__error" id={errorId}>
+          <span class="visually-hidden">Erreur&nbsp;:</span> {error}
         </p>
       )}
       <div class="question__options">
@@ -87,7 +113,9 @@ const scaleSteps =
               type={question.type === 'single-choice' ? 'radio' : 'checkbox'}
               name={question.id}
               value={option}
+              checked={isChecked(option)}
               required={question.required}
+              aria-invalid={invalid}
             />
             {frenchSpacing(option)}
           </label>
@@ -99,7 +127,10 @@ const scaleSteps =
 
 {
   question.type === 'scale' && (
-    <fieldset class="question" aria-describedby={helpId}>
+    <fieldset
+      class:list={['question', { 'question--invalid': error }]}
+      aria-describedby={describedBy}
+    >
       <legend class="question__label">
         {label}
         {requiredMark}
@@ -109,19 +140,26 @@ const scaleSteps =
           {help}
         </p>
       )}
+      {error && (
+        <p class="question__error" id={errorId}>
+          <span class="visually-hidden">Erreur&nbsp;:</span> {error}
+        </p>
+      )}
       <div class="question__scale">
-        {scaleSteps.map((step) => (
-          <label class="option option--scale" for={`${fieldId}__${step.value}`}>
+        {scaleSteps.map(({ step, hint }) => (
+          <label class="option option--scale" for={`${fieldId}__${step}`}>
             <input
-              id={`${fieldId}__${step.value}`}
+              id={`${fieldId}__${step}`}
               type="radio"
               name={question.id}
-              value={step.value}
+              value={step}
+              checked={value === String(step)}
               required={question.required}
+              aria-invalid={invalid}
             />
             <span>
-              {step.value}
-              {step.hint && <span class="option__hint">{frenchSpacing(step.hint)}</span>}
+              {step}
+              {hint && <span class="option__hint">{frenchSpacing(hint)}</span>}
             </span>
           </label>
         ))}
@@ -140,6 +178,11 @@ const scaleSteps =
     border: 0;
   }
 
+  .question--invalid {
+    padding-inline-start: var(--space-s);
+    border-inline-start: 4px solid var(--color-danger);
+  }
+
   .question__label {
     padding: 0;
     font-weight: var(--weight-semibold);
@@ -148,6 +191,11 @@ const scaleSteps =
   .question__help {
     color: var(--color-text-muted);
     font-size: var(--step--1);
+  }
+
+  .question__error {
+    color: var(--color-danger);
+    font-weight: var(--weight-semibold);
   }
 
   .question input[type='text'],
@@ -171,6 +219,13 @@ const scaleSteps =
     gap: var(--space-xs);
     min-height: 2.75rem;
     cursor: pointer;
+  }
+
+  .option input,
+  .question input[type='text'],
+  .question textarea {
+    /* Keep the question and its error in view when an error summary link jumps here. */
+    scroll-margin-block-start: 8rem;
   }
 
   .option input {

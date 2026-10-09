@@ -44,7 +44,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
 </header>
 
 <script>
-  // Mobile disclosure menu. Without JavaScript the list stays visible (see the .js styles).
+  // Mobile disclosure menu. Without JavaScript the list stays visible (see the styles below).
   const nav = document.querySelector<HTMLElement>('[data-site-nav]');
   const toggle = nav?.querySelector<HTMLButtonElement>('[data-site-nav-toggle]');
 
@@ -141,19 +141,20 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
     text-underline-offset: 0.25em;
   }
 
-  /* Mobile: with JavaScript the list collapses behind the "Menu" button, while the
-     contact call to action stays visible. */
-  @media (max-width: 47.99rem) {
-    :global(.js) .site-nav__toggle {
+  /* Mobile: when scripting is enabled the list collapses behind the "Menu" button, while
+     the contact call to action stays visible. The media query needs no inline script, so the
+     Content Security Policy can stay strict. */
+  @media (max-width: 47.99rem) and (scripting: enabled) {
+    .site-nav__toggle {
       display: inline-flex;
       align-items: center;
     }
 
-    :global(.js) .site-nav__list {
+    .site-nav__list {
       display: none;
     }
 
-    :global(.js) .site-nav[data-open] .site-nav__list {
+    .site-nav[data-open] .site-nav__list {
       position: absolute;
       inset-inline: 0;
       inset-block-start: 100%;
@@ -165,7 +166,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
       background-color: var(--color-bg);
     }
 
-    :global(.js) .site-nav[data-open] .site-nav__list a {
+    .site-nav[data-open] .site-nav__list a {
       width: 100%;
     }
   }

@@ -1,0 +1,50 @@
+# DT-THAU website, one service on a shared Docker host.
+# It publishes no port: only the Caddy reverse proxy reaches it, through the external
+# network shared by the sites. Settings come from .env (see .env.example).
+
+name: dt-thau
+
+services:
+  web:
+    build:
+      context: .
+      args:
+        SITE_DOMAIN: ${SITE_DOMAIN:?Set SITE_DOMAIN in .env}
+    image: dt-thau-web
+    container_name: dt-thau-web
+    restart: unless-stopped
+    # A minimal init process forwards stop signals to Node and reaps zombies, so that
+    # "docker compose down" stops the server at once instead of killing it after 10 s.
+    init: true
+    environment:
+      DATA_DIR: /app/data
+    volumes:
+      - data:/app/data
+    networks:
+      - proxy
+    # Hardening: read-only system, no Linux capabilities, no privilege escalation,
+    # bounded resources so the site cannot starve its neighbours.
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 256m
+    cpus: 0.5
+    pids_limit: 100
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+volumes:
+  data:
+    name: dt-thau-data
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-proxy}
+    external: true

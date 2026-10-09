@@ -1,89 +1,212 @@
 ---
 import { getEntry } from 'astro:content';
 import ContentText from '../components/ContentText.astro';
+import FormErrorSummary from '../components/FormErrorSummary.astro';
+import FormNotice from '../components/FormNotice.astro';
+import SpamTrap from '../components/SpamTrap.astro';
 import SurveyQuestion from '../components/SurveyQuestion.astro';
+import TextField from '../components/TextField.astro';
 import WireNote from '../components/WireNote.astro';
-import { company } from '../data/site';
+import { area, company } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { handleSurveyPost, type SurveyValues } from '../lib/server/survey-response';
+import { questionAnchorId, SURVEY_CONSENT_FIELD, SURVEY_EMAIL_FIELD } from '../lib/survey';
 import { frenchSpacing } from '../lib/text';
 
-const survey = await getEntry('surveys', 'besoins-entreprises');
+// Rendered on each request: the page receives the form post and shows its outcome.
+export const prerender = false;
+
+const SURVEY_ID = 'besoins-entreprises';
+const survey = await getEntry('surveys', SURVEY_ID);
 if (!survey) {
-  throw new Error('Survey "besoins-entreprises" is missing from src/content/surveys.json');
+  throw new Error(`Survey "${SURVEY_ID}" is missing from src/content/surveys.json`);
 }
 const { title, intro, duration, sections } = survey.data;
+const questions = sections.flatMap((section) => section.questions);
+
+const outcome =
+  Astro.request.method === 'POST'
+    ? await handleSurveyPost(Astro.request, Astro.clientAddress, { id: SURVEY_ID, questions })
+    : undefined;
+
+// Post/Redirect/Get, without #fragment so that autofocus applies on the next page.
+if (outcome?.status === 'sent') return Astro.redirect('/questionnaire/?merci=1', 303);
+
+const isSent = Astro.url.searchParams.has('merci');
+const values: Partial<SurveyValues> = outcome && 'values' in outcome ? outcome.values : {};
+const errors = outcome?.status === 'invalid' ? outcome.errors : {};
+
+const emailFieldId = 'survey-email';
+const consentFieldId = 'survey-consent';
+const errorList = [
+  ...questions
+    .filter((question) => errors[question.id])
+    .map((question) => ({
+      fieldId: questionAnchorId(question),
+      message: `${frenchSpacing(question.label)} ${errors[question.id]}`,
+    })),
+  ...(errors[SURVEY_EMAIL_FIELD]
+    ? [{ fieldId: emailFieldId, message: errors[SURVEY_EMAIL_FIELD] }]
+    : []),
+  ...(errors[SURVEY_CONSENT_FIELD]
+    ? [{ fieldId: consentFieldId, message: errors[SURVEY_CONSENT_FIELD] }]
+    : []),
+];
+
+if (outcome?.status === 'invalid' || outcome?.status === 'too-fast') Astro.response.status = 422;
+if (outcome?.status === 'rate-limited') Astro.response.status = 429;
+if (outcome?.status === 'failed') Astro.response.status = 500;
+if (outcome?.status === 'unreadable') Astro.response.status = 400;
+
+// Any outcome left here is a failure: a successful post was redirected above.
+const titlePrefix = outcome !== undefined ? 'Erreur : ' : isSent ? 'Merci : ' : '';
+const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error` : undefined;
 ---
 
 <BaseLayout
-  title="Questionnaire : vos besoins en transition écologique"
+  title={`${titlePrefix}Questionnaire : vos besoins en transition écologique`}
   description="Entreprise du Bassin de Thau ? Répondez à notre questionnaire sur vos besoins de formation à la transition écologique et à la RSE, sans indiquer votre nom ni celui de votre entreprise."
 >
   <div class="container container--narrow section flow flow--l">
     <header class="flow flow--m">
       <p class="eyebrow">Questionnaire entreprises</p>
       <h1>{frenchSpacing(title)}</h1>
-      <p class="lead">{frenchSpacing(intro)}</p>
-      <p>Durée&nbsp;: <ContentText value={duration} /></p>
-      <p>
-        Le questionnaire ne demande ni votre nom ni celui de votre entreprise. Les questions
-        marquées «&nbsp;obligatoire&nbsp;» doivent être remplies.
-      </p>
-      <WireNote>
-        Questions d’exemple, à remplacer par celles du fondateur. Elles sont définies dans
-        <code>src/content/surveys.json</code>&nbsp;: les modifier ne demande aucun développement.
-      </WireNote>
+      {
+        !isSent && (
+          <>
+            <p class="lead">{frenchSpacing(intro)}</p>
+            <p>
+              Durée&nbsp;: <ContentText value={duration} />
+            </p>
+            <p>
+              Le questionnaire ne demande ni votre nom ni celui de votre entreprise. Les
+              questions marquées «&nbsp;obligatoire&nbsp;» doivent être remplies.
+            </p>
+            <WireNote>
+              Questions d’exemple, à remplacer par celles du fondateur. Elles sont définies dans
+              <code>src/content/surveys.json</code>&nbsp;: les modifier ne demande aucun
+              développement.
+            </WireNote>
+          </>
+        )
+      }
     </header>
 
-    <form class="survey flow flow--l" method="post">
-      {
-        sections.map((section, sectionIndex) => (
-          <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`}>
-            <h2 id={`survey-section-${sectionIndex}`} class="survey__section-title">
-              {frenchSpacing(section.title)}
-            </h2>
-            {section.questions.map((question) => (
-              <SurveyQuestion question={question} />
+    {
+      isSent ? (
+        <FormNotice tone="success" title={`Merci pour vos réponses\u00a0!`}>
+          <p>
+            Elles nous aident à construire des formations utiles aux entreprises du {area}.
+          </p>
+          <p>
+            <a href="/">Retour à l’accueil</a>
+          </p>
+        </FormNotice>
+      ) : (
+        <>
+          {outcome?.status === 'too-fast' && (
+            <FormNotice tone="error" title="Vos réponses n’ont pas encore été envoyées.">
+              <p>
+                Pour nous protéger des envois automatiques, patientez quelques secondes puis
+                envoyez de nouveau le questionnaire&nbsp;: vos réponses ont été conservées.
+              </p>
+            </FormNotice>
+          )}
+          {outcome?.status === 'rate-limited' && (
+            <FormNotice tone="error" title="Vos réponses n’ont pas été envoyées.">
+              <p>
+                {outcome.limit === 'client'
+                  ? 'Plusieurs questionnaires viennent d’être envoyés depuis votre connexion. Réessayez dans une dizaine de minutes.'
+                  : 'Le questionnaire reçoit beaucoup de réponses en ce moment. Réessayez dans une heure.'}
+              </p>
+            </FormNotice>
+          )}
+          {(outcome?.status === 'failed' || outcome?.status === 'unreadable') && (
+            <FormNotice tone="error" title="Vos réponses n’ont pas pu être enregistrées.">
+              <p>Un problème technique est survenu de notre côté. Réessayez un peu plus tard.</p>
+            </FormNotice>
+          )}
+          <FormErrorSummary errors={errorList} />
+
+          <form class="survey flow flow--l" method="post" action="/questionnaire/">
+            {sections.map((section, sectionIndex) => (
+              <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`}>
+                <h2 id={`survey-section-${sectionIndex}`} class="survey__section-title">
+                  {frenchSpacing(section.title)}
+                </h2>
+                {section.questions.map((question) => (
+                  <SurveyQuestion
+                    question={question}
+                    value={values.answers?.[question.id]}
+                    error={errors[question.id]}
+                  />
+                ))}
+              </section>
             ))}
-          </section>
-        ))
-      }
 
-      <section class="survey__section" aria-labelledby="survey-contact-title">
-        <h2 id="survey-contact-title" class="survey__section-title">
-          Souhaitez-vous être recontacté&nbsp;? (facultatif)
-        </h2>
-        <p>
-          Laissez votre adresse e-mail si vous souhaitez que {company.name} vous recontacte au sujet
-          de vos réponses. Sans cela, vos réponses ne sont rattachées ni à votre nom ni à vos coordonnées.
-        </p>
-        <div class="field">
-          <label for="survey-email">Votre adresse e-mail (facultatif)</label>
-          <input id="survey-email" name="email" type="email" autocomplete="email" />
-        </div>
-        <label class="consent" for="survey-consent">
-          <input id="survey-consent" name="contactConsent" type="checkbox" value="yes" />
-          J’accepte que {company.name} utilise cette adresse pour me recontacter au sujet de mes
-          réponses. Je peux retirer mon accord à tout moment.
-        </label>
-        <WireNote>
-          Consentement explicite, case non cochée par défaut (RGPD). Côté serveur, l’adresse ne sera
-          enregistrée que si la case est cochée.
-        </WireNote>
-      </section>
+            <section class="survey__section" aria-labelledby="survey-contact-title">
+              <h2 id="survey-contact-title" class="survey__section-title">
+                Souhaitez-vous être recontacté&nbsp;? (facultatif)
+              </h2>
+              <p>
+                Laissez votre adresse e-mail si vous souhaitez que {company.name} vous recontacte
+                au sujet de vos réponses. Sans cela, vos réponses ne sont rattachées ni à votre nom
+                ni à vos coordonnées.
+              </p>
+              <TextField
+                id={emailFieldId}
+                name={SURVEY_EMAIL_FIELD}
+                label="Votre adresse e-mail (facultatif)"
+                type="email"
+                autocomplete="email"
+                maxlength={254}
+                value={values.email}
+                error={errors[SURVEY_EMAIL_FIELD]}
+              />
+              <div class:list={['consent', { 'consent--invalid': consentErrorId }]}>
+                {consentErrorId && (
+                  <p class="consent__error" id={consentErrorId}>
+                    <span class="visually-hidden">Erreur&nbsp;:</span>
+                    {errors[SURVEY_CONSENT_FIELD]}
+                  </p>
+                )}
+                <label class="consent__label" for={consentFieldId}>
+                  <input
+                    id={consentFieldId}
+                    name={SURVEY_CONSENT_FIELD}
+                    type="checkbox"
+                    value="yes"
+                    checked={values.contactConsent}
+                    aria-describedby={consentErrorId}
+                    aria-invalid={consentErrorId ? 'true' : undefined}
+                  />
+                  J’accepte que {company.name} utilise cette adresse pour me recontacter au sujet
+                  de mes réponses. Je peux retirer mon accord à tout moment.
+                </label>
+              </div>
+              <WireNote>
+                Consentement explicite, case non cochée par défaut (RGPD)&nbsp;: l’adresse n’est
+                enregistrée que si la case est cochée.
+              </WireNote>
+            </section>
 
-      <p class="survey__privacy">
-        Vos réponses servent uniquement à adapter l’offre de formation de {company.name}.
-        <a href="/confidentialite/">En savoir plus sur vos données et vos droits</a>.
-      </p>
+            <SpamTrap
+              formId="survey"
+              startedAt={outcome?.status === 'invalid' ? outcome.startedAt : undefined}
+            />
 
-      <div class="flow">
-        <button type="submit" class="button button--primary" disabled>Envoyer mes réponses</button>
-        <WireNote>
-          L’enregistrement des réponses (base SQLite, export CSV) sera branché à l’étape
-          suivante&nbsp;: le bouton est désactivé dans le wireframe.
-        </WireNote>
-      </div>
-    </form>
+            <p class="survey__privacy">
+              Vos réponses servent uniquement à adapter l’offre de formation de {company.name}.
+              <a href="/confidentialite/">En savoir plus sur vos données et vos droits</a>.
+            </p>
+
+            <div>
+              <button type="submit" class="button button--primary">Envoyer mes réponses</button>
+            </div>
+          </form>
+        </>
+      )
+    }
   </div>
 </BaseLayout>
 
@@ -99,33 +222,29 @@ const { title, intro, duration, sections } = survey.data;
     font-size: var(--step-2);
   }
 
-  .field {
+  .consent {
     display: grid;
-    gap: var(--space-3xs);
+    gap: var(--space-2xs);
   }
 
-  .field label {
+  .consent--invalid {
+    padding-inline-start: var(--space-s);
+    border-inline-start: 4px solid var(--color-danger);
+  }
+
+  .consent__error {
+    color: var(--color-danger);
     font-weight: var(--weight-semibold);
   }
 
-  .field input {
-    width: 100%;
-    max-width: 28rem;
-    min-height: 2.75rem;
-    padding: var(--space-2xs) var(--space-xs);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-s);
-    background-color: var(--color-bg);
-  }
-
-  .consent {
+  .consent__label {
     display: flex;
     align-items: flex-start;
     gap: var(--space-xs);
     cursor: pointer;
   }
 
-  .consent input {
+  .consent__label input {
     flex: none;
     width: 1.25rem;
     height: 1.25rem;

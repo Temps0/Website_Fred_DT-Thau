@@ -1,0 +1,28 @@
+# Site block for DT-THAU, to add to the shared Caddy configuration.
+# Replace dt-thau.example with the real domain (the same value as SITE_DOMAIN in .env).
+# Caddy must be attached to the same Docker network as the site (PROXY_NETWORK).
+
+www.dt-thau.example {
+	redir https://dt-thau.example{uri} permanent
+}
+
+dt-thau.example {
+	encode zstd gzip
+
+	# Applied after the site's own headers (defer), so its Content-Security-Policy stays:
+	# "+" adds a second policy for frame-ancestors, which a <meta> CSP cannot carry.
+	header {
+		defer
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		Cross-Origin-Opener-Policy "same-origin"
+		+Content-Security-Policy "frame-ancestors 'none'"
+		-Server
+	}
+
+	# Caddy sends Host, X-Forwarded-For and X-Forwarded-Proto; the site trusts them for
+	# SITE_DOMAIN only.
+	reverse_proxy dt-thau-web:4321
+}
