@@ -28,6 +28,21 @@ export default defineConfig({
           { hostname: `www.${siteDomain}`, protocol: 'https' },
         ]
       : [],
+    // Strict CSP: Astro adds hashes for its own scripts and styles, nothing else may run.
+    // Prerendered pages carry it in a <meta> tag, server-rendered pages in a response
+    // header. frame-ancestors cannot live in a <meta> tag: it is sent by the reverse proxy
+    // with the other security headers (deploy/Caddyfile.example).
+    // The adapter's staticHeaders option is not used: its route lookup matches paths by
+    // substring and serves the wrong policy (or none) for /page/ URLs and for "/".
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+      ],
+    },
   },
   // HTML whitespace semantics: a line break between text and a tag or expression renders as
   // a space. The "jsx" default would silently glue words together in prose.
