@@ -26,6 +26,13 @@ function getDatabase(): DatabaseSync {
         phone TEXT,
         message TEXT NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS survey_responses (
+        id INTEGER PRIMARY KEY,
+        survey_id TEXT NOT NULL,
+        submitted_on TEXT NOT NULL,
+        answers TEXT NOT NULL,
+        contact_email TEXT
+      );
     `);
   }
   return database;
@@ -53,4 +60,26 @@ export function saveContactMessage(contact: ContactMessage): void {
       contact.phone,
       contact.message,
     );
+}
+
+export interface SurveyResponse {
+  surveyId: string;
+  /** Answers by question id; unanswered optional questions are left out. */
+  answers: Record<string, string | string[] | number>;
+  /** Only when the respondent ticked the consent box. */
+  contactEmail: string | null;
+}
+
+export function saveSurveyResponse(response: SurveyResponse): void {
+  // Day only (in Paris time), no time and no IP address: answers should not point back to
+  // a person. The en-CA locale formats dates as YYYY-MM-DD.
+  const submittedOn = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(
+    new Date(),
+  );
+  getDatabase()
+    .prepare(
+      `INSERT INTO survey_responses (survey_id, submitted_on, answers, contact_email)
+       VALUES (?, ?, ?, ?)`,
+    )
+    .run(response.surveyId, submittedOn, JSON.stringify(response.answers), response.contactEmail);
 }

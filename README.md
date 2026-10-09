@@ -87,12 +87,15 @@ SITE_DOMAIN=dt-thau.fr npm run build
 
 ## Formulaires et données
 
-Le formulaire de contact enregistre les messages dans une base SQLite
+Le formulaire de contact et le questionnaire enregistrent les envois dans une base SQLite
 (`submissions.db`), dans le dossier indiqué par la variable `DATA_DIR` (par défaut
 `./data`, ignoré par git). Voir [.env.example](.env.example).
 
+Les réponses au questionnaire sont enregistrées sans adresse IP ni heure (la date du jour
+seulement) ; l’adresse e-mail n’est conservée que si la case de consentement est cochée.
+
 Protections : validation côté serveur, champ piège et délai minimal contre les robots,
-5 messages valides au plus par adresse IP et par tranche de 10 minutes, contrôle de
+5 envois valides au plus par formulaire, par adresse IP et par tranche de 10 minutes, contrôle de
 l’origine des envois (Astro), corps de requête limité à 100 Ko.
 
 En local, ouvrir le site sur <http://localhost:4321> (et non `127.0.0.1`) : sans
