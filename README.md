@@ -117,3 +117,46 @@ node scripts/export-submissions.mjs survey > reponses.csv
 Les cellules qui commencent par `=`, `+`, `-` ou `@` sont préfixées d’une apostrophe, pour
 qu’un tableur n’exécute jamais une formule saisie par un visiteur. Ces exports contiennent
 des données personnelles : à ne pas laisser traîner ni envoyer en clair.
+
+## Déploiement (Docker, derrière Caddy)
+
+Le site tourne seul dans son conteneur (`dt-thau-web`). Il ne publie aucun port : seul le
+reverse proxy Caddy le joint, par un réseau Docker externe. Le conteneur est durci : système
+de fichiers en lecture seule, aucune capacité Linux, utilisateur non root, sans npm,
+mémoire, CPU et nombre de processus limités. Seul le volume `dt-thau-data` (la base
+SQLite) est inscriptible.
+
+Conseil : donner à ce site son propre réseau, partagé uniquement avec Caddy (par exemple
+`PROXY_NETWORK=dt-thau-proxy`), plutôt qu’un réseau commun à tous les sites. Les autres
+conteneurs ne pourront alors ni joindre ce site directement, ni lui envoyer une fausse
+adresse IP de visiteur.
+
+Sur le serveur, dans le dossier du site :
+
+1. Copier `.env.example` en `.env`, puis renseigner `SITE_DOMAIN` (domaine public) et
+   `PROXY_NETWORK` (réseau Docker partagé avec Caddy). Créer ce réseau s’il n’existe pas
+   (`docker network create dt-thau-proxy`) et y rattacher le conteneur Caddy.
+2. Construire et démarrer :
+
+   ```bash
+   docker compose up -d --build
+   ```
+
+3. Ajouter à la configuration de Caddy le bloc de
+   [deploy/Caddyfile.example](deploy/Caddyfile.example), en remplaçant le domaine
+   d’exemple, puis recharger Caddy. Ce bloc ajoute aussi les en-têtes de sécurité HTTP
+   (HSTS, `nosniff`, interdiction d’afficher le site dans un cadre…).
+4. Mettre à jour le site : `git pull`, puis la même commande `docker compose up -d --build`.
+
+Exporter les envois depuis le conteneur (`-T` évite les fins de ligne du terminal) :
+
+```bash
+docker compose exec -T web node scripts/export-submissions.mjs survey > reponses.csv
+```
+
+Sauvegarder la base (copie du dossier de données, à faire de préférence hors des heures
+d’affluence) :
+
+```bash
+docker cp dt-thau-web:/app/data ./sauvegarde-dt-thau
+```
