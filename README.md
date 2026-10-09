@@ -118,6 +118,41 @@ Les cellules qui commencent par `=`, `+`, `-` ou `@` sont préfixées d’une ap
 qu’un tableur n’exécute jamais une formule saisie par un visiteur. Ces exports contiennent
 des données personnelles : à ne pas laisser traîner ni envoyer en clair.
 
+### Supprimer des envois
+
+Pour répondre à une demande d’effacement, ou appliquer les durées de conservation de la
+politique de confidentialité, [scripts/delete-submissions.mjs](scripts/delete-submissions.mjs)
+supprime définitivement des envois. Le contenu est aussi écrasé sur le disque, y compris
+dans le journal de la base ; si le script signale que la base était occupée, le relancer un
+peu plus tard :
+
+```bash
+node scripts/delete-submissions.mjs --email personne@example.fr
+```
+
+```bash
+node scripts/delete-submissions.mjs contact --older-than 1095
+```
+
+Variantes : `contact <n°>` ou `survey <n°>` supprime un envoi précis (numéro de l’export),
+`survey --older-than <jours>` purge les anciennes réponses. Avec `--email`, les messages de
+contact de cette adresse sont supprimés, et l’adresse est retirée des réponses au
+questionnaire (qui redeviennent sans lien avec la personne).
+
+Les sauvegardes faites avant une suppression contiennent encore les données supprimées :
+les conserver pour une durée limitée, puis les détruire.
+
+### Sauvegarder et restaurer
+
+[scripts/backup-database.mjs](scripts/backup-database.mjs) écrit une copie cohérente de la
+base, prise pendant que le serveur tourne :
+
+```bash
+node scripts/backup-database.mjs > sauvegarde.db
+```
+
+La copie contient des données personnelles : la conserver avec les mêmes précautions.
+
 ## Déploiement (Docker, derrière Caddy)
 
 Le site tourne seul dans son conteneur (`dt-thau-web`). Il ne publie aucun port : seul le
@@ -154,9 +189,28 @@ Exporter les envois depuis le conteneur (`-T` évite les fins de ligne du termin
 docker compose exec -T web node scripts/export-submissions.mjs survey > reponses.csv
 ```
 
-Sauvegarder la base (copie du dossier de données, à faire de préférence hors des heures
-d’affluence) :
+Les scripts de gestion des données s’utilisent de la même façon, par exemple :
 
 ```bash
-docker cp dt-thau-web:/app/data ./sauvegarde-dt-thau
+docker compose exec -T web node scripts/backup-database.mjs > sauvegarde.db
+```
+
+```bash
+docker compose exec web node scripts/delete-submissions.mjs --email personne@example.fr
+```
+
+Restaurer une sauvegarde : arrêter le site, restaurer avec
+[scripts/restore-database.mjs](scripts/restore-database.mjs) (qui vérifie le fichier avant
+de remplacer la base), redémarrer.
+
+```bash
+docker compose stop web
+```
+
+```bash
+docker compose run --rm --no-deps -v "$PWD/sauvegarde.db:/restore.db:ro" web node scripts/restore-database.mjs /restore.db
+```
+
+```bash
+docker compose start web
 ```
