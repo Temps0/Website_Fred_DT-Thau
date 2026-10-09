@@ -100,3 +100,20 @@ l’origine des envois (Astro), corps de requête limité à 100 Ko.
 
 En local, ouvrir le site sur <http://localhost:4321> (et non `127.0.0.1`) : sans
 `SITE_DOMAIN`, Astro n’accepte les envois que depuis `localhost`.
+
+### Exporter les envois
+
+Le script [scripts/export-submissions.mjs](scripts/export-submissions.mjs) produit un
+fichier CSV lisible par Excel (séparateur `;`, UTF-8) à partir de la base :
+
+```bash
+node scripts/export-submissions.mjs contact > messages.csv
+```
+
+```bash
+node scripts/export-submissions.mjs survey > reponses.csv
+```
+
+Les cellules qui commencent par `=`, `+`, `-` ou `@` sont préfixées d’une apostrophe, pour
+qu’un tableur n’exécute jamais une formule saisie par un visiteur. Ces exports contiennent
+des données personnelles : à ne pas laisser traîner ni envoyer en clair.
