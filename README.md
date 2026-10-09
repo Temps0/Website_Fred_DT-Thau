@@ -104,19 +104,25 @@ En local, ouvrir le site sur <http://localhost:4321> (et non `127.0.0.1`) : sans
 ### Exporter les envois
 
 Le script [scripts/export-submissions.mjs](scripts/export-submissions.mjs) produit un
-fichier CSV lisible par Excel (séparateur `;`, UTF-8) à partir de la base :
+fichier CSV lisible par Excel (séparateur `;`, UTF-8) à partir de la base, et indique le
+nombre d’envois exportés :
 
 ```bash
-node scripts/export-submissions.mjs contact > messages.csv
+node scripts/export-submissions.mjs contact messages.csv
 ```
 
 ```bash
-node scripts/export-submissions.mjs survey > reponses.csv
+node scripts/export-submissions.mjs survey reponses.csv
 ```
+
+Sous Windows, toujours donner le nom du fichier comme ci-dessus : une redirection `>` dans
+Windows PowerShell réécrit le texte en UTF-16, qu’Excel lit mal, et rend une sauvegarde
+inutilisable. Si le fichier est encore ouvert dans Excel, le fermer avant de relancer.
 
 Les cellules qui commencent par `=`, `+`, `-` ou `@` sont préfixées d’une apostrophe, pour
 qu’un tableur n’exécute jamais une formule saisie par un visiteur. Ces exports contiennent
-des données personnelles : à ne pas laisser traîner ni envoyer en clair.
+des données personnelles : à ne pas laisser traîner ni envoyer en clair. Les fichiers
+`.csv` et `.db` sont ignorés par git, pour qu’ils ne finissent jamais dans le dépôt.
 
 ### Supprimer des envois
 
@@ -148,7 +154,7 @@ les conserver pour une durée limitée, puis les détruire.
 base, prise pendant que le serveur tourne :
 
 ```bash
-node scripts/backup-database.mjs > sauvegarde.db
+node scripts/backup-database.mjs sauvegarde.db
 ```
 
 La copie contient des données personnelles : la conserver avec les mêmes précautions.
@@ -183,7 +189,9 @@ Sur le serveur, dans le dossier du site :
    (HSTS, `nosniff`, interdiction d’afficher le site dans un cadre…).
 4. Mettre à jour le site : `git pull`, puis la même commande `docker compose up -d --build`.
 
-Exporter les envois depuis le conteneur (`-T` évite les fins de ligne du terminal) :
+Exporter les envois depuis le conteneur : sans nom de fichier, le script écrit sur la
+sortie standard, que le shell du serveur (bash) redirige vers un fichier sur l’hôte
+(`-T` évite les fins de ligne du terminal) :
 
 ```bash
 docker compose exec -T web node scripts/export-submissions.mjs survey > reponses.csv
