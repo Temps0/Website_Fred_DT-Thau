@@ -1,9 +1,9 @@
 ---
+import ContentText from '../components/ContentText.astro';
 import ToComplete from '../components/ToComplete.astro';
 import WireNote from '../components/WireNote.astro';
 import { company } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { frenchSpacing } from '../lib/text';
 
 const processings = [
   {
@@ -14,17 +14,18 @@ const processings = [
     legalBasis: 'Intérêt légitime de DT-THAU à répondre aux demandes qu’elle reçoit.',
     requirement:
       'Nom, entreprise, adresse e-mail et message sont nécessaires pour vous répondre : sans eux, nous ne pouvons pas traiter votre demande. Le téléphone est facultatif.',
-    retention: 'durée de conservation, par exemple 3 ans après le dernier contact (CNIL)',
+    retention:
+      '[À COMPLÉTER : durée de conservation, par exemple 3 ans après le dernier contact (CNIL)]',
   },
   {
     id: 'questionnaire',
     title: 'Questionnaire entreprises',
-    data: 'Vos réponses, sans nom ni entreprise. Votre adresse e-mail uniquement si vous demandez à être recontacté.',
+    data: 'Vos réponses, sans nom ni entreprise, enregistrées avec la date du jour seulement : ni heure, ni adresse IP. Votre adresse e-mail uniquement si vous avez coché la case pour être recontacté.',
     purpose: 'Adapter l’offre de formation aux besoins des entreprises et, si vous l’avez demandé, vous recontacter.',
     legalBasis: 'Intérêt légitime pour les réponses, consentement pour l’adresse e-mail.',
     requirement:
       'Seules les questions marquées « obligatoire » doivent être remplies : sans elles, vos réponses ne peuvent pas être exploitées. L’adresse e-mail est facultative.',
-    retention: 'durée de conservation des réponses et des adresses e-mail',
+    retention: '[À COMPLÉTER : durée de conservation des réponses et des adresses e-mail]',
   },
   {
     id: 'logs',
@@ -34,7 +35,16 @@ const processings = [
     legalBasis: 'Intérêt légitime.',
     requirement:
       'Ces données sont enregistrées automatiquement à chaque visite : elles sont nécessaires au fonctionnement du site.',
-    retention: 'durée de conservation des journaux, de 6 mois à 1 an selon la CNIL',
+    retention: '[À COMPLÉTER : durée de conservation des journaux, de 6 mois à 1 an selon la CNIL]',
+  },
+  {
+    id: 'anti-abus',
+    title: 'Protection contre les envois abusifs',
+    data: 'Adresse IP de l’appareil qui envoie un formulaire, gardée sous forme d’empreinte (hachage).',
+    purpose: 'Limiter le nombre d’envois par connexion, pour bloquer les robots et le spam.',
+    legalBasis: 'Intérêt légitime (sécurité du site).',
+    requirement: 'Donnée transmise automatiquement par votre navigateur lors de l’envoi.',
+    retention: '11 minutes au plus, en mémoire seulement : elle n’est jamais enregistrée.',
   },
 ];
 ---
@@ -72,24 +82,32 @@ const processings = [
             <dl class="processing">
               <div>
                 <dt>Données</dt>
-                <dd>{frenchSpacing(processing.data)}</dd>
+                <dd>
+                  <ContentText value={processing.data} />
+                </dd>
               </div>
               <div>
                 <dt>Finalité</dt>
-                <dd>{frenchSpacing(processing.purpose)}</dd>
+                <dd>
+                  <ContentText value={processing.purpose} />
+                </dd>
               </div>
               <div>
                 <dt>Base légale</dt>
-                <dd>{frenchSpacing(processing.legalBasis)}</dd>
+                <dd>
+                  <ContentText value={processing.legalBasis} />
+                </dd>
               </div>
               <div>
                 <dt>Caractère obligatoire</dt>
-                <dd>{frenchSpacing(processing.requirement)}</dd>
+                <dd>
+                  <ContentText value={processing.requirement} />
+                </dd>
               </div>
               <div>
                 <dt>Durée de conservation</dt>
                 <dd>
-                  <ToComplete>{processing.retention}</ToComplete>
+                  <ContentText value={processing.retention} />
                 </dd>
               </div>
             </dl>
