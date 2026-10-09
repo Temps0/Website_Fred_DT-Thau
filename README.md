@@ -22,6 +22,7 @@ npm ci
 | `npm run dev`     | serveur de développement sur <http://localhost:4321>  |
 | `npm run build`   | build de production dans `dist/`                      |
 | `npm run preview` | sert le build de production en local                  |
+| `npm start`       | lance le serveur Node du build (`PORT`, `HOST`)       |
 | `npm run check`   | vérification des types (`astro check`)                |
 | `npm run lint`    | lint et contrôle du formatage (Biome)                 |
 | `npm run format`  | formate le code (Biome)                               |
@@ -72,3 +73,14 @@ Dans `src/data/site.ts`. Une valeur `null` s’affiche comme un champ à complé
 - `[À COMPLÉTER : description]` s’affiche surligné en jaune dans les champs des formations
   et dans la durée du questionnaire ; ailleurs, il reste visible tel quel.
 - `[EXEMPLE]` en début de titre marque un contenu d’exemple à remplacer.
+
+## Build de production
+
+Le site est servi par le serveur Node autonome d’Astro : les pages sont pré-générées, seuls
+les formulaires s’exécutent côté serveur. Pour un build destiné au domaine public, indiquer
+le domaine (sans `https://`) ; derrière le reverse proxy, Astro ne fait confiance qu’à ce
+domaine pour l’hôte, le protocole et l’adresse IP transmis :
+
+```bash
+SITE_DOMAIN=dt-thau.fr npm run build
+```
