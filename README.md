@@ -27,12 +27,13 @@ npm ci
 | `npm run lint`    | lint et contrôle du formatage (Biome)                 |
 | `npm run format`  | formate le code (Biome)                               |
 
-## État actuel : wireframe
+## État actuel : maquette
 
-Le site est au stade de wireframe : structure et contenus sans graphisme. Le bandeau bleu
-en haut de page et les notes (« Note », « Proposition ») expliquent le rôle de chaque bloc ;
-ils seront retirés avec la direction artistique. Les formulaires ne sont pas encore branchés
-(boutons d’envoi désactivés).
+La charte graphique est appliquée ; les textes viennent du brief et des documents de
+DT-Thau (catalogue, offre CAP TRANSITION Étudiants) et restent à faire valider. Le bandeau
+bleu en haut de page et les notes (« Note », « Proposition ») expliquent les choix et les
+points à valider ; ils seront retirés avant la mise en ligne. Les formulaires fonctionnent
+et enregistrent les envois (voir plus bas).
 
 ## Modifier le contenu
 
