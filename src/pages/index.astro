@@ -1,50 +1,35 @@
 ---
+import AudienceList from '../components/AudienceList.astro';
+import FounderPortrait from '../components/FounderPortrait.astro';
+import LearningPath from '../components/LearningPath.astro';
 import LinkButton from '../components/LinkButton.astro';
+import PrincipleList from '../components/PrincipleList.astro';
 import ToComplete from '../components/ToComplete.astro';
 import WireNote from '../components/WireNote.astro';
 import WirePlaceholder from '../components/WirePlaceholder.astro';
-import { area, contactNav, surveyNav } from '../data/site';
+import { area, contactNav, founder, surveyNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const steps = [
-  {
-    title: 'Comprendre les enjeux',
-    text: 'Des explications simples et précises sur ce que la transition écologique change pour votre activité.',
-  },
-  {
-    title: 'Identifier vos priorités',
-    text: 'Partir de votre situation pour repérer ce qui compte vraiment, sans vouloir tout faire à la fois.',
-  },
-  {
-    title: 'Passer à l’action',
-    text: 'Repartir avec des premières actions réalistes, adaptées à vos moyens.',
-  },
-];
 ---
 
 <BaseLayout
-  title="Formations transition écologique et RSE, Bassin de Thau"
-  description="Formations courtes et concrètes à la transition écologique et à la RSE pour les dirigeants et les équipes des PME et TPE du Bassin de Thau."
+  title="Formation transition écologique et RSE, Bassin de Thau"
+  description="DT-Thau forme les entreprises, les écoles et les collectivités du Bassin de Thau à la transition écologique et à la RSE : formations courtes et concrètes."
 >
-  <section class="section hero" aria-labelledby="hero-title">
-    <div class="container hero__grid">
+  <section class="section section--dark" aria-labelledby="hero-title">
+    <div class="container hero">
       <div class="flow flow--m">
         <p class="eyebrow">Organisme de formation · {area}</p>
-        <h1 id="hero-title">
-          Comprendre la transition écologique pour mieux agir dans votre vie et dans votre
-          entreprise
-        </h1>
-        <p class="lead">
-          Des formations courtes et concrètes pour les dirigeants et les équipes des PME et TPE du
-          {area}.
+        <h1 id="hero-title" class="with-rule">Accélérer la transition écologique sur le {area}</h1>
+        <p class="lead hero__promise">
+          Accompagner les acteurs locaux vers un modèle durable et responsable.
         </p>
         <div class="actions">
-          <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+          <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
           <LinkButton href="/programmes/" variant="secondary">Découvrir les programmes</LinkButton>
         </div>
         <WireNote>
-          Premier écran&nbsp;: ce que propose DT-THAU, pour qui, où, et l’action principale.
-          Extrait du brief.
+          Premier écran&nbsp;: ce que propose DT-Thau, pour qui, où, et l’action principale. Titre
+          et promesse du catalogue.
         </WireNote>
       </div>
       <div class="flow">
@@ -57,141 +42,120 @@ const steps = [
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="audience-title">
-    <div class="container flow">
-      <h2 id="audience-title">Pour qui&nbsp;?</h2>
-      <p class="lead">
-        Vous dirigez une PME ou une TPE du {area}, ou vous faites partie de son équipe. Vous
-        entendez parler de transition écologique et de RSE, et vous vous demandez par où commencer.
-      </p>
-      <WireNote proposal>Texte rédigé à partir du brief, à changer et épurer.</WireNote>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="value-title">
+  <section class="section" aria-labelledby="audience-title">
     <div class="container flow flow--l">
       <div class="flow">
-        <h2 id="value-title">Ce que nous apportons</h2>
+        <h2 id="audience-title">Pour qui&nbsp;?</h2>
         <p class="lead">
-          Rendre les enjeux compréhensibles, identifier les priorités et passer à l’action grâce à
-          la formation.
+          Une expertise de la transition écologique et un ancrage local, au service de trois
+          publics.
         </p>
       </div>
-      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-      <ol class="steps" role="list">
-        {
-          steps.map((step, index) => (
-            <li class="steps__item">
-              <span class="steps__number" aria-hidden="true">
-                {index + 1}
-              </span>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
-            </li>
-          ))
-        }
-      </ol>
-      <WireNote proposal>
-        Trois étapes tirées de la phrase du brief&nbsp;; c’est une partie également très
-        importante pour l’accroche, que l’on va totalement transformer.
-      </WireNote>
+      <AudienceList />
+      <WireNote>Les trois publics et leurs accroches viennent du catalogue.</WireNote>
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="difference-title">
-    <div class="container flow">
-      <h2 id="difference-title">Notre différence</h2>
-      <p class="lead">
-        Une approche pédagogique, pragmatique et ancrée dans les réalités locales du {area}, sans
-        culpabiliser ni simplifier à l’excès.
-      </p>
-      <p><a href="/approche/">Découvrir notre approche</a></p>
-      <WireNote>
-        Important aussi, à transformer en quelque chose de percutant. Le texte ici est extrait du
-        brief pour exemple.
-      </WireNote>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="founder-title">
-    <div class="container founder">
-      <div class="founder__photo">
-        <WirePlaceholder label="Portrait du fondateur – à fournir" ratio="portrait" />
+  <section class="section section--alt" aria-labelledby="path-title">
+    <div class="container flow flow--l">
+      <div class="flow">
+        <p class="eyebrow">CAP TRANSITION</p>
+        <h2 id="path-title">Du constat à l’action, en trois modules</h2>
+        <p class="lead">
+          Trois modules de 3&nbsp;heures, au cœur du programme CAP TRANSITION Étudiants&nbsp;:
+          décoder le dérèglement climatique, comprendre la RSE, puis mesurer son empreinte carbone
+          pour agir.
+        </p>
       </div>
+      <LearningPath />
+      <p><a href="/programmes/#ecoles">Voir le détail des modules et les tarifs</a></p>
+      <WireNote>Le parcours du catalogue remplace les trois étapes tirées du brief.</WireNote>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="approach-title">
+    <div class="container flow flow--l">
+      <div class="flow">
+        <h2 id="approach-title">Notre approche</h2>
+        <p class="lead">
+          Une approche professionnalisante, ancrée dans les réalités du {area}, sans culpabiliser
+          ni simplifier à l’excès.
+        </p>
+      </div>
+      <PrincipleList />
+      <p><a href="/approche/">Découvrir notre approche</a></p>
+      <WireNote>Les quatre principes du catalogue remplacent le texte du brief.</WireNote>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="founder-title">
+    <div class="container founder">
+      <FounderPortrait />
       <div class="flow">
         <h2 id="founder-title">Qui porte le projet</h2>
+        <p class="lead">
+          <strong>{founder.name}</strong><br />
+          {founder.role}
+        </p>
         <p>
-          <ToComplete>prénom, nom et une ou deux phrases sur le parcours du fondateur</ToComplete>
+          <ToComplete>une ou deux phrases sur le parcours du fondateur</ToComplete>
         </p>
         <p><a href="/qui-sommes-nous/">Qui sommes-nous&nbsp;?</a></p>
         <WireNote proposal>
           Une photo de toi, peut-être un résumé de ton parcours et de tes intérêts (axe-toi
           principalement sur le côté écologique et humanitaire).
         </WireNote>
+        <WireNote>
+          Photo provisoire, tirée de l’offre étudiants&nbsp;: trop petite pour être agrandie, une
+          photo en meilleure définition sera nécessaire.
+        </WireNote>
       </div>
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="cta-title">
+  <section class="section section--dark" aria-labelledby="cta-title">
     <div class="container flow flow--m">
       <h2 id="cta-title">Vous vous demandez par où commencer&nbsp;?</h2>
-      <p class="lead">Échangeons sur votre situation, vos questions et vos besoins.</p>
+      <p class="lead">
+        Réservez un échange de 30&nbsp;minutes, en visio ou en présentiel, pour parler de votre
+        situation.
+      </p>
       <div class="actions">
-        <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+        <LinkButton href={contactNav.href}>Réserver un échange</LinkButton>
       </div>
       <p>
         Entreprise du {area}&nbsp;? Aidez-nous à mieux connaître vos besoins&nbsp;:
         <a href={surveyNav.href}>répondre au questionnaire</a>.
       </p>
       <WireNote>
-        L’appel à l’action du brief, répété en fin de page. Le questionnaire est proposé en action
-        secondaire.
+        L’appel à l’action du catalogue, répété en fin de page. Le questionnaire est proposé en
+        action secondaire.
       </WireNote>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero__grid {
+  .hero {
     display: grid;
     gap: var(--space-xl);
     align-items: center;
   }
 
   @media (min-width: 56rem) {
-    .hero__grid {
+    .hero {
       grid-template-columns: 3fr 2fr;
     }
   }
 
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: var(--space-l);
-    padding: 0;
-    list-style: none;
-  }
-
-  .steps__item > * + * {
-    margin-block-start: var(--space-2xs);
-  }
-
-  .steps__number {
-    display: block;
-    color: var(--color-text-muted);
-    font-size: var(--step-3);
-    font-weight: var(--weight-bold);
-    line-height: 1;
+  .hero__promise {
+    color: var(--color-accent-on-dark);
   }
 
   .founder {
     display: grid;
     gap: var(--space-l);
     align-items: center;
-  }
-
-  .founder__photo {
-    max-width: 16rem;
   }
 
   @media (min-width: 48rem) {
