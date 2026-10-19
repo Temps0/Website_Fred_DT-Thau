@@ -1,0 +1,314 @@
+---
+import AudienceList from '../components/AudienceList.astro';
+import Icon from '../components/Icon.astro';
+import LearningPath from '../components/LearningPath.astro';
+import LinkButton from '../components/LinkButton.astro';
+import ModuleCard from '../components/ModuleCard.astro';
+import ToComplete from '../components/ToComplete.astro';
+import WireNote from '../components/WireNote.astro';
+import { audiences, modalities } from '../data/audiences';
+import { studentProgramme } from '../data/cap-transition-etudiants';
+import { contactNav } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getModules } from '../lib/modules';
+import { frenchSpacing } from '../lib/text';
+
+const modules = await getModules();
+const otherAudiences = audiences.filter((audience) => audience.id !== 'ecoles');
+const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
+---
+
+<BaseLayout
+  title="Programmes CAP TRANSITION : écoles, PME, collectivités"
+  description="Programmes CAP TRANSITION de DT-Thau : formations courtes et concrètes à la transition écologique pour écoles, TPE/PME et collectivités du Bassin de Thau."
+>
+  <section class="section section--dark" aria-labelledby="programmes-title">
+    <div class="container flow flow--m">
+      <p class="eyebrow">Programmes</p>
+      <h1 id="programmes-title" class="programmes-title with-rule">CAP TRANSITION</h1>
+      <p class="lead">
+        Des formations courtes et concrètes pour comprendre les enjeux écologiques et leurs
+        conséquences sur l’entreprise.
+      </p>
+      <p>Accompagner les acteurs locaux vers un modèle durable et responsable.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="audiences-title">
+    <div class="container flow flow--l">
+      <h2 id="audiences-title">Pour qui&nbsp;?</h2>
+      <AudienceList />
+      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+      <ul class="modalities" role="list" aria-label="Modalités">
+        {
+          modalities.map((modality) => (
+            <li>
+              <Icon name={modality.icon} />
+              {modality.label}
+            </li>
+          ))
+        }
+        <li>
+          <Icon name="check" />
+          <ToComplete>financement possible, selon la certification Qualiopi</ToComplete>
+        </li>
+      </ul>
+      <WireNote>
+        Le catalogue annonce «&nbsp;Financements OPCO / Région Occitanie possibles&nbsp;». Un
+        financement OPCO exige la certification Qualiopi&nbsp;: mention à confirmer par DT-Thau
+        avant publication.
+      </WireNote>
+    </div>
+  </section>
+
+  <section id="ecoles" class="section section--alt" aria-labelledby="ecoles-title">
+    <div class="container flow flow--l">
+      <header class="programme-intro">
+        <div class="flow flow--m">
+          <p class="eyebrow">Écoles, universités & CFA</p>
+          <h2 id="ecoles-title">{studentProgramme.name}</h2>
+          <p class="lead">{frenchSpacing(studentProgramme.promise)}</p>
+          {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+          <ul class="checklist" role="list">
+            {
+              studentProgramme.highlights.map((item) => (
+                <li>
+                  <Icon name="check" />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <p class="quote">{frenchSpacing(studentProgramme.quote)}</p>
+      </header>
+
+      <section class="flow flow--m" aria-labelledby="path-title">
+        <h3 id="path-title">Le parcours</h3>
+        <LearningPath linkToModules />
+      </section>
+
+      <section class="flow flow--m" aria-labelledby="modules-title">
+        <h3 id="modules-title">Les 3 modules de 3&nbsp;heures</h3>
+        <div class="modules-grid">
+          {modules.map((module) => <ModuleCard module={module} as="h4" />)}
+        </div>
+      </section>
+
+      <section class="flow flow--m" aria-labelledby="offers-title">
+        <h3 id="offers-title">Formules et tarifs</h3>
+        <p>{frenchSpacing(studentProgramme.conditions)}</p>
+        {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+        <ul class="offers" role="list">
+          {
+            studentProgramme.offers.map((offer) => (
+              <li class="offer">
+                <h4 class="offer__name">{offer.name}</h4>
+                <p>
+                  {offer.content} ({offer.duration})
+                </p>
+                <p class="offer__price">{offer.price}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="per-student">
+          <strong>{studentProgramme.perStudent}</strong> ({perStudentBasis})
+        </p>
+        {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+        <ul class="checklist checklist--inline" role="list">
+          {
+            studentProgramme.included.map((item) => (
+              <li>
+                <Icon name="check" />
+                {item}
+              </li>
+            ))
+          }
+          <li>
+            <Icon name="check" />
+            <ToComplete>attestation de participation ou de formation</ToComplete>
+          </li>
+        </ul>
+        <WireNote>
+          Noms des formules repris de l’offre commerciale (le catalogue dit «&nbsp;Double
+          Module&nbsp;» et «&nbsp;Parcours Complet&nbsp;»). Les prix barrés (750, 1&nbsp;300 et
+          1&nbsp;800&nbsp;€ HT) ne sont pas affichés&nbsp;: un prix de référence barré doit avoir
+          été réellement pratiqué. À confirmer par DT-Thau, comme le type d’attestation.
+        </WireNote>
+        <WireNote>
+          Régime de TVA à confirmer&nbsp;: un organisme de formation peut être exonéré (CGI,
+          art.&nbsp;261-4-4°&nbsp;a) ou en franchise en base (art.&nbsp;293&nbsp;B). «&nbsp;HT&nbsp;»
+          serait alors trompeur&nbsp;: afficher «&nbsp;net de taxe&nbsp;» avec la mention légale.
+        </WireNote>
+      </section>
+
+      <aside class="custom-offer" aria-label="Offre sur mesure">
+        <p class="custom-offer__question">{frenchSpacing(studentProgramme.custom.question)}</p>
+        <p>{frenchSpacing(studentProgramme.custom.answer)}</p>
+        <div class="actions">
+          <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {
+    otherAudiences.map((audience, index) => (
+      <section
+        id={audience.id}
+        class:list={['section', { 'section--alt': index % 2 === 1 }]}
+        aria-labelledby={`${audience.id}-title`}
+      >
+        <div class="container audience-programme">
+          <Icon name={audience.icon} size="xl" />
+          <div class="flow flow--m">
+            <h2 id={`${audience.id}-title`}>{audience.name}</h2>
+            <p class="lead">{frenchSpacing(audience.summary)}</p>
+            <p>Contenu et tarifs sur devis, selon vos enjeux et votre organisation.</p>
+            <div class="actions">
+              <LinkButton href={contactNav.href}>Échanger sur votre besoin</LinkButton>
+            </div>
+            <WireNote>
+              Le catalogue ne détaille pas encore ce programme&nbsp;: présentation et «&nbsp;sur
+              devis&nbsp;» en attendant son contenu.
+            </WireNote>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section section--dark" aria-labelledby="cta-title">
+    <div class="container flow flow--m">
+      <h2 id="cta-title">Vous vous demandez par où commencer&nbsp;?</h2>
+      <p class="lead">Échangeons sur votre situation, en visio ou en présentiel.</p>
+      <div class="actions">
+        <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .programmes-title {
+    color: var(--color-accent-on-dark);
+    letter-spacing: 0.04em;
+  }
+
+  .modalities {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-s) var(--space-xl);
+    padding: var(--space-m) 0 0;
+    border-block-start: var(--border-width) solid var(--color-accent);
+    list-style: none;
+  }
+
+  .modalities li,
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+  }
+
+  .programme-intro {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 56rem) {
+    .programme-intro {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  .checklist {
+    display: grid;
+    gap: var(--space-2xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .checklist--inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-l);
+  }
+
+  .quote {
+    margin: 0;
+    padding-inline-start: var(--space-m);
+    border-inline-start: 2px solid var(--color-accent);
+    color: var(--color-heading);
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1.3;
+  }
+
+  .modules-grid,
+  .offers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-m);
+  }
+
+  .offers {
+    padding: 0;
+    list-style: none;
+  }
+
+  .offer {
+    display: grid;
+    gap: var(--space-2xs);
+    justify-items: center;
+    padding: var(--space-l) var(--space-m);
+    border: var(--border-width) solid var(--color-accent);
+    border-radius: var(--radius-m);
+    background-color: var(--color-surface);
+    text-align: center;
+  }
+
+  .offer__name {
+    font-size: var(--step-2);
+  }
+
+  .offer__price {
+    color: var(--color-heading);
+    font-size: var(--step-3);
+    font-weight: var(--weight-bold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .per-student {
+    font-size: var(--step-1);
+  }
+
+  .custom-offer {
+    display: grid;
+    gap: var(--space-xs);
+    padding: var(--space-l);
+    border-radius: var(--radius-m);
+    background-color: var(--color-highlight);
+  }
+
+  .custom-offer__question {
+    color: var(--color-heading);
+    font-size: var(--step-1);
+    font-weight: var(--weight-bold);
+  }
+
+  .audience-programme {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  @media (min-width: 48rem) {
+    .audience-programme {
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: var(--space-xl);
+    }
+  }
+</style>

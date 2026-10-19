@@ -1,0 +1,101 @@
+---
+/**
+ * The CAP TRANSITION path as in the catalogue: three steps, one per module, linked by
+ * gold arrows (side by side on wide screens, stacked on narrow ones).
+ */
+import { getModules } from '../lib/modules';
+import { frenchSpacing } from '../lib/text';
+
+interface Props {
+  /** Link each step to its module card on the same page. */
+  linkToModules?: boolean;
+}
+
+const { linkToModules = false } = Astro.props;
+const modules = await getModules();
+---
+
+{/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+<ol class="path" role="list">
+  {
+    modules.map((module) => (
+      <li class="path__step">
+        <span class="path__verb">{module.data.verb}</span>
+        {linkToModules ? (
+          <a class="path__title" href={`#${module.id}`}>
+            {frenchSpacing(module.data.title)}
+          </a>
+        ) : (
+          <span class="path__title">{frenchSpacing(module.data.title)}</span>
+        )}
+        <span class="path__detail">{frenchSpacing(module.data.pathStep)}</span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .path {
+    --arrow-size: 0.75rem;
+    display: grid;
+    gap: var(--space-l);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .path {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .path__step {
+    position: relative;
+    display: grid;
+    gap: var(--space-3xs);
+    align-content: start;
+    padding: var(--space-m);
+    border: var(--border-width) solid var(--color-accent);
+    border-radius: var(--radius-m);
+    background-color: var(--color-surface);
+    text-align: center;
+  }
+
+  /* Gold arrow towards the next step: downwards when stacked, rightwards side by side. */
+  .path__step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    inset-block-start: calc(100% + (var(--space-l) - var(--arrow-size)) / 2);
+    inset-inline-start: calc(50% - var(--arrow-size));
+    border-inline: var(--arrow-size) solid transparent;
+    border-block-start: var(--arrow-size) solid var(--color-accent);
+  }
+
+  @media (min-width: 48rem) {
+    .path__step:not(:last-child)::after {
+      inset-block-start: calc(50% - var(--arrow-size));
+      inset-inline-start: calc(100% + (var(--space-l) - var(--arrow-size)) / 2);
+      border-block: var(--arrow-size) solid transparent;
+      border-inline-start: var(--arrow-size) solid var(--color-accent);
+      border-inline-end: 0;
+    }
+  }
+
+  .path__verb {
+    color: var(--color-accent-text);
+    font-size: var(--step--1);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .path__title {
+    color: var(--color-heading);
+    font-size: var(--step-1);
+    font-weight: var(--weight-bold);
+  }
+
+  .path__detail {
+    color: var(--color-text-muted);
+  }
+</style>

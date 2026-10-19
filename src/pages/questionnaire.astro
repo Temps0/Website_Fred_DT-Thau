@@ -7,7 +7,7 @@ import SpamTrap from '../components/SpamTrap.astro';
 import SurveyQuestion from '../components/SurveyQuestion.astro';
 import TextField from '../components/TextField.astro';
 import WireNote from '../components/WireNote.astro';
-import { area, company } from '../data/site';
+import { area, brand } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { handleSurveyPost, type SurveyValues } from '../lib/server/survey-response';
 import { questionAnchorId, SURVEY_CONSENT_FIELD, SURVEY_EMAIL_FIELD } from '../lib/survey';
@@ -149,7 +149,7 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
                 Souhaitez-vous être recontacté&nbsp;? (facultatif)
               </h2>
               <p>
-                Laissez votre adresse e-mail si vous souhaitez que {company.name} vous recontacte
+                Laissez votre adresse e-mail si vous souhaitez que {brand.name} vous recontacte
                 au sujet de vos réponses. Sans cela, vos réponses ne sont rattachées ni à votre nom
                 ni à vos coordonnées.
               </p>
@@ -180,7 +180,7 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
                     aria-describedby={consentErrorId}
                     aria-invalid={consentErrorId ? 'true' : undefined}
                   />
-                  J’accepte que {company.name} utilise cette adresse pour me recontacter au sujet
+                  J’accepte que {brand.name} utilise cette adresse pour me recontacter au sujet
                   de mes réponses. Je peux retirer mon accord à tout moment.
                 </label>
               </div>
@@ -196,7 +196,7 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
             />
 
             <p class="survey__privacy">
-              Vos réponses servent uniquement à adapter l’offre de formation de {company.name}.
+              Vos réponses servent uniquement à adapter l’offre de formation de {brand.name}.
               <a href="/confidentialite/">En savoir plus sur vos données et vos droits</a>.
             </p>
 

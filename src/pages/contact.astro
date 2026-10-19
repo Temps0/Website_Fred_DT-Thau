@@ -1,12 +1,13 @@
 ---
 import FormErrorSummary from '../components/FormErrorSummary.astro';
 import FormNotice from '../components/FormNotice.astro';
+import Icon from '../components/Icon.astro';
 import LinkButton from '../components/LinkButton.astro';
 import SpamTrap from '../components/SpamTrap.astro';
 import TextField from '../components/TextField.astro';
 import ToComplete from '../components/ToComplete.astro';
 import WireNote from '../components/WireNote.astro';
-import { area, company, surveyNav } from '../data/site';
+import { area, brand, company, founder, phoneHref, surveyNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { type ContactValues, handleContactPost } from '../lib/server/contact';
 
@@ -49,15 +50,15 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
 
 <BaseLayout
   title={`${titlePrefix}Contact : échangeons sur votre projet`}
-  description="Une question, un besoin de formation, un projet de transition écologique ? Contactez DT-THAU, organisme de formation à Mèze, au service des entreprises du Bassin de Thau."
+  description="Une question, un besoin de formation ? Réservez un échange de 30 minutes avec DT-Thau, organisme de formation à Mèze, au service du Bassin de Thau."
 >
   <div class="container section flow flow--l">
     <header class="flow flow--m">
       <p class="eyebrow">Contact</p>
-      <h1>Échangeons sur votre projet</h1>
+      <h1 class="with-rule">Échangeons sur votre projet</h1>
       <p class="lead">
-        Vos besoins, vos questions, votre projet de transition écologique&nbsp;: écrivez-nous, nous
-        vous recontactons pour en parler.
+        Réservez un échange de 30&nbsp;minutes, en visio ou en présentiel&nbsp;: écrivez-nous vos
+        besoins et vos disponibilités, nous vous recontactons pour fixer le rendez-vous.
       </p>
     </header>
 
@@ -120,7 +121,8 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
           <TextField
             id={fieldIds.company}
             name="company"
-            label="Entreprise"
+            label="Structure"
+            hint="Entreprise, établissement ou collectivité."
             autocomplete="organization"
             maxlength={160}
             required
@@ -154,7 +156,7 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
             id={fieldIds.message}
             name="message"
             label="Message"
-            hint="Votre situation, vos questions, ce que vous aimeriez mettre en place."
+            hint="Votre situation, vos questions, vos disponibilités pour un échange."
             multiline
             maxlength={5000}
             required
@@ -167,8 +169,9 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
           />
 
           <p class="form__privacy">
-            Vos données servent uniquement à répondre à votre demande et ne sont jamais cédées.
-            Elles sont conservées <ToComplete>durée de conservation</ToComplete>.
+            {company.name}, responsable du traitement, utilise vos données uniquement pour répondre
+            à votre demande (intérêt légitime)&nbsp;; elles ne sont jamais cédées. Elles sont
+            conservées <ToComplete>durée de conservation</ToComplete>.
             <a href="/confidentialite/">En savoir plus sur vos données et vos droits</a>.
           </p>
 
@@ -190,30 +193,52 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
           <h2 id="details-title" class="contact-subtitle">Coordonnées</h2>
           <address class="flow">
             <p>
-              <strong>{company.name}</strong><br />
-              {company.address.street}<br />
-              {company.address.postalCode} {company.address.city}
+              <strong>{founder.name}</strong><br />
+              {founder.role}
             </p>
-            <p>
-              Téléphone&nbsp;:
-              {
-                company.phone ? (
-                  <a href={`tel:${company.phone.replace(/\s/g, '')}`}>{company.phone}</a>
-                ) : (
-                  <ToComplete>téléphone</ToComplete>
-                )
-              }<br />
-              E-mail&nbsp;:
-              {
-                company.email ? (
-                  <a href={`mailto:${company.email}`}>{company.email}</a>
-                ) : (
-                  <ToComplete>adresse e-mail</ToComplete>
-                )
-              }
-            </p>
+            {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+            <ul class="contact-details" role="list">
+              <li>
+                <Icon name="phone" />
+                <span>
+                  Téléphone&nbsp;:
+                  {
+                    company.phone ? (
+                      <a href={phoneHref(company.phone)}>{company.phone}</a>
+                    ) : (
+                      <ToComplete>téléphone</ToComplete>
+                    )
+                  }
+                </span>
+              </li>
+              <li>
+                <Icon name="mail" />
+                <span>
+                  E-mail&nbsp;:
+                  {
+                    company.email ? (
+                      <a href={`mailto:${company.email}`}>{company.email}</a>
+                    ) : (
+                      <ToComplete>adresse e-mail</ToComplete>
+                    )
+                  }
+                </span>
+              </li>
+              <li>
+                <Icon name="map-pin" />
+                <span>
+                  {brand.name}<br />
+                  {company.address.street}<br />
+                  {company.address.postalCode} {company.address.city}
+                </span>
+              </li>
+            </ul>
+            <p><a href={founder.linkedin}>Profil LinkedIn de {founder.name}</a></p>
           </address>
-          <p>Nous intervenons auprès des entreprises du {area}.</p>
+          <p>
+            Nous intervenons auprès des entreprises, des établissements d’enseignement et des
+            collectivités du {area}.
+          </p>
           <WireNote>
             Adresse du siège à confirmer ici&nbsp;: si c’est une adresse personnelle, elle reste
             obligatoire dans les mentions légales, mais pas sur cette page.
@@ -260,6 +285,19 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
 
   address {
     font-style: normal;
+  }
+
+  .contact-details {
+    display: grid;
+    gap: var(--space-xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-details li {
+    display: flex;
+    gap: var(--space-xs);
+    align-items: flex-start;
   }
 
   .survey-teaser {

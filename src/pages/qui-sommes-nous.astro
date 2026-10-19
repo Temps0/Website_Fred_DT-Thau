@@ -1,14 +1,14 @@
 ---
+import FounderPortrait from '../components/FounderPortrait.astro';
 import LinkButton from '../components/LinkButton.astro';
 import ToComplete from '../components/ToComplete.astro';
 import WireNote from '../components/WireNote.astro';
-import WirePlaceholder from '../components/WirePlaceholder.astro';
-import { area, company, contactNav } from '../data/site';
+import { area, brand, company, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const values = [
   { title: 'Pédagogie', text: 'Rendre les sujets complexes accessibles, sans jargon.' },
-  { title: 'Pragmatisme', text: 'Privilégier ce qui est utile et faisable pour votre entreprise.' },
+  { title: 'Pragmatisme', text: 'Privilégier ce qui est utile et faisable pour votre structure.' },
   {
     title: 'Responsabilité',
     text: 'Agir avec exigence et honnêteté, sans culpabiliser ni promettre l’impossible.',
@@ -18,13 +18,13 @@ const values = [
 
 <BaseLayout
   title="Qui sommes-nous ? L’origine du projet et son fondateur"
-  description="DT-THAU, organisme de formation créé à Mèze en 2026 pour rendre la transition écologique compréhensible et aider les entreprises du Bassin de Thau à passer à l’action."
+  description="DT-Thau, organisme de formation créé à Mèze en 2026 par Frédéric Dessombs, aide les acteurs du Bassin de Thau à passer à l’action écologique."
 >
   <div class="container section flow flow--m">
-    <h1>Qui sommes-nous&nbsp;?</h1>
+    <h1 class="with-rule">Qui sommes-nous&nbsp;?</h1>
     <p class="lead">
-      {company.name} est née d’une conviction&nbsp;: rendre la transition écologique compréhensible
-      et permettre aux entreprises de passer de la réflexion à l’action.
+      {brand.name} est née d’une conviction&nbsp;: rendre la transition écologique compréhensible
+      et permettre aux acteurs du {area} de passer de la réflexion à l’action.
     </p>
     <WireNote>
       Le brief hésite entre «&nbsp;Qui sommes-nous&nbsp;?&nbsp;» et «&nbsp;Qui suis-je&nbsp;?&nbsp;».
@@ -44,12 +44,13 @@ const values = [
 
   <section class="section" aria-labelledby="founder-title">
     <div class="container founder">
-      <div class="founder__photo">
-        <WirePlaceholder label="Portrait du fondateur – à fournir" ratio="portrait" />
-      </div>
+      <FounderPortrait />
       <div class="flow flow--m">
         <h2 id="founder-title">Qui porte le projet</h2>
-        <p class="lead"><ToComplete>prénom et nom du fondateur</ToComplete></p>
+        <p class="lead">
+          <strong>{founder.name}</strong><br />
+          {founder.role}
+        </p>
         <dl class="founder__facts">
           <div>
             <dt>Parcours</dt>
@@ -64,9 +65,10 @@ const values = [
             <dd><ToComplete>diplômes, certifications, références vérifiables</ToComplete></dd>
           </div>
         </dl>
+        <p><a href={founder.linkedin}>Profil LinkedIn de {founder.name}</a></p>
         <WireNote>
           Mettre l’accent sur ce qui légitime l’expertise plutôt que sur l’ancienneté de
-          l’entreprise (brief).
+          l’entreprise (brief). Photo provisoire, en basse définition.
         </WireNote>
       </div>
     </div>
@@ -100,12 +102,15 @@ const values = [
 
   <section class="section" aria-labelledby="facts-title">
     <div class="container flow">
-      <h2 id="facts-title">{company.name} en bref</h2>
+      <h2 id="facts-title">{brand.name} en bref</h2>
       {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
       <ul class="facts" role="list">
         <li>Organisme de formation et de conseil en développement durable et RSE</li>
         <li>Créée en 2026, basée à {company.address.city}</li>
-        <li>Au service des PME et TPE du {area}</li>
+        <li>
+          Au service des entreprises, des établissements d’enseignement et des collectivités du
+          {area}
+        </li>
       </ul>
       <WireNote proposal>
         Des faits tirés de l’immatriculation de la société&nbsp;: une structure jeune gagne à les
@@ -114,11 +119,12 @@ const values = [
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="next-title">
+  <section class="section section--dark" aria-labelledby="next-title">
     <div class="container flow flow--m">
       <h2 id="next-title">Faisons connaissance</h2>
+      <p class="lead">Un échange de 30&nbsp;minutes, en visio ou en présentiel.</p>
       <div class="actions">
-        <LinkButton href={contactNav.href}>Échangeons sur votre situation</LinkButton>
+        <LinkButton href={contactNav.href}>Réserver un échange</LinkButton>
         <LinkButton href="/approche/" variant="secondary">Découvrir notre approche</LinkButton>
       </div>
     </div>
@@ -130,10 +136,6 @@ const values = [
     display: grid;
     gap: var(--space-l);
     align-items: start;
-  }
-
-  .founder__photo {
-    max-width: 16rem;
   }
 
   @media (min-width: 48rem) {
@@ -149,6 +151,7 @@ const values = [
   }
 
   .founder__facts dt {
+    color: var(--color-heading);
     font-weight: var(--weight-semibold);
   }
 
@@ -164,6 +167,11 @@ const values = [
     list-style: none;
   }
 
+  .values li {
+    padding-block-start: var(--space-s);
+    border-block-start: var(--border-width) solid var(--color-accent);
+  }
+
   .values li > * + * {
     margin-block-start: var(--space-2xs);
   }
@@ -177,6 +185,6 @@ const values = [
 
   .facts li {
     padding-inline-start: var(--space-s);
-    border-inline-start: 3px solid var(--color-border-subtle);
+    border-inline-start: 2px solid var(--color-accent);
   }
 </style>

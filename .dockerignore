@@ -4,6 +4,7 @@ node_modules/
 dist/
 .astro/
 data/
+docs/
 # exports and backups of form submissions (personal data), in any folder
 **/*.csv
 **/*.db

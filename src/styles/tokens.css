@@ -1,14 +1,19 @@
 /*
- * Design tokens.
- *
- * Wireframe stage: the structure (semantic names, scales) is final, the colour and font
- * VALUES are deliberately neutral greys and system fonts. They will be replaced by the
- * art direction once the wireframe is validated. Components use semantic tokens only.
+ * Design tokens, from the DT-Thau graphic charter (docs/Prompt Charte graphique V1):
+ * sober, elegant and reassuring; deep green covers, off-white content, matt gold accents.
+ * Components use semantic tokens only. Text pairs meet WCAG AA (4.5:1). The charter gold is
+ * too light for small text (3.16:1 on cream), hence --gold-dark for text on light
+ * backgrounds (5.01:1) and --gold-light on deep green (5.23:1). Do not put
+ * --color-accent-text on --color-highlight (sage): 3.79:1 only.
  */
 
 :root {
   /* ---- Typography ------------------------------------------------------ */
-  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Serif for page titles, as on the catalogue covers; system fonts, nothing to download. */
+  --font-display: Georgia, Cambria, "Times New Roman", serif;
+  /* Sans-serif for inner titles and text: Aptos where installed, else the system font. */
+  --font-body:
+    Aptos, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-heading: var(--font-body);
 
   --weight-regular: 400;
@@ -22,6 +27,7 @@
   --step-2: clamp(1.44rem, 1.316rem + 0.553vw, 1.758rem);
   --step-3: clamp(1.728rem, 1.544rem + 0.816vw, 2.197rem);
   --step-4: clamp(2.074rem, 1.81rem + 1.17vw, 2.747rem);
+  --step-5: clamp(2.074rem, 1.601rem + 2.364vw, 3.433rem);
 
   --leading-tight: 1.15;
   --leading-normal: 1.6;
@@ -46,7 +52,7 @@
   --measure: 65ch;
   --header-height: 4.5rem;
 
-  /* ---- Shape ------------------------------------------------------------- */
+  /* ---- Shape: slightly rounded blocks, fine gold rules rather than shadows ---- */
   --radius-s: 4px;
   --radius-m: 8px;
   --border-width: 1px;
@@ -55,36 +61,51 @@
   --z-header: 100;
   --z-skip-link: 1000;
 
-  /* ---- Colour: primitives (wireframe greys) ------------------------------ */
-  --neutral-0: #ffffff;
-  --neutral-50: #f6f6f4;
-  --neutral-100: #ebebe8;
-  --neutral-300: #c8c8c3;
-  --neutral-500: #7d7d77;
-  --neutral-600: #5c5c57;
-  --neutral-800: #2d2d2a;
-  --neutral-900: #1a1a18;
+  /* ---- Colour: primitives (charter) --------------------------------------- */
+  --green-deep: #143d35; /* covers, banners, contact */
+  --green-forest: #103d25; /* titles on light backgrounds, table headers */
+  --gold: #aa8755; /* pictograms, rules, frames: graphics and large text only */
+  --gold-dark: #866639; /* gold for small text on light backgrounds (5:1) */
+  --gold-light: #c9a66b; /* gold for text on deep green (5.2:1) */
+  --cream: #faf9f4; /* main background */
+  --cream-strong: #f1efe6; /* alternate bands */
+  --sage: #d5ddcc; /* "skills acquired" and "to remember" boxes */
+  --anthracite: #202520; /* body text */
+  --grey-green-600: #56605a; /* secondary text (4.7:1 even on sage) */
+  --grey-green-500: #7d8579; /* form control borders (3.6:1) */
+  --grey-green-200: #dcdcd2; /* decorative dividers */
+  --white: #ffffff;
 
   /* ---- Colour: semantic (what components use) ----------------------------- */
-  --color-bg: var(--neutral-0);
-  --color-surface: var(--neutral-50);
-  --color-surface-strong: var(--neutral-100);
-  --color-text: var(--neutral-900);
-  --color-text-muted: var(--neutral-600);
-  --color-border: var(--neutral-500); /* inputs, controls: >= 3:1 on bg */
-  --color-border-subtle: var(--neutral-300); /* decorative dividers only */
-  --color-primary: var(--neutral-900);
-  --color-primary-hover: var(--neutral-800);
-  --color-on-primary: #ffffff;
-  --color-link: var(--neutral-900);
-  --color-focus: var(--neutral-900);
+  --color-bg: var(--cream);
+  --color-surface: var(--white);
+  --color-surface-strong: var(--cream-strong);
+  --color-highlight: var(--sage);
+  --color-text: var(--anthracite);
+  --color-text-muted: var(--grey-green-600);
+  --color-heading: var(--green-forest);
+  --color-border: var(--grey-green-500); /* inputs, controls: >= 3:1 on bg */
+  --color-border-subtle: var(--grey-green-200); /* decorative dividers only */
+  --color-accent: var(--gold); /* rules, frames, pictograms */
+  --color-accent-text: var(--gold-dark);
+  --color-primary: var(--green-deep);
+  --color-primary-hover: var(--green-forest);
+  --color-on-primary: var(--white);
+  --color-link: var(--green-forest);
+  --color-focus: var(--green-forest);
   --color-success: #12723f;
   --color-danger: #b42318;
 
-  /* ---- Colour: wireframe annotations (removed with the wireframe) ---------- */
+  /* Deep green bands (hero, calls to action, footer). */
+  --color-dark: var(--green-deep);
+  --color-on-dark: var(--cream);
+  --color-on-dark-muted: #c5d0c3;
+  --color-accent-on-dark: var(--gold-light);
+
+  /* ---- Colour: wireframe annotations (removed before launch) -------------- */
   --color-note-bg: #e8f0fb;
   --color-note-text: #18304f;
   --color-note-border: #5a7ba6;
   --color-todo-bg: #fff0a6;
-  --color-todo-text: var(--neutral-900);
+  --color-todo-text: var(--anthracite);
 }

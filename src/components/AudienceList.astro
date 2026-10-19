@@ -1,0 +1,76 @@
+---
+/**
+ * The three audiences, as in the catalogue: a gold pictogram, a name and a sentence each,
+ * separated by fine gold rules rather than boxed cards.
+ */
+import { audiences } from '../data/audiences';
+import { frenchSpacing } from '../lib/text';
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Heading level of the audience names, to fit the page outline. */
+  as?: 'h2' | 'h3';
+}
+
+const { as: Heading = 'h3' } = Astro.props;
+---
+
+{/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+<ul class="audiences" role="list">
+  {
+    audiences.map((audience) => (
+      <li class="audience">
+        <Icon name={audience.icon} size="xl" />
+        <Heading class="audience__name">{audience.name}</Heading>
+        <p>{frenchSpacing(audience.summary)}</p>
+        <a class="audience__link" href={`/programmes/#${audience.id}`}>
+          Voir le programme<span class="visually-hidden">&nbsp;: {audience.name}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .audiences {
+    display: grid;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 56rem) {
+    .audiences {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .audience {
+    display: grid;
+    gap: var(--space-xs);
+    align-content: start;
+    justify-items: center;
+    padding: var(--space-l) var(--space-m);
+    text-align: center;
+  }
+
+  /* Fine gold rules between audiences: horizontal when stacked, vertical side by side. */
+  .audience + .audience {
+    border-block-start: var(--border-width) solid var(--color-accent);
+  }
+
+  @media (min-width: 56rem) {
+    .audience + .audience {
+      border-block-start: 0;
+      border-inline-start: var(--border-width) solid var(--color-accent);
+    }
+  }
+
+  .audience__name {
+    font-size: var(--step-2);
+  }
+
+  .audience__link {
+    margin-block-start: var(--space-2xs);
+    font-weight: var(--weight-semibold);
+  }
+</style>

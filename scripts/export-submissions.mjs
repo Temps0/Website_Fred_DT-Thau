@@ -75,7 +75,7 @@ function contactRows() {
     .prepare(`SELECT ${columns.join(', ')} FROM contact_messages ORDER BY id`)
     .all();
   return [
-    ['N°', 'Date', 'Nom', 'Entreprise', 'E-mail', 'Téléphone', 'Message'],
+    ['N°', 'Date', 'Nom', 'Structure', 'E-mail', 'Téléphone', 'Message'],
     ...messages.map((message) =>
       columns.map((column) =>
         column === 'created_at' ? localTime(message[column]) : message[column],

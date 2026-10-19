@@ -1,0 +1,22 @@
+---
+/**
+ * Portrait of the founder, optimised at build time. Provisional photo from the client's
+ * student offer deck, only 257 × 305 px: replace src/assets/frederic-dessombs.png with a
+ * larger photo when available.
+ */
+import { Image } from 'astro:assets';
+import portrait from '../assets/frederic-dessombs.png';
+import { founder } from '../data/site';
+---
+
+<Image class="portrait" src={portrait} alt={`Portrait de ${founder.name}`} />
+
+<style>
+  .portrait {
+    width: 100%;
+    max-width: 16rem;
+    height: auto;
+    border: var(--border-width) solid var(--color-accent);
+    border-radius: var(--radius-m);
+  }
+</style>

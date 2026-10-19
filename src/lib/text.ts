@@ -11,8 +11,12 @@ export function placeholderText(value: string): string | null {
 
 /**
  * Applies French typographic spacing, so that content authors can type plain spaces:
- * non-breaking space before : ; ? ! and inside « ».
+ * non-breaking space before : ; ? ! and inside « », and between a number and its unit
+ * (3 h, 600 €, 20 %, 30 minutes).
  */
 export function frenchSpacing(text: string): string {
-  return text.replace(/ +([:;?!»])/g, '\u00a0$1').replace(/« +/g, '«\u00a0');
+  return text
+    .replace(/ +([:;?!»])/g, '\u00a0$1')
+    .replace(/« +/g, '«\u00a0')
+    .replace(/(\d) +(?=€|%|(?:h|min|minutes?|heures?|jours?)\b)/g, '$1\u00a0');
 }

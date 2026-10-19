@@ -27,6 +27,12 @@ const { label, ratio = 'landscape' } = Astro.props;
     text-align: center;
   }
 
+  /* On a dark section, the muted text colour is light: keep the box dark too. */
+  :global(.section--dark) .wire-placeholder {
+    border-color: var(--color-on-dark-muted);
+    background-color: transparent;
+  }
+
   .wire-placeholder--landscape {
     aspect-ratio: 4 / 3;
   }
