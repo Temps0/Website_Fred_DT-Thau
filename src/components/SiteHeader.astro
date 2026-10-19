@@ -1,5 +1,5 @@
 ---
-import { company, contactNav, mainNav } from '../data/site';
+import { brand, contactNav, mainNav } from '../data/site';
 
 const currentPath = Astro.url.pathname;
 const isCurrent = (href: string) => currentPath === href || currentPath === href.replace(/\/$/, '');
@@ -8,7 +8,8 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="site-header__brand" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>
-      {company.name}
+      <span class="site-header__name">{brand.name}</span>
+      <span class="site-header__tagline">{brand.tagline}</span>
     </a>
 
     <nav class="site-nav" aria-label="Navigation principale" data-site-nav>
@@ -83,12 +84,26 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
     padding-block: var(--space-2xs);
   }
 
+  /* Text wordmark until the logo file is provided (the charter forbids redrawing it). */
   .site-header__brand {
+    display: grid;
     margin-inline-end: auto;
-    color: var(--color-text);
-    font-size: var(--step-1);
-    font-weight: var(--weight-bold);
+    color: var(--color-heading);
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1.1;
     text-decoration: none;
+  }
+
+  .site-header__name {
+    white-space: nowrap;
+  }
+
+  .site-header__tagline {
+    color: var(--color-accent-text);
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-wide);
   }
 
   .site-nav {
@@ -145,6 +160,11 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
      the contact call to action stays visible. The media query needs no inline script, so the
      Content Security Policy can stay strict. */
   @media (max-width: 47.99rem) and (scripting: enabled) {
+    /* Only "Menu" and "Contact" are left in the bar: keep them side by side. */
+    .site-nav {
+      flex-wrap: nowrap;
+    }
+
     .site-nav__toggle {
       display: inline-flex;
       align-items: center;
@@ -171,9 +191,20 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
     }
   }
 
+  /* The tagline would wrap beside "Menu" and "Contact": the footer still shows it. */
+  @media (max-width: 25rem) {
+    .site-header__tagline {
+      display: none;
+    }
+  }
+
   @media (max-width: 22rem) {
     .site-header__brand {
-      font-size: var(--step-0);
+      font-size: var(--step-1);
+    }
+
+    .site-nav {
+      gap: var(--space-2xs);
     }
   }
 </style>

@@ -1,5 +1,14 @@
 ---
-import { area, company, contactNav, legalNav, mainNav, surveyNav } from '../data/site';
+import {
+  area,
+  brand,
+  company,
+  contactNav,
+  legalNav,
+  mainNav,
+  phoneHref,
+  surveyNav,
+} from '../data/site';
 import ToComplete from './ToComplete.astro';
 
 const siteMap = [{ href: '/', label: 'Accueil' }, ...mainNav, contactNav, surveyNav];
@@ -9,9 +18,11 @@ const year = new Date().getFullYear();
 <footer class="site-footer section--dark">
   <div class="container site-footer__grid">
     <div class="site-footer__identity">
-      <p class="site-footer__name">{company.name}</p>
+      <p class="site-footer__name">{brand.name}</p>
+      <p>{brand.tagline}</p>
       <p>
-        Formations à la transition écologique et à la RSE pour les PME et TPE du {area}.
+        Formations à la transition écologique et à la RSE pour les entreprises, les
+        établissements d’enseignement et les collectivités du {area}.
       </p>
       <address>
         {company.address.street}<br />
@@ -19,7 +30,7 @@ const year = new Date().getFullYear();
         {company.address.city}<br />
         {
           company.phone ? (
-            <a href={`tel:${company.phone.replace(/\s/g, '')}`}>{company.phone}</a>
+            <a href={phoneHref(company.phone)}>{company.phone}</a>
           ) : (
             <ToComplete>téléphone</ToComplete>
           )
@@ -60,7 +71,7 @@ const year = new Date().getFullYear();
   </div>
 
   <div class="container">
-    <p class="site-footer__copyright">© {year} {company.name}</p>
+    <p class="site-footer__copyright">© {year} {brand.name}</p>
   </div>
 </footer>
 
