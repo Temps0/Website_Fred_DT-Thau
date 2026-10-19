@@ -1,0 +1,82 @@
+---
+/**
+ * The four principles of the approach, laid out as in the catalogue: a 2 × 2 grid of gold
+ * pictograms separated by fine gold rules.
+ */
+import { principles } from '../data/approach';
+import { frenchSpacing } from '../lib/text';
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Heading level of the principle names, to fit the page outline. */
+  as?: 'h2' | 'h3';
+  /** Add the longer explanation of each principle (approach page). */
+  detailed?: boolean;
+}
+
+const { as: Heading = 'h3', detailed = false } = Astro.props;
+---
+
+{/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+<ul class="principles" role="list">
+  {
+    principles.map((principle) => (
+      <li class="principle" id={detailed ? principle.id : undefined}>
+        <Icon name={principle.icon} size={detailed ? 'xl' : 'l'} />
+        <Heading class="principle__title">{principle.title}</Heading>
+        <p class:list={['principle__summary', { lead: detailed }]}>
+          {frenchSpacing(principle.summary)}
+        </p>
+        {detailed && <p class="principle__detail">{frenchSpacing(principle.detail)}</p>}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .principles {
+    display: grid;
+    padding: 0;
+    list-style: none;
+  }
+
+  .principle {
+    display: grid;
+    gap: var(--space-xs);
+    align-content: start;
+    justify-items: center;
+    padding: var(--space-l) var(--space-m);
+    text-align: center;
+  }
+
+  .principle > p {
+    max-width: 32rem;
+  }
+
+  /* Gold rules between principles: one column when narrow, a cross in the 2 × 2 grid. */
+  .principle:not(:first-child) {
+    border-block-start: var(--border-width) solid var(--color-accent);
+  }
+
+  @media (min-width: 48rem) {
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .principle:nth-child(2) {
+      border-block-start: 0;
+    }
+
+    .principle:nth-child(even) {
+      border-inline-start: var(--border-width) solid var(--color-accent);
+    }
+  }
+
+  .principle__title {
+    font-size: var(--step-2);
+  }
+
+  .principle__detail {
+    color: var(--color-text-muted);
+  }
+</style>
