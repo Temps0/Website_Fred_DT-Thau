@@ -10,8 +10,10 @@ import footprints from 'lucide-static/icons/footprints.svg?raw';
 import graduationCap from 'lucide-static/icons/graduation-cap.svg?raw';
 import handshake from 'lucide-static/icons/handshake.svg?raw';
 import landmark from 'lucide-static/icons/landmark.svg?raw';
+import mail from 'lucide-static/icons/mail.svg?raw';
 import mapPin from 'lucide-static/icons/map-pin.svg?raw';
 import monitor from 'lucide-static/icons/monitor.svg?raw';
+import phone from 'lucide-static/icons/phone.svg?raw';
 import slidersHorizontal from 'lucide-static/icons/sliders-horizontal.svg?raw';
 import thermometerSun from 'lucide-static/icons/thermometer-sun.svg?raw';
 import users from 'lucide-static/icons/users.svg?raw';
@@ -25,8 +27,10 @@ export const icons = {
   'graduation-cap': graduationCap,
   handshake,
   landmark,
+  mail,
   'map-pin': mapPin,
   monitor,
+  phone,
   'sliders-horizontal': slidersHorizontal,
   'thermometer-sun': thermometerSun,
   users,

@@ -15,8 +15,8 @@ const contactSchema = z.object({
   name: z.string().min(1, 'Indiquez votre nom.').max(120, 'Votre nom est trop long.'),
   company: z
     .string()
-    .min(1, 'Indiquez le nom de votre entreprise.')
-    .max(160, 'Le nom de l’entreprise est trop long.'),
+    .min(1, 'Indiquez le nom de votre structure.')
+    .max(160, 'Le nom de la structure est trop long.'),
   email: z
     .string()
     .max(254, 'L’adresse e-mail est trop longue.')
