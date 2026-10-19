@@ -1,0 +1,56 @@
+---
+/**
+ * Thin-line pictogram in the charter's matt gold. Always decorative: it accompanies a
+ * visible text, so it is hidden from assistive technologies.
+ */
+import { type IconName, icons } from '../lib/icons';
+
+interface Props {
+  name: IconName;
+  size?: 'm' | 'l' | 'xl';
+}
+
+const { name, size = 'm' } = Astro.props;
+
+// Lucide files are trusted build-time sources, never visitor input. Drop the licence
+// comment (credited in the legal notice), thin the stroke and hide the SVG from screen
+// readers.
+const svg = icons[name]
+  .replace(/<!--[\s\S]*?-->/, '')
+  .replace('stroke-width="2"', 'stroke-width="1.25"')
+  .replace('<svg', '<svg aria-hidden="true" focusable="false"');
+---
+
+<span class:list={['icon', `icon--${size}`]} set:html={svg} />
+
+<style>
+  .icon {
+    display: inline-flex;
+    flex: none;
+    color: var(--color-accent);
+  }
+
+  .icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon--m {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .icon--l {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .icon--xl {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  :global(.section--dark) .icon {
+    color: var(--color-accent-on-dark);
+  }
+</style>

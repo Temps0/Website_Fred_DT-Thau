@@ -57,7 +57,7 @@ export interface NavItem {
 }
 
 export const mainNav: NavItem[] = [
-  { href: '/formations/', label: 'Formations' },
+  { href: '/programmes/', label: 'Programmes' },
   { href: '/approche/', label: 'Notre approche' },
   { href: '/qui-sommes-nous/', label: 'Qui sommes-nous\u00a0?' },
 ];

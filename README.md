@@ -38,20 +38,31 @@ ils seront retirés avec la direction artistique. Les formulaires ne sont pas en
 
 Le build (`npm run build`) vérifie tous les fichiers de contenu : une erreur de saisie
 l’arrête avec un message qui indique le champ fautif. Les espaces insécables avant
-`: ; ? !` et dans les guillemets `« »` sont ajoutés automatiquement.
+`: ; ? !`, dans les guillemets `« »` et entre un nombre et son unité (`3 h`, `600 €`)
+sont ajoutés automatiquement.
 
-### Formations
+### Programmes CAP TRANSITION
 
-Un fichier Markdown par formation dans `src/content/formations/`. Pour en ajouter une,
-copier un fichier existant et le renommer : le nom du fichier devient l’ancre de la
-formation (`/formations/#nom-du-fichier`).
+La page `/programmes/` présente les trois publics et leurs programmes.
 
-| Champ | Contenu |
+- **Modules** : un fichier Markdown par module dans `src/content/modules/`. Pour en
+  ajouter un, copier un fichier existant et le renommer : le nom du fichier devient l’ancre
+  du module (`/programmes/#nom-du-fichier`).
+- **Publics et modalités** (présentiel, inter/intra) : `src/data/audiences.ts`.
+- **Offre étudiants** (formules, tarifs, conditions) :
+  `src/data/cap-transition-etudiants.ts`.
+
+| Champ d’un module | Contenu |
 | --- | --- |
-| `title`, `objective`, `audience`, `duration`, `format`, `benefit` | obligatoires |
-| `need` | `comprendre`, `demarche-rse`, `priorites` ou `action` |
-| `order` | position dans le besoin (croissante) |
+| `title`, `tagline`, `duration`, `objective`, `skill` | obligatoires ; `skill` est la « compétence acquise » |
+| `theme`, `verb`, `pathStep` | badge (« Climat »), verbe (« Décoder ») et étape du parcours (« Comprendre la menace ») |
+| `topics` | liste des points du programme |
+| `icon` | pictogramme, parmi ceux de `src/lib/icons.ts` |
+| `order` | position dans le parcours (croissante) |
 | `prerequisites`, `access`, `price`, `methods`, `assessment`, `accessibility` | facultatifs : informations exigées par Qualiopi, affichées seulement si elles sont remplies |
+
+Les pictogrammes viennent de [Lucide](https://lucide.dev) (licence ISC). Pour en ajouter
+un, l’importer dans `src/lib/icons.ts` sous son nom Lucide.
 
 ### Questionnaire
 
@@ -70,7 +81,7 @@ Dans `src/data/site.ts`. Une valeur `null` s’affiche comme un champ à complé
 
 ### Contenus provisoires
 
-- `[À COMPLÉTER : description]` s’affiche surligné en jaune dans les champs des formations
+- `[À COMPLÉTER : description]` s’affiche surligné en jaune dans les champs facultatifs des modules
   et dans la durée du questionnaire ; ailleurs, il reste visible tel quel.
 - `[EXEMPLE]` en début de titre marque un contenu d’exemple à remplacer.
 
