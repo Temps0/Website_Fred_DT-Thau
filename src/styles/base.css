@@ -3,6 +3,22 @@
  * Depends on tokens.css. Component styles live with their components.
  */
 
+/* ---- Fonts --------------------------------------------------------------- */
+/*
+ * Fraunces (SIL OFL 1.1, licence next to the file), served from this site: no request to
+ * a third party. Instance from Google Fonts pinned to weight 500, SOFT 100, WONK 0, with
+ * the optical size axis kept variable; latin subset (accents, œ, « », €, U+00A0).
+ * It lacks the narrow no-break space U+202F: use U+00A0, as frenchSpacing() does.
+ * Preloaded in BaseLayout.
+ */
+@font-face {
+  font-family: Fraunces;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/fraunces/fraunces-500-soft-latin.woff2") format("woff2");
+}
+
 /* ---- Reset --------------------------------------------------------------- */
 *,
 *::before,
@@ -100,8 +116,9 @@ h4 {
 h1 {
   font-family: var(--font-display);
   font-size: var(--step-5);
-  font-weight: var(--weight-regular);
-  letter-spacing: 0;
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
   /* Long French words ("professionnalisante") must not break mid-word on small screens. */
   -webkit-hyphens: auto;
   hyphens: auto;
