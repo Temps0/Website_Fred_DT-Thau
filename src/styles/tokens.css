@@ -9,14 +9,18 @@
 
 :root {
   /* ---- Typography ------------------------------------------------------ */
-  /* Serif for page titles, as on the catalogue covers; system fonts, nothing to download. */
-  --font-display: Georgia, Cambria, "Times New Roman", serif;
+  /*
+   * Serif for page titles, as on the catalogue covers: Fraunces, self-hosted (base.css),
+   * one instance only (weight 500, fully soft corners). Georgia stands in while it loads.
+   */
+  --font-display: Fraunces, Georgia, Cambria, "Times New Roman", serif;
   /* Sans-serif for inner titles and text: Aptos where installed, else the system font. */
   --font-body:
     Aptos, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-heading: var(--font-body);
 
   --weight-regular: 400;
+  --weight-medium: 500; /* the only weight of the display font */
   --weight-semibold: 600;
   --weight-bold: 700;
 
@@ -29,8 +33,10 @@
   --step-4: clamp(2.074rem, 1.81rem + 1.17vw, 2.747rem);
   --step-5: clamp(2.074rem, 1.601rem + 2.364vw, 3.433rem);
 
+  --leading-display: 1.05;
   --leading-tight: 1.15;
   --leading-normal: 1.6;
+  --tracking-display: -0.015em;
   --tracking-tight: -0.01em;
   --tracking-wide: 0.06em;
 

@@ -96,7 +96,8 @@ const year = new Date().getFullYear();
   .site-footer__name {
     font-family: var(--font-display);
     font-size: var(--step-1);
-    font-weight: var(--weight-bold);
+    /* The display font has no bold: a heavier weight would be synthesised. */
+    font-weight: var(--weight-medium);
   }
 
   address {
