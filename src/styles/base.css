@@ -248,15 +248,6 @@ a:hover {
   background-color: var(--color-accent);
 }
 
-/* Short label above a title, in the charter's gold (darker shade, readable when small). */
-.eyebrow {
-  color: var(--color-accent-text);
-  font-size: var(--step--1);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-}
-
 /* ---- Buttons -------------------------------------------------------------- */
 /* Calls to action in deep green framed by a gold rule: matt gold itself is too light to
    carry button text (3.3:1 with white). */

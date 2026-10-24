@@ -14,7 +14,14 @@ import { getModules } from '../lib/modules';
 import { frenchSpacing } from '../lib/text';
 
 const modules = await getModules();
+const schools = audiences.find((audience) => audience.id === 'ecoles');
+if (!schools) {
+  throw new Error('Audience "ecoles" is missing from src/data/audiences.ts');
+}
 const otherAudiences = audiences.filter((audience) => audience.id !== 'ecoles');
+// The promise follows the programme name after a colon: lower-case its first letter.
+const studentPromise =
+  studentProgramme.promise.charAt(0).toLowerCase() + studentProgramme.promise.slice(1);
 const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
 ---
 
@@ -24,7 +31,6 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
 >
   <section class="section section--dark" aria-labelledby="programmes-title">
     <div class="container flow flow--m">
-      <p class="eyebrow">Programmes</p>
       <h1 id="programmes-title" class="programmes-title with-rule">CAP TRANSITION</h1>
       <p class="lead">
         Des formations courtes et concrètes pour comprendre les enjeux écologiques et leurs
@@ -65,9 +71,8 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
     <div class="container flow flow--l">
       <header class="programme-intro">
         <div class="flow flow--m">
-          <p class="eyebrow">Écoles, universités & CFA</p>
-          <h2 id="ecoles-title">{studentProgramme.name}</h2>
-          <p class="lead">{frenchSpacing(studentProgramme.promise)}</p>
+          <h2 id="ecoles-title">{schools.name}</h2>
+          <p class="lead">{frenchSpacing(`${studentProgramme.name} : ${studentPromise}`)}</p>
           {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
           <ul class="checklist" role="list">
             {
