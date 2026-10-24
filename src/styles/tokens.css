@@ -25,10 +25,11 @@
   --weight-bold: 700;
 
   /*
-   * Fluid text scale: ratio 1.2 at 360px viewport -> 1.25 at 1280px (base 16 -> 18px).
-   * The two title steps below depart from it on purpose.
+   * Fluid text scale, steps 0 to 3: ratio 1.2 at 360px viewport -> 1.25 at 1280px (base
+   * 16 -> 18px). The small step and the two title steps below depart from it on purpose.
    */
-  --step--1: clamp(0.833rem, 0.807rem + 0.116vw, 0.9rem);
+  /* Small text (hints, notes, footer) never goes under 16px: it sets apart by colour. */
+  --step--1: clamp(1rem, 0.976rem + 0.109vw, 1.0625rem);
   --step-0: clamp(1rem, 0.951rem + 0.217vw, 1.125rem);
   --step-1: clamp(1.2rem, 1.119rem + 0.359vw, 1.406rem);
   --step-2: clamp(1.44rem, 1.316rem + 0.553vw, 1.758rem);
