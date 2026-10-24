@@ -224,9 +224,10 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
     align-items: center;
   }
 
+  /* Equal columns, so the quote, in the wide title serif, stays at four lines on desktop. */
   @media (min-width: 56rem) {
     .programme-intro {
-      grid-template-columns: 3fr 2fr;
+      grid-template-columns: 1fr 1fr;
     }
   }
 
