@@ -24,14 +24,21 @@
   --weight-semibold: 600;
   --weight-bold: 700;
 
-  /* Fluid type scale: ratio 1.2 at 360px viewport -> 1.25 at 1280px (base 16 -> 18px). */
+  /*
+   * Fluid text scale: ratio 1.2 at 360px viewport -> 1.25 at 1280px (base 16 -> 18px).
+   * The two title steps below depart from it on purpose.
+   */
   --step--1: clamp(0.833rem, 0.807rem + 0.116vw, 0.9rem);
   --step-0: clamp(1rem, 0.951rem + 0.217vw, 1.125rem);
   --step-1: clamp(1.2rem, 1.119rem + 0.359vw, 1.406rem);
   --step-2: clamp(1.44rem, 1.316rem + 0.553vw, 1.758rem);
   --step-3: clamp(1.728rem, 1.544rem + 0.816vw, 2.197rem);
-  --step-4: clamp(2.074rem, 1.81rem + 1.17vw, 2.747rem);
-  --step-5: clamp(2.074rem, 1.601rem + 2.364vw, 3.433rem);
+  /*
+   * Title steps grow faster than the text scale, so titles clearly lead on large screens:
+   * section titles (h2) 28 -> 44px, page titles (h1) 36 -> 80px, about 4.4 times the text.
+   */
+  --step-4: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  --step-5: clamp(2.25rem, 1.35rem + 4vw, 5rem);
 
   --leading-display: 1.05;
   --leading-tight: 1.15;
