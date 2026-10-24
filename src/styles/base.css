@@ -124,7 +124,7 @@ h1 {
   hyphens: auto;
 }
 h2 {
-  font-size: var(--step-3);
+  font-size: var(--step-4);
 }
 h3 {
   font-size: var(--step-1);
@@ -246,15 +246,6 @@ a:hover {
   height: 2px;
   margin-block-start: var(--space-s);
   background-color: var(--color-accent);
-}
-
-/* Short label above a title, in the charter's gold (darker shade, readable when small). */
-.eyebrow {
-  color: var(--color-accent-text);
-  font-size: var(--step--1);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
 }
 
 /* ---- Buttons -------------------------------------------------------------- */

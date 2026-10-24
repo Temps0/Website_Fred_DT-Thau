@@ -27,11 +27,11 @@ const details = [
 <article class="module" id={module.id} aria-labelledby={titleId}>
   <header class="module__header">
     <Icon name={data.icon} size="l" />
+    <Heading id={titleId} class="module__title">{frenchSpacing(data.title)}</Heading>
+    <p class="module__tagline">{frenchSpacing(data.tagline)}</p>
     <p class="module__theme">
       {data.theme} · {data.verb} · {frenchSpacing(data.duration)}
     </p>
-    <Heading id={titleId} class="module__title">{frenchSpacing(data.title)}</Heading>
-    <p class="module__tagline">{frenchSpacing(data.tagline)}</p>
   </header>
 
   <div class="module__block">
@@ -87,11 +87,7 @@ const details = [
   }
 
   .module__theme {
-    color: var(--color-accent-text);
-    font-size: var(--step--1);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
 
   .module__title {
