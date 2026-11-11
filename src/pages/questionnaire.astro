@@ -6,7 +6,6 @@ import FormNotice from '../components/FormNotice.astro';
 import SpamTrap from '../components/SpamTrap.astro';
 import SurveyQuestion from '../components/SurveyQuestion.astro';
 import TextField from '../components/TextField.astro';
-import WireNote from '../components/WireNote.astro';
 import { area, brand } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { handleSurveyPost, type SurveyValues } from '../lib/server/survey-response';
@@ -81,13 +80,6 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
               Le questionnaire ne demande ni votre nom ni celui de votre entreprise. Les
               questions marquées «&nbsp;obligatoire&nbsp;» doivent être remplies.
             </p>
-            <WireNote>
-              Questions d’exemple, à remplacer par celles du fondateur. Elles sont définies dans
-              <code>src/content/surveys.json</code>&nbsp;: les modifier ne demande aucun
-              développement. Titre raccourci pour tenir en deux lignes (il était «&nbsp;Transition
-              écologique&nbsp;: quels besoins pour les entreprises du Bassin de Thau&nbsp;?&nbsp;»),
-              à valider.
-            </WireNote>
           </>
         )
       }
@@ -185,10 +177,6 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
                   de mes réponses. Je peux retirer mon accord à tout moment.
                 </label>
               </div>
-              <WireNote>
-                Consentement explicite, case non cochée par défaut (RGPD)&nbsp;: l’adresse n’est
-                enregistrée que si la case est cochée.
-              </WireNote>
             </section>
 
             <SpamTrap

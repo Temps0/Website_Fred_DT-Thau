@@ -2,7 +2,6 @@
 import FounderPortrait from '../components/FounderPortrait.astro';
 import LinkButton from '../components/LinkButton.astro';
 import ToComplete from '../components/ToComplete.astro';
-import WireNote from '../components/WireNote.astro';
 import { area, brand, company, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -26,11 +25,6 @@ const values = [
       {brand.name} est née d’une conviction&nbsp;: rendre la transition écologique compréhensible
       et permettre aux acteurs du {area} de passer de la réflexion à l’action.
     </p>
-    <WireNote>
-      Le brief hésite entre «&nbsp;Qui sommes-nous&nbsp;?&nbsp;» et «&nbsp;Qui suis-je&nbsp;?&nbsp;».
-      Avec un fondateur seul, le «&nbsp;je&nbsp;» est plus direct et plus humain&nbsp;: à choisir
-      avec lui.
-    </WireNote>
   </div>
 
   <section class="section section--alt" aria-labelledby="origin-title">
@@ -66,10 +60,6 @@ const values = [
           </div>
         </dl>
         <p><a href={founder.linkedin}>Profil LinkedIn de {founder.name}</a></p>
-        <WireNote>
-          Mettre l’accent sur ce qui légitime l’expertise plutôt que sur l’ancienneté de
-          l’entreprise (brief). Photo provisoire, en basse définition.
-        </WireNote>
       </div>
     </div>
   </section>
@@ -94,9 +84,6 @@ const values = [
           ))
         }
       </ul>
-      <WireNote proposal>
-        Les trois valeurs sont celles du brief&nbsp;; leurs descriptions sont à faire valider.
-      </WireNote>
     </div>
   </section>
 
@@ -112,10 +99,6 @@ const values = [
           {area}
         </li>
       </ul>
-      <WireNote proposal>
-        Des faits tirés de l’immatriculation de la société&nbsp;: une structure jeune gagne à les
-        afficher franchement.
-      </WireNote>
     </div>
   </section>
 

@@ -116,10 +116,7 @@
   --color-on-dark-muted: #c5d0c3;
   --color-accent-on-dark: var(--gold-light);
 
-  /* ---- Colour: wireframe annotations (removed before launch) -------------- */
-  --color-note-bg: #e8f0fb;
-  --color-note-text: #18304f;
-  --color-note-border: #5a7ba6;
+  /* ---- Colour: "[À COMPLÉTER]" markers, until every value is provided ---------- */
   --color-todo-bg: #fff0a6;
   --color-todo-text: var(--anthracite);
 }

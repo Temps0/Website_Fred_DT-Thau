@@ -5,8 +5,6 @@ import LearningPath from '../components/LearningPath.astro';
 import LinkButton from '../components/LinkButton.astro';
 import PrincipleList from '../components/PrincipleList.astro';
 import ToComplete from '../components/ToComplete.astro';
-import WireNote from '../components/WireNote.astro';
-import WirePlaceholder from '../components/WirePlaceholder.astro';
 import { area, contactNav, founder, surveyNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -27,19 +25,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
           <LinkButton href="/programmes/" variant="secondary">Découvrir les programmes</LinkButton>
         </div>
-        <WireNote>
-          Premier écran&nbsp;: ce que propose DT-Thau, pour qui, où, et l’action principale. Titre
-          du catalogue raccourci pour tenir en deux lignes à grande taille (il était «&nbsp;Accélérer
-          la transition écologique sur le Bassin de Thau&nbsp;»)&nbsp;; la phrase dessous dit le
-          reste. À valider.
-        </WireNote>
-      </div>
-      <div class="flow">
-        <WirePlaceholder label="Photo du Bassin de Thau (lagune, tables conchylicoles, côte) – à fournir" />
-        <WireNote proposal>
-          Une photo réelle du territoire, avec peut-être toi devant&nbsp;? Ou du moins, ton
-          activité avec un lien sur le paysage local.
-        </WireNote>
       </div>
     </div>
   </section>
@@ -54,7 +39,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </p>
       </div>
       <AudienceList />
-      <WireNote>Les trois publics et leurs accroches viennent du catalogue.</WireNote>
     </div>
   </section>
 
@@ -70,7 +54,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
       <LearningPath />
       <p><a href="/programmes/#ecoles">Voir le détail des modules et les tarifs</a></p>
-      <WireNote>Le parcours du catalogue remplace les trois étapes tirées du brief.</WireNote>
     </div>
   </section>
 
@@ -85,7 +68,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
       <PrincipleList />
       <p><a href="/approche/">Découvrir notre approche</a></p>
-      <WireNote>Les quatre principes du catalogue remplacent le texte du brief.</WireNote>
     </div>
   </section>
 
@@ -102,14 +84,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <ToComplete>une ou deux phrases sur le parcours du fondateur</ToComplete>
         </p>
         <p><a href="/qui-sommes-nous/">Qui sommes-nous&nbsp;?</a></p>
-        <WireNote proposal>
-          Une photo de toi, peut-être un résumé de ton parcours et de tes intérêts (axe-toi
-          principalement sur le côté écologique et humanitaire).
-        </WireNote>
-        <WireNote>
-          Photo provisoire, tirée de l’offre étudiants&nbsp;: trop petite pour être agrandie, une
-          photo en meilleure définition sera nécessaire.
-        </WireNote>
       </div>
     </div>
   </section>
@@ -128,10 +102,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Entreprise du {area}&nbsp;? Aidez-nous à mieux connaître vos besoins&nbsp;:
         <a href={surveyNav.href}>répondre au questionnaire</a>.
       </p>
-      <WireNote>
-        L’appel à l’action du catalogue, répété en fin de page. Le questionnaire est proposé en
-        action secondaire.
-      </WireNote>
     </div>
   </section>
 </BaseLayout>

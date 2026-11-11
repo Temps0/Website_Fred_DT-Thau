@@ -6,7 +6,6 @@ import LinkButton from '../components/LinkButton.astro';
 import SpamTrap from '../components/SpamTrap.astro';
 import TextField from '../components/TextField.astro';
 import ToComplete from '../components/ToComplete.astro';
-import WireNote from '../components/WireNote.astro';
 import { area, brand, company, founder, phoneHref, surveyNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { type ContactValues, handleContactPost } from '../lib/server/contact';
@@ -180,11 +179,6 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
           </div>
         </form>
 
-        <WireNote>
-          Formulaire court du brief&nbsp;; le téléphone est facultatif pour limiter les données
-          collectées. Les messages sont enregistrés sur le serveur&nbsp;; la notification par
-          e-mail viendra avec l’adresse e-mail professionnelle.
-        </WireNote>
       </section>
 
       <aside class="contact-aside flow flow--l" aria-label="Coordonnées et questionnaire">
@@ -238,10 +232,6 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
             Nous intervenons auprès des entreprises, des établissements d’enseignement et des
             collectivités du {area}.
           </p>
-          <WireNote>
-            Adresse du siège à confirmer ici&nbsp;: si c’est une adresse personnelle, elle reste
-            obligatoire dans les mentions légales, mais pas sur cette page.
-          </WireNote>
         </section>
 
         <section aria-labelledby="survey-title" class="survey-teaser flow">

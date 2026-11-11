@@ -1,7 +1,6 @@
 ---
 import ContentText from '../components/ContentText.astro';
 import ToComplete from '../components/ToComplete.astro';
-import WireNote from '../components/WireNote.astro';
 import { company } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -60,12 +59,6 @@ const processings = [
         Cette page explique quelles données personnelles {company.name} collecte sur ce site,
         pourquoi, combien de temps elles sont conservées et comment exercer vos droits.
       </p>
-
-      <WireNote>
-        Proposition de texte à faire valider par le responsable du site, idéalement avec un
-        professionnel du droit. Elle devra suivre les choix techniques réels (hébergement,
-        messagerie, envoi des e-mails).
-      </WireNote>
 
       <h2>Responsable du traitement</h2>
       <p>

@@ -5,7 +5,6 @@ import LearningPath from '../components/LearningPath.astro';
 import LinkButton from '../components/LinkButton.astro';
 import ModuleCard from '../components/ModuleCard.astro';
 import ToComplete from '../components/ToComplete.astro';
-import WireNote from '../components/WireNote.astro';
 import { audiences, modalities } from '../data/audiences';
 import { studentProgramme } from '../data/cap-transition-etudiants';
 import { contactNav } from '../data/site';
@@ -59,11 +58,6 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
           <ToComplete>financement possible, selon la certification Qualiopi</ToComplete>
         </li>
       </ul>
-      <WireNote>
-        Le catalogue annonce «&nbsp;Financements OPCO / Région Occitanie possibles&nbsp;». Un
-        financement OPCO exige la certification Qualiopi&nbsp;: mention à confirmer par DT-Thau
-        avant publication.
-      </WireNote>
     </div>
   </section>
 
@@ -135,17 +129,6 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
             <ToComplete>attestation de participation ou de formation</ToComplete>
           </li>
         </ul>
-        <WireNote>
-          Noms des formules repris de l’offre commerciale (le catalogue dit «&nbsp;Double
-          Module&nbsp;» et «&nbsp;Parcours Complet&nbsp;»). Les prix barrés (750, 1&nbsp;300 et
-          1&nbsp;800&nbsp;€ HT) ne sont pas affichés&nbsp;: un prix de référence barré doit avoir
-          été réellement pratiqué. À confirmer par DT-Thau, comme le type d’attestation.
-        </WireNote>
-        <WireNote>
-          Régime de TVA à confirmer&nbsp;: un organisme de formation peut être exonéré (CGI,
-          art.&nbsp;261-4-4°&nbsp;a) ou en franchise en base (art.&nbsp;293&nbsp;B). «&nbsp;HT&nbsp;»
-          serait alors trompeur&nbsp;: afficher «&nbsp;net de taxe&nbsp;» avec la mention légale.
-        </WireNote>
       </section>
 
       <aside class="custom-offer" aria-label="Offre sur mesure">
@@ -174,10 +157,6 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
             <div class="actions">
               <LinkButton href={contactNav.href}>Échanger sur votre besoin</LinkButton>
             </div>
-            <WireNote>
-              Le catalogue ne détaille pas encore ce programme&nbsp;: présentation et «&nbsp;sur
-              devis&nbsp;» en attendant son contenu.
-            </WireNote>
           </div>
         </div>
       </section>

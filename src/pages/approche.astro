@@ -1,8 +1,6 @@
 ---
 import LinkButton from '../components/LinkButton.astro';
 import PrincipleList from '../components/PrincipleList.astro';
-import WireNote from '../components/WireNote.astro';
-import WirePlaceholder from '../components/WirePlaceholder.astro';
 import { area, contactNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -17,24 +15,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       Une expertise de la transition écologique et un ancrage local dans le {area}&nbsp;: quatre
       principes guident chacune de nos formations.
     </p>
-    <WireNote>
-      Titre et principes repris du catalogue, explications reprises du brief. Pour couvrir les
-      trois publics, «&nbsp;des étudiants&nbsp;» devient «&nbsp;des participants&nbsp;»&nbsp;;
-      l’explication de «&nbsp;Flexible&nbsp;» est une proposition, d’après les modalités du
-      catalogue.
-    </WireNote>
   </div>
 
   <section class="section section--alt" aria-label="Nos quatre principes">
     <div class="container flow flow--l">
       <PrincipleList as="h2" detailed />
-      <WireNote proposal>
-        Un exemple concret par principe, tiré d’une formation, rendrait l’approche plus
-        crédible&nbsp;: à fournir par le fondateur.
-      </WireNote>
-      <div class="approach-photo">
-        <WirePlaceholder label="Photo d’une intervention en entreprise ou du territoire – à fournir" />
-      </div>
     </div>
   </section>
 
