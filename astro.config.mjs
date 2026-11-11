@@ -50,6 +50,10 @@ export default defineConfig({
       // Declared "secret" so that it is read when the server starts: "public" server
       // variables are frozen into the bundle at build time.
       DATA_DIR: envField.string({ context: 'server', access: 'secret', default: './data' }),
+      // Search engines may index the site only when this is "true" at build time. It stays
+      // off while legal or factual content is still "[À COMPLÉTER]": every page then carries
+      // a noindex tag and robots.txt does not announce the sitemap.
+      SITE_INDEXABLE: envField.boolean({ context: 'server', access: 'public', default: false }),
     },
   },
   // HTML whitespace semantics: a line break between text and a tag or expression renders as

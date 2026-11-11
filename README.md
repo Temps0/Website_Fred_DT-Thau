@@ -111,6 +111,20 @@ domaine pour l’hôte, le protocole et l’adresse IP transmis :
 SITE_DOMAIN=dt-thau.fr npm run build
 ```
 
+Par défaut, le site n’est pas indexé par les moteurs de recherche : chaque page porte une
+balise `noindex` et `robots.txt` n’annonce pas le plan du site. C’est voulu tant que des
+mentions obligatoires restent `[À COMPLÉTER]` et sur un serveur de préproduction. Pour la
+mise en ligne publique, construire avec `SITE_INDEXABLE=true` (variable du même nom dans
+`.env` avec Docker) :
+
+```bash
+SITE_DOMAIN=dt-thau.fr SITE_INDEXABLE=true npm run build
+```
+
+Le build produit aussi `sitemap.xml` (liste des pages dans `src/lib/site-pages.ts`), les
+balises de partage Open Graph et, sur l’accueil, la description de l’organisme pour les
+moteurs de recherche (JSON-LD, tirée de `src/data/site.ts`).
+
 ## Formulaires et données
 
 Le formulaire de contact et le questionnaire enregistrent les envois dans une base SQLite
