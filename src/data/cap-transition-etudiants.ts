@@ -2,6 +2,7 @@
  * The CAP TRANSITION Étudiants offer, from the client's commercial deck
  * (docs/Visuel Notebook offre commerciale CAP-TRANSITION-ETUDIANTS). Prices are shown
  * without the struck-through reference prices of the deck until the client confirms them.
+ * Amounts are in euros excluding VAT, per session.
  */
 
 export const studentProgramme = {
@@ -19,21 +20,23 @@ export const studentProgramme = {
       name: 'Découverte',
       content: '1\u00a0module au choix',
       duration: '3\u00a0h',
-      price: '600\u00a0€\u00a0HT',
+      amount: 600,
     },
     {
       name: 'Intermédiaire',
       content: '2\u00a0modules au choix',
       duration: '6\u00a0h',
-      price: '990\u00a0€\u00a0HT',
+      amount: 990,
     },
     {
       name: 'Intégral',
       content: 'Parcours complet',
       duration: '9\u00a0h',
-      price: '1\u00a0490\u00a0€\u00a0HT',
+      amount: 1490,
     },
   ],
+  /** Most students per session: each session of a formula is invoiced at its price. */
+  sessionSize: 30,
   perStudent: 'Soit 20\u00a0€\u00a0HT par étudiant',
   perStudentBasis: 'base : module de 3\u00a0h pour 30\u00a0étudiants',
   conditions:
