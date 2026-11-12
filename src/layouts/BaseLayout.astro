@@ -24,7 +24,7 @@ const canonicalUrl =
   Astro.site && !noindex ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 const isIndexable = SITE_INDEXABLE && !noindex;
 const isHome = Astro.url.pathname === '/';
-// Share image: a 1200 × 630 waterline with the name (public/og/). Absolute URL required.
+// Share image: 1200 × 630, the name on deep green (public/og/). Absolute URL required.
 const shareImage = Astro.site ? new URL('/og/dt-thau.png', Astro.site).href : undefined;
 ---
 
