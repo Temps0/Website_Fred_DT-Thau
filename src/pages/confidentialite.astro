@@ -1,7 +1,7 @@
 ---
 import ContentText from '../components/ContentText.astro';
+import PageHero from '../components/PageHero.astro';
 import ToComplete from '../components/ToComplete.astro';
-import Waterline from '../components/Waterline.astro';
 import { company } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -53,12 +53,12 @@ const processings = [
   title="Politique de confidentialité"
   description="Quelles données personnelles DT-Thau collecte sur son site, pourquoi, combien de temps, et comment exercer vos droits."
 >
-  <Waterline lines={['Politique de', 'confidentialité']} titleId="legal-title" size="m" compact>
+  <PageHero lines={['Politique de', 'confidentialité']} titleId="legal-title" size="m" compact>
     <p class="lead">
       Cette page explique quelles données personnelles {company.name} collecte sur ce site,
       pourquoi, combien de temps elles sont conservées et comment exercer vos droits.
     </p>
-  </Waterline>
+  </PageHero>
 
   <div class="chapter chapter--paper">
     <article class="container legal" aria-labelledby="legal-title">

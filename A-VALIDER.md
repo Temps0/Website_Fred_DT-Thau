@@ -40,8 +40,8 @@ Politique de confidentialité (`/confidentialite/`) et formulaires :
 - [ ] Un portrait du fondateur en bonne définition (au moins 1 200 px de haut). La photo
       actuelle, tirée de l’offre étudiants, ne fait que 257 × 305 px.
 - [ ] Des photos réelles : le Bassin de Thau, une intervention en entreprise ou en classe,
-      le fondateur sur le territoire. En attendant, le site utilise des dessins de la lagune
-      faits pour lui, dans les couleurs de la charte.
+      le fondateur sur le territoire. En attendant, le site n’a pas d’autre image que le
+      portrait du fondateur : ses sections reposent sur les aplats de couleur de la charte.
 - [ ] Le fichier du logo : le site affiche le nom en texte, la charte interdisant de le
       redessiner.
 - [ ] Qui sommes-nous : l’histoire du projet (le déclic, le constat, l’envie), le parcours

@@ -4,9 +4,9 @@ import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
 import LearningPath from '../components/LearningPath.astro';
 import LinkButton from '../components/LinkButton.astro';
+import PageHero from '../components/PageHero.astro';
 import PrincipleList from '../components/PrincipleList.astro';
 import ToComplete from '../components/ToComplete.astro';
-import Waterline from '../components/Waterline.astro';
 import { area, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -15,7 +15,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Formation transition écologique et RSE, Bassin de Thau"
   description="DT-Thau forme les entreprises, les écoles et les collectivités du Bassin de Thau à la transition écologique et à la RSE : formations courtes et concrètes."
 >
-  <Waterline lines={['Accélérer la', 'transition']} titleId="hero-title" size="xl">
+  <PageHero lines={['Accélérer la', 'transition']} titleId="hero-title" size="xl">
     <p class="lead">
       Formations à la transition écologique et à la RSE pour les entreprises, les écoles et
       les collectivités du {area}.
@@ -24,7 +24,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
       <LinkButton href="/programmes/" variant="secondary">Découvrir les programmes</LinkButton>
     </div>
-  </Waterline>
+  </PageHero>
 
   <section class="chapter chapter--paper" aria-labelledby="audience-title">
     <div class="container split" data-reveal>

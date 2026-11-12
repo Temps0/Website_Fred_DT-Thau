@@ -1,8 +1,8 @@
 ---
 import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
+import PageHero from '../components/PageHero.astro';
 import ToComplete from '../components/ToComplete.astro';
-import Waterline from '../components/Waterline.astro';
 import { area, brand, company, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -20,12 +20,12 @@ const values = [
   title="Qui sommes-nous ? L’origine du projet et son fondateur"
   description="DT-Thau, organisme de formation créé à Mèze en 2026 par Frédéric Dessombs, aide les acteurs du Bassin de Thau à passer à l’action écologique."
 >
-  <Waterline lines={['Qui sommes-nous ?']} titleId="about-title">
+  <PageHero lines={['Qui sommes-nous ?']} titleId="about-title">
     <p class="lead">
       {brand.name} est née d’une conviction&nbsp;: rendre la transition écologique compréhensible
       et permettre aux acteurs du {area} de passer de la réflexion à l’action.
     </p>
-  </Waterline>
+  </PageHero>
 
   <section class="chapter chapter--sage" aria-labelledby="origin-title">
     <div class="container split" data-reveal>
