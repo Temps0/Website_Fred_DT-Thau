@@ -1,6 +1,6 @@
 ---
 import ToComplete from '../components/ToComplete.astro';
-import WireNote from '../components/WireNote.astro';
+import Waterline from '../components/Waterline.astro';
 import { company } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -9,14 +9,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Mentions légales"
   description="Mentions légales du site de DT-Thau : éditeur, organisme de formation, hébergement et propriété intellectuelle."
 >
-  <div class="container section">
-    <article class="prose">
-      <h1>Mentions légales</h1>
+  <Waterline lines={['Mentions légales']} titleId="legal-title" size="m" compact>
+    <p class="lead">Qui édite ce site, qui l’héberge, et à qui appartiennent ses contenus.</p>
+  </Waterline>
 
-      <WireNote>
-        Données de l’entreprise reprises du brief. Les textes juridiques sont à faire valider par
-        le responsable du site, idéalement avec un professionnel du droit.
-      </WireNote>
+  <div class="chapter chapter--paper">
+    <article class="container legal" aria-labelledby="legal-title">
 
       <h2>Éditeur du site</h2>
       <p>
@@ -46,19 +44,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           )
         } auprès du préfet de région Occitanie. Cet enregistrement ne vaut pas agrément de l’État.
       </p>
-      <WireNote>
-        Formulation prévue par le Code du travail (article L6352-12) dès que le numéro est
-        affiché, à confirmer lors de la validation juridique. Le numéro est attribué par la DREETS
-        après la déclaration d’activité.
-      </WireNote>
 
       <h2>Hébergement</h2>
       <p>
         <ToComplete>nom ou raison sociale, adresse et téléphone de l’hébergeur</ToComplete>
       </p>
-      <WireNote>
-        Site hébergé sur un serveur personnel&nbsp;: la personne qui l’héberge doit figurer ici.
-      </WireNote>
 
       <h2>Propriété intellectuelle</h2>
       <p>

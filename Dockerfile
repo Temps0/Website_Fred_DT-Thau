@@ -14,6 +14,8 @@ COPY . .
 # Public domain of the site; Astro trusts only this host behind the reverse proxy.
 ARG SITE_DOMAIN
 RUN test -n "$SITE_DOMAIN" || { echo "Build argument SITE_DOMAIN is required" >&2; exit 1; }
+# "true" lets search engines index the site; anything else keeps it out of their results.
+ARG SITE_INDEXABLE=false
 RUN npm run build
 
 # ---- Runtime dependencies only -------------------------------------------------

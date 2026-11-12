@@ -1,5 +1,6 @@
 ---
 import LinkButton from '../components/LinkButton.astro';
+import Waterline from '../components/Waterline.astro';
 import { contactNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -7,14 +8,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout
   title="Page introuvable"
   description="La page demandée n’existe pas ou a été déplacée."
+  noindex
 >
-  <div class="container section flow flow--m">
-    <h1>Page introuvable</h1>
+  <Waterline lines={['Page introuvable']} titleId="not-found-title" size="m">
     <p class="lead">La page que vous cherchez n’existe pas ou a été déplacée.</p>
     <div class="actions">
       <LinkButton href="/">Retour à l’accueil</LinkButton>
       <LinkButton href="/programmes/" variant="secondary">Voir les programmes</LinkButton>
     </div>
     <p>Une question&nbsp;? <a href={contactNav.href}>Contactez-nous</a>.</p>
-  </div>
+  </Waterline>
 </BaseLayout>

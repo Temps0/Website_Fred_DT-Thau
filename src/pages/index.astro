@@ -1,13 +1,13 @@
 ---
 import AudienceList from '../components/AudienceList.astro';
+import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
 import LearningPath from '../components/LearningPath.astro';
 import LinkButton from '../components/LinkButton.astro';
 import PrincipleList from '../components/PrincipleList.astro';
 import ToComplete from '../components/ToComplete.astro';
-import WireNote from '../components/WireNote.astro';
-import WirePlaceholder from '../components/WirePlaceholder.astro';
-import { area, contactNav, founder, surveyNav } from '../data/site';
+import Waterline from '../components/Waterline.astro';
+import { area, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -15,38 +15,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Formation transition écologique et RSE, Bassin de Thau"
   description="DT-Thau forme les entreprises, les écoles et les collectivités du Bassin de Thau à la transition écologique et à la RSE : formations courtes et concrètes."
 >
-  <section class="section section--dark" aria-labelledby="hero-title">
-    <div class="container hero">
-      <div class="flow flow--m">
-        <h1 id="hero-title" class="with-rule">Accélérer la transition</h1>
-        <p class="lead hero__promise">
-          Formations à la transition écologique et à la RSE pour les entreprises, les écoles et
-          les collectivités du {area}.
-        </p>
-        <div class="actions">
-          <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
-          <LinkButton href="/programmes/" variant="secondary">Découvrir les programmes</LinkButton>
-        </div>
-        <WireNote>
-          Premier écran&nbsp;: ce que propose DT-Thau, pour qui, où, et l’action principale. Titre
-          du catalogue raccourci pour tenir en deux lignes à grande taille (il était «&nbsp;Accélérer
-          la transition écologique sur le Bassin de Thau&nbsp;»)&nbsp;; la phrase dessous dit le
-          reste. À valider.
-        </WireNote>
-      </div>
-      <div class="flow">
-        <WirePlaceholder label="Photo du Bassin de Thau (lagune, tables conchylicoles, côte) – à fournir" />
-        <WireNote proposal>
-          Une photo réelle du territoire, avec peut-être toi devant&nbsp;? Ou du moins, ton
-          activité avec un lien sur le paysage local.
-        </WireNote>
-      </div>
+  <Waterline lines={['Accélérer la', 'transition']} titleId="hero-title" size="xl">
+    <p class="lead">
+      Formations à la transition écologique et à la RSE pour les entreprises, les écoles et
+      les collectivités du {area}.
+    </p>
+    <div class="actions">
+      <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
+      <LinkButton href="/programmes/" variant="secondary">Découvrir les programmes</LinkButton>
     </div>
-  </section>
+  </Waterline>
 
-  <section class="section" aria-labelledby="audience-title">
-    <div class="container flow flow--l">
-      <div class="flow">
+  <section class="chapter chapter--paper" aria-labelledby="audience-title">
+    <div class="container split" data-reveal>
+      <div class="flow flow--m">
         <h2 id="audience-title">Pour qui&nbsp;?</h2>
         <p class="lead">
           Une expertise de la transition écologique et un ancrage local, au service de trois
@@ -54,29 +36,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </p>
       </div>
       <AudienceList />
-      <WireNote>Les trois publics et leurs accroches viennent du catalogue.</WireNote>
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="path-title">
-    <div class="container flow flow--l">
-      <div class="flow">
-        <h2 id="path-title">Du constat à l’action, en trois modules</h2>
-        <p class="lead">
+  <section class="chapter chapter--sage" aria-labelledby="path-title">
+    <div class="container" data-reveal>
+      <LearningPath>
+        <h2 id="path-title" slot="intro">Du constat à l’action</h2>
+        <p class="lead" slot="intro">
           Trois modules de 3&nbsp;heures, au cœur du programme CAP TRANSITION Étudiants&nbsp;:
-          décoder le dérèglement climatique, comprendre la RSE, puis mesurer son empreinte carbone
-          pour agir.
+          décoder le dérèglement climatique, comprendre la RSE, puis mesurer son empreinte
+          carbone pour agir.
         </p>
-      </div>
-      <LearningPath />
-      <p><a href="/programmes/#ecoles">Voir le détail des modules et les tarifs</a></p>
-      <WireNote>Le parcours du catalogue remplace les trois étapes tirées du brief.</WireNote>
+      </LearningPath>
+      <p class="path-more">
+        <a href="/programmes/#ecoles">Voir le détail des modules et les tarifs</a>
+      </p>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="approach-title">
-    <div class="container flow flow--l">
-      <div class="flow">
+  <section class="chapter chapter--lagoon" aria-labelledby="approach-title">
+    <div class="container flow flow--l" data-reveal>
+      <div class="approach-intro">
         <h2 id="approach-title">Notre approche</h2>
         <p class="lead">
           Une approche professionnalisante, ancrée dans les réalités du {area}, sans culpabiliser
@@ -85,14 +66,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
       <PrincipleList />
       <p><a href="/approche/">Découvrir notre approche</a></p>
-      <WireNote>Les quatre principes du catalogue remplacent le texte du brief.</WireNote>
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="founder-title">
-    <div class="container founder">
-      <FounderPortrait />
-      <div class="flow">
+  <section class="chapter chapter--sand" aria-labelledby="founder-title">
+    <div class="container founder" data-reveal>
+      <div class="flow flow--m">
         <h2 id="founder-title">Qui porte le projet</h2>
         <p class="lead">
           <strong>{founder.name}</strong><br />
@@ -102,67 +81,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <ToComplete>une ou deux phrases sur le parcours du fondateur</ToComplete>
         </p>
         <p><a href="/qui-sommes-nous/">Qui sommes-nous&nbsp;?</a></p>
-        <WireNote proposal>
-          Une photo de toi, peut-être un résumé de ton parcours et de tes intérêts (axe-toi
-          principalement sur le côté écologique et humanitaire).
-        </WireNote>
-        <WireNote>
-          Photo provisoire, tirée de l’offre étudiants&nbsp;: trop petite pour être agrandie, une
-          photo en meilleure définition sera nécessaire.
-        </WireNote>
+      </div>
+      <div class="founder__portrait">
+        <FounderPortrait />
       </div>
     </div>
   </section>
 
-  <section class="section section--dark" aria-labelledby="cta-title">
-    <div class="container flow flow--m">
-      <h2 id="cta-title">Vous vous demandez par où commencer&nbsp;?</h2>
-      <p class="lead">
-        Réservez un échange de 30&nbsp;minutes, en visio ou en présentiel, pour parler de votre
-        situation.
-      </p>
-      <div class="actions">
-        <LinkButton href={contactNav.href}>Réserver un échange</LinkButton>
-      </div>
-      <p>
-        Entreprise du {area}&nbsp;? Aidez-nous à mieux connaître vos besoins&nbsp;:
-        <a href={surveyNav.href}>répondre au questionnaire</a>.
-      </p>
-      <WireNote>
-        L’appel à l’action du catalogue, répété en fin de page. Le questionnaire est proposé en
-        action secondaire.
-      </WireNote>
-    </div>
-  </section>
+  <CtaBand
+    href={contactNav.href}
+    word="Parlons"
+    sentence="Réservez un échange de 30 minutes, en visio ou en présentiel, pour parler de votre situation."
+  />
 </BaseLayout>
 
 <style>
-  .hero {
+  /* Heading and lead on the left, the content it introduces on the right. */
+  .split {
     display: grid;
     gap: var(--space-xl);
-    align-items: center;
   }
 
   @media (min-width: 56rem) {
-    .hero {
-      grid-template-columns: 3fr 2fr;
+    .split {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+      align-items: start;
     }
   }
 
-  .hero__promise {
-    color: var(--color-accent-on-dark);
+  .path-more {
+    margin-block-start: var(--space-xl);
+  }
+
+  .approach-intro {
+    display: grid;
+    gap: var(--space-m);
+    margin-block-end: var(--space-xl);
+  }
+
+  @media (min-width: 56rem) {
+    .approach-intro {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: baseline;
+    }
   }
 
   .founder {
     display: grid;
-    gap: var(--space-l);
-    align-items: center;
+    gap: var(--space-xl);
+    align-items: end;
   }
 
+  /* The portrait first, the text beside it: the two stay together on the grid. */
   @media (min-width: 48rem) {
     .founder {
-      grid-template-columns: 16rem 1fr;
-      gap: var(--space-xl);
+      grid-template-columns: auto minmax(0, 40rem);
+      justify-content: start;
+      column-gap: clamp(3rem, 1rem + 6vw, 8rem);
+    }
+
+    .founder__portrait {
+      grid-row: 1;
+      grid-column: 1;
     }
   }
+
 </style>

@@ -3,10 +3,11 @@ import { getEntry } from 'astro:content';
 import ContentText from '../components/ContentText.astro';
 import FormErrorSummary from '../components/FormErrorSummary.astro';
 import FormNotice from '../components/FormNotice.astro';
+import LinkButton from '../components/LinkButton.astro';
 import SpamTrap from '../components/SpamTrap.astro';
 import SurveyQuestion from '../components/SurveyQuestion.astro';
 import TextField from '../components/TextField.astro';
-import WireNote from '../components/WireNote.astro';
+import Waterline from '../components/Waterline.astro';
 import { area, brand } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { handleSurveyPost, type SurveyValues } from '../lib/server/survey-response';
@@ -67,31 +68,50 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
   title={`${titlePrefix}Questionnaire : vos besoins en transition écologique`}
   description="Entreprise du Bassin de Thau ? Répondez à notre questionnaire sur vos besoins de formation à la transition écologique et à la RSE, sans indiquer votre nom ni celui de votre entreprise."
 >
-  <div class="container container--narrow section flow flow--l">
-    <header class="flow flow--m">
-      <h1>{frenchSpacing(title)}</h1>
+  {/* A shorter first screen: the questions, the point of the page, start close to the top. */}
+  <Waterline lines={[title]} titleId="survey-title" size="m" compact>
+    {
+      isSent ? (
+        <p class="lead">Vos réponses ont bien été enregistrées.</p>
+      ) : (
+        <>
+          <p class="lead">{frenchSpacing(intro)}</p>
+          <p>
+            Durée&nbsp;: <ContentText value={duration} />. Le questionnaire ne demande ni votre
+            nom ni celui de votre entreprise.
+          </p>
+          {outcome === undefined && (
+            <div class="actions">
+              <LinkButton href="#survey-section-0">Commencer le questionnaire</LinkButton>
+            </div>
+          )}
+        </>
+      )
+    }
+  </Waterline>
+
+  <div class="chapter chapter--paper">
+    <div class="container survey-layout">
       {
         !isSent && (
-          <>
-            <p class="lead">{frenchSpacing(intro)}</p>
-            <p>
-              Durée&nbsp;: <ContentText value={duration} />
-            </p>
-            <p>
-              Le questionnaire ne demande ni votre nom ni celui de votre entreprise. Les
-              questions marquées «&nbsp;obligatoire&nbsp;» doivent être remplies.
-            </p>
-            <WireNote>
-              Questions d’exemple, à remplacer par celles du fondateur. Elles sont définies dans
-              <code>src/content/surveys.json</code>&nbsp;: les modifier ne demande aucun
-              développement. Titre raccourci pour tenir en deux lignes (il était «&nbsp;Transition
-              écologique&nbsp;: quels besoins pour les entreprises du Bassin de Thau&nbsp;?&nbsp;»),
-              à valider.
-            </WireNote>
-          </>
+          <nav class="survey-index" aria-label="Parties du questionnaire">
+            <p class="survey-index__title">En {sections.length + 1}&nbsp;parties</p>
+            {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+            <ol class="survey-index__list" role="list">
+              {sections.map((section, sectionIndex) => (
+                <li>
+                  <a href={`#survey-section-${sectionIndex}`}>{frenchSpacing(section.title)}</a>
+                </li>
+              ))}
+              <li>
+                <a href="#survey-contact-title">Être recontacté (facultatif)</a>
+              </li>
+            </ol>
+            <p>Les questions marquées «&nbsp;obligatoire&nbsp;» doivent être remplies.</p>
+          </nav>
         )
       }
-    </header>
+      <div class="survey-main flow flow--l">
 
     {
       isSent ? (
@@ -131,7 +151,7 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
 
           <form class="survey flow flow--l" method="post" action="/questionnaire/">
             {sections.map((section, sectionIndex) => (
-              <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`}>
+              <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`} data-reveal>
                 <h2 id={`survey-section-${sectionIndex}`} class="survey__section-title">
                   {frenchSpacing(section.title)}
                 </h2>
@@ -185,10 +205,6 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
                   de mes réponses. Je peux retirer mon accord à tout moment.
                 </label>
               </div>
-              <WireNote>
-                Consentement explicite, case non cochée par défaut (RGPD)&nbsp;: l’adresse n’est
-                enregistrée que si la case est cochée.
-              </WireNote>
             </section>
 
             <SpamTrap
@@ -208,19 +224,73 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
         </>
       )
     }
+      </div>
+    </div>
   </div>
 </BaseLayout>
 
 <style>
+  /* The index of parts on the left (sticky on wide screens), the form on the right. */
+  .survey-layout {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 56rem) {
+    .survey-layout {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      align-items: start;
+      column-gap: var(--space-2xl);
+    }
+
+    .survey-index {
+      position: sticky;
+      top: var(--space-l);
+    }
+
+    .survey-index + .survey-main {
+      grid-column: 2;
+    }
+  }
+
+  .survey-index {
+    display: grid;
+    gap: var(--space-m);
+    padding: var(--space-l);
+    background-color: var(--sage);
+  }
+
+  .survey-index__title {
+    color: var(--color-heading);
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-display);
+  }
+
+  .survey-index__list {
+    display: grid;
+    gap: var(--space-2xs);
+    padding: 0;
+    list-style: none;
+  }
+
+  .survey-index__list a {
+    display: inline-block;
+    padding-block: var(--space-3xs);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* Each part on its own sand panel: a tone step instead of a dividing line. */
   .survey__section {
     display: grid;
     gap: var(--space-m);
-    padding-block-start: var(--space-l);
-    border-block-start: var(--border-width) solid var(--color-border-subtle);
+    padding: clamp(1.5rem, 1rem + 2vw, 3rem);
+    background-color: var(--cream-strong);
   }
 
   .survey__section-title {
-    font-size: var(--step-2);
+    font-size: var(--step-3);
   }
 
   .consent {

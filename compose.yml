@@ -10,6 +10,7 @@ services:
       context: .
       args:
         SITE_DOMAIN: ${SITE_DOMAIN:?Set SITE_DOMAIN in .env}
+        SITE_INDEXABLE: ${SITE_INDEXABLE:-false}
     image: dt-thau-web
     container_name: dt-thau-web
     restart: unless-stopped

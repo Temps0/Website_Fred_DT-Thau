@@ -1,8 +1,12 @@
 ---
+/**
+ * One module of the programme as a full-width sheet, one tone step lighter than the sage
+ * chapter it sits on: the module named on the left, its objective and topics in the
+ * middle, the skill acquired and the Qualiopi details on the right.
+ */
 import type { CollectionEntry } from 'astro:content';
 import { frenchSpacing } from '../lib/text';
 import ContentText from './ContentText.astro';
-import Icon from './Icon.astro';
 
 interface Props {
   module: CollectionEntry<'modules'>;
@@ -26,7 +30,6 @@ const details = [
 
 <article class="module" id={module.id} aria-labelledby={titleId}>
   <header class="module__header">
-    <Icon name={data.icon} size="l" />
     <Heading id={titleId} class="module__title">{frenchSpacing(data.title)}</Heading>
     <p class="module__tagline">{frenchSpacing(data.tagline)}</p>
     <p class="module__theme">
@@ -34,69 +37,88 @@ const details = [
     </p>
   </header>
 
-  <div class="module__block">
-    <p class="module__label">Objectif</p>
-    <p>{frenchSpacing(data.objective)}</p>
+  <div class="module__body">
+    <div class="module__block">
+      <p class="module__label">Objectif</p>
+      <p>{frenchSpacing(data.objective)}</p>
+    </div>
+    <div class="module__block">
+      <p class="module__label">Au programme</p>
+      <ul class="module__topics">
+        {data.topics.map((topic) => <li>{frenchSpacing(topic)}</li>)}
+      </ul>
+    </div>
   </div>
 
-  <div class="module__block">
-    <p class="module__label">Au programme</p>
-    <ul class="module__topics">
-      {data.topics.map((topic) => <li>{frenchSpacing(topic)}</li>)}
-    </ul>
-  </div>
-
-  {
-    details.length > 0 && (
-      <details class="module__details">
-        <summary>Prérequis, méthodes et évaluation</summary>
-        <dl>
-          {details.map((item) => (
-            <div>
-              <dt>{item.term}</dt>
-              <dd>
-                <ContentText value={item.value} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </details>
-    )
-  }
-
-  <div class="module__skill">
-    <p class="module__label">Compétence acquise</p>
-    <p>{frenchSpacing(data.skill)}</p>
+  <div class="module__aside">
+    <div class="module__skill">
+      <p class="module__label">Compétence acquise</p>
+      <p>{frenchSpacing(data.skill)}</p>
+    </div>
+    {
+      details.length > 0 && (
+        <details class="module__details">
+          <summary>Prérequis, méthodes et évaluation</summary>
+          <dl>
+            {details.map((item) => (
+              <div>
+                <dt>{item.term}</dt>
+                <dd>
+                  <ContentText value={item.value} />
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </details>
+      )
+    }
   </div>
 </article>
 
 <style>
   .module {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-m);
-    padding: var(--space-m);
-    border: var(--border-width) solid var(--color-accent);
-    border-radius: var(--radius-m);
-    background-color: var(--color-surface);
+    display: grid;
+    gap: var(--space-l);
+    padding: clamp(1.5rem, 1rem + 2vw, 3rem);
+    background-color: var(--cream);
+  }
+
+  @media (min-width: 64rem) {
+    .module {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 4fr);
+      column-gap: var(--space-xl);
+    }
   }
 
   .module__header {
     display: grid;
+    align-content: start;
     gap: var(--space-2xs);
+  }
+
+  /* One step under the section titles (h2) of the page. */
+  .module__title {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .module__tagline {
+    color: var(--color-accent-text);
+    font-size: var(--step-1);
   }
 
   .module__theme {
     color: var(--color-text-muted);
   }
 
-  .module__title {
-    font-size: var(--step-2);
-  }
-
-  .module__tagline {
-    color: var(--color-accent-text);
-    font-style: italic;
+  .module__body,
+  .module__aside {
+    display: grid;
+    align-content: start;
+    gap: var(--space-m);
   }
 
   .module__label {
@@ -104,7 +126,8 @@ const details = [
     font-weight: var(--weight-bold);
   }
 
-  .module__block > * + * {
+  .module__block > * + *,
+  .module__skill > * + * {
     margin-block-start: var(--space-3xs);
   }
 
@@ -116,8 +139,16 @@ const details = [
     color: var(--color-accent);
   }
 
+  /* The charter's sage box for acquired skills. */
+  .module__skill {
+    padding: var(--space-m);
+    background-color: var(--sage);
+  }
+
   .module__details summary {
-    padding-block: var(--space-2xs);
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
     color: var(--color-heading);
     font-weight: var(--weight-semibold);
     cursor: pointer;
@@ -135,17 +166,5 @@ const details = [
 
   .module__details dd {
     margin: 0;
-  }
-
-  /* The charter's sage box for acquired skills, pushed to the bottom of the card. */
-  .module__skill {
-    margin-block-start: auto;
-    padding: var(--space-s);
-    border-radius: var(--radius-s);
-    background-color: var(--color-highlight);
-  }
-
-  .module__skill > * + * {
-    margin-block-start: var(--space-3xs);
   }
 </style>

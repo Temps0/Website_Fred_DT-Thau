@@ -1,11 +1,10 @@
 ---
 /**
- * The three audiences, as in the catalogue: a gold pictogram, a name and a sentence each,
- * separated by fine gold rules rather than boxed cards.
+ * The three audiences of the catalogue, as rows of a list: the audience named large, its
+ * sentence and a link to its programme. Space separates the rows; no lines, no cards.
  */
 import { audiences } from '../data/audiences';
 import { frenchSpacing } from '../lib/text';
-import Icon from './Icon.astro';
 
 interface Props {
   /** Heading level of the audience names, to fit the page outline. */
@@ -16,15 +15,15 @@ const { as: Heading = 'h3' } = Astro.props;
 ---
 
 {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-<ul class="audiences" role="list">
+<ul class="audiences" role="list" data-reveal>
   {
     audiences.map((audience) => (
       <li class="audience">
-        <Icon name={audience.icon} size="xl" />
         <Heading class="audience__name">{audience.name}</Heading>
-        <p>{frenchSpacing(audience.summary)}</p>
+        <p class="audience__summary">{frenchSpacing(audience.summary)}</p>
         <a class="audience__link" href={`/programmes/#${audience.id}`}>
           Voir le programme<span class="visually-hidden">&nbsp;: {audience.name}</span>
+          <span aria-hidden="true">&nbsp;→</span>
         </a>
       </li>
     ))
@@ -34,43 +33,42 @@ const { as: Heading = 'h3' } = Astro.props;
 <style>
   .audiences {
     display: grid;
+    gap: var(--space-2xl);
     padding: 0;
     list-style: none;
-  }
-
-  @media (min-width: 56rem) {
-    .audiences {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
   }
 
   .audience {
     display: grid;
     gap: var(--space-xs);
-    align-content: start;
-    justify-items: center;
-    padding: var(--space-l) var(--space-m);
-    text-align: center;
-  }
-
-  /* Fine gold rules between audiences: horizontal when stacked, vertical side by side. */
-  .audience + .audience {
-    border-block-start: var(--border-width) solid var(--color-accent);
   }
 
   @media (min-width: 56rem) {
-    .audience + .audience {
-      border-block-start: 0;
-      border-inline-start: var(--border-width) solid var(--color-accent);
+    .audience {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr);
+      align-items: baseline;
+      gap: var(--space-l);
     }
   }
 
   .audience__name {
-    font-size: var(--step-2);
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
   }
 
   .audience__link {
-    margin-block-start: var(--space-2xs);
     font-weight: var(--weight-semibold);
+  }
+
+  .audience__link span[aria-hidden] {
+    display: inline-block;
+    transition: transform 160ms ease-out;
+  }
+
+  .audience__link:hover span[aria-hidden] {
+    transform: translateX(4px);
   }
 </style>

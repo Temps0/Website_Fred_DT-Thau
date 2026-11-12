@@ -1,20 +1,31 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import { SITE_INDEXABLE } from 'astro:env/server';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { brand } from '../data/site';
+import { organizationJsonLd } from '../lib/structured-data';
 import { frenchSpacing } from '../lib/text';
 
 interface Props {
   /** Page title, without the site name (omit on the home page). */
   title?: string;
   description: string;
+  /** Keep this page out of search results even when the site is indexable (404, errors). */
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 const fullTitle = frenchSpacing(title ? `${title} | ${brand.name}` : brand.name);
-const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const metaDescription = frenchSpacing(description);
+// No canonical URL on pages never meant for search results (the 404 is served at any URL).
+const canonicalUrl =
+  Astro.site && !noindex ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const isIndexable = SITE_INDEXABLE && !noindex;
+const isHome = Astro.url.pathname === '/';
+// Share image: a 1200 × 630 waterline with the name (public/og/). Absolute URL required.
+const shareImage = Astro.site ? new URL('/og/dt-thau.png', Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -23,9 +34,39 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href :
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
-    <meta name="description" content={frenchSpacing(description)} />
+    <meta name="description" content={metaDescription} />
+    {!isIndexable && <meta name="robots" content="noindex, nofollow" />}
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={brand.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={metaDescription} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {
+      shareImage && (
+        <>
+          <meta property="og:image" content={shareImage} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content={`${brand.name} : formations à la transition écologique et à la RSE, Bassin de Thau`} />
+          <meta name="twitter:card" content="summary_large_image" />
+        </>
+      )
+    }
+    {
+      isHome && Astro.site && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(organizationJsonLd(Astro.site))}
+        />
+      )
+    }
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#143d35" />
     <link
       rel="preload"
       href="/fonts/fraunces/fraunces-500-soft-latin.woff2"
@@ -37,19 +78,6 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href :
   <body>
     <a class="skip-link" href="#main">Aller au contenu</a>
 
-    <aside class="wire-banner" aria-label="Maquette">
-      <div class="container wire-banner__inner">
-        <p>
-          <strong>Maquette</strong>&nbsp;: charte graphique appliquée. Les textes viennent du brief
-          et des documents de {brand.name}, ou restent à compléter.
-        </p>
-        <label class="wire-banner__toggle">
-          <input type="checkbox" id="wire-notes-toggle" checked />
-          Afficher les notes
-        </label>
-      </div>
-    </aside>
-
     <SiteHeader />
 
     <main id="main">
@@ -57,41 +85,10 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href :
     </main>
 
     <SiteFooter />
+
+    <script>
+      import '../scripts/reveal';
+    </script>
   </body>
 </html>
 
-<style>
-  .wire-banner {
-    background-color: var(--color-note-text);
-    color: #ffffff;
-    font-size: var(--step--1);
-  }
-
-  .wire-banner__inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3xs) var(--space-m);
-    padding-block: var(--space-2xs);
-  }
-
-  .wire-banner__toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2xs);
-    min-height: 2.75rem;
-    font-weight: var(--weight-semibold);
-    cursor: pointer;
-  }
-
-  .wire-banner__toggle input {
-    width: 1.25rem;
-    height: 1.25rem;
-    accent-color: #ffffff;
-  }
-
-  .wire-banner :focus-visible {
-    outline-color: #ffffff;
-  }
-</style>

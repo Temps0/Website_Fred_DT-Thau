@@ -194,19 +194,55 @@ a:hover {
 .section {
   padding-block: var(--space-section);
 }
-.section--alt {
-  background-color: var(--color-surface-strong);
-}
 
-/* Deep green band, as the charter's covers and conclusion pages. */
+/*
+ * Colour chapters: every section is a full-width field of one charter colour, butted
+ * against the next. The hard edge between two fields does the work of lines, cards and
+ * shadows. Each field sets the inks that read on it, so components only use the semantic
+ * tokens; neighbouring chapters should differ clearly in lightness.
+ */
+.chapter {
+  --button-secondary-bg: var(--sage);
+  padding-block: var(--space-chapter);
+  background-color: var(--field, var(--color-bg));
+  color: var(--color-text);
+}
+.chapter--paper {
+  --field: var(--cream);
+}
+.chapter--sand {
+  --field: var(--cream-strong);
+}
+.chapter--sage {
+  --field: var(--sage);
+  --button-secondary-bg: var(--cream);
+  /* Gold text is too light on sage (3.8:1). */
+  --color-accent-text: var(--green-forest);
+}
+/* Deep green, as the charter's covers and conclusion pages. */
+.chapter--lagoon,
 .section--dark {
+  --field: var(--green-deep);
+  --button-secondary-bg: var(--green-deep-raised);
   --color-focus: var(--color-accent-on-dark);
   --color-link: var(--color-on-dark);
   --color-heading: var(--color-on-dark);
+  --color-text: var(--color-on-dark);
   --color-text-muted: var(--color-on-dark-muted);
   --color-accent-text: var(--color-accent-on-dark);
-  background-color: var(--color-dark);
+  background-color: var(--field);
   color: var(--color-on-dark);
+}
+/* Matt gold field: only anthracite reads on it at text size (4.7:1). */
+.chapter--gold {
+  --field: var(--gold);
+  --button-secondary-bg: var(--cream);
+  --color-focus: var(--anthracite);
+  --color-link: var(--anthracite);
+  --color-heading: var(--anthracite);
+  --color-text: var(--anthracite);
+  --color-text-muted: var(--anthracite);
+  --color-accent-text: var(--anthracite);
 }
 
 /* Vertical rhythm between siblings; modifiers pick a step of the spacing scale. */
@@ -223,46 +259,33 @@ a:hover {
   --flow-space: var(--space-l);
 }
 
-.prose {
-  max-width: var(--measure);
-}
-.prose > * + * {
-  margin-block-start: 1em;
-}
-.prose > :is(h2, h3) {
-  margin-block-start: 1.6em;
-}
-
 .lead {
   font-size: var(--step-1);
   max-width: var(--measure);
 }
 
-/* Signature of the charter: a fine matt gold rule under a title. */
-.with-rule::after {
-  content: "";
-  display: block;
-  width: 4rem;
-  height: 2px;
-  margin-block-start: var(--space-s);
-  background-color: var(--color-accent);
-}
-
 /* ---- Buttons -------------------------------------------------------------- */
-/* Calls to action in deep green framed by a gold rule: matt gold itself is too light to
-   carry button text (3.3:1 with white). */
+/* Flat, square blocks of one fill. Primary: deep green, or cream on the deep green
+   fields. Secondary: one tone step from the field it sits on. */
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem;
-  padding: var(--space-2xs) var(--space-m);
-  border: var(--border-width) solid var(--color-accent);
-  border-radius: var(--radius-s);
+  gap: var(--space-2xs);
+  min-height: 3rem;
+  padding: var(--space-xs) var(--space-m);
+  border: 0;
+  border-radius: 0;
   font-weight: var(--weight-semibold);
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
+  transition:
+    background-color 160ms ease-out,
+    transform 120ms ease-out;
+}
+.button:active {
+  transform: translateY(1px);
 }
 .button--primary {
   background-color: var(--color-primary);
@@ -272,25 +295,26 @@ a:hover {
   background-color: var(--color-primary-hover);
 }
 .button--secondary {
-  background-color: transparent;
+  background-color: var(--button-secondary-bg, var(--sage));
   color: var(--color-heading);
 }
 .button--secondary:hover {
-  background-color: var(--color-surface-strong);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
 }
-.section--dark .button--primary {
+:is(.chapter--lagoon, .section--dark) .button--primary {
   background-color: var(--color-on-dark);
   color: var(--color-primary);
 }
-.section--dark .button--primary:hover {
+:is(.chapter--lagoon, .section--dark) .button--primary:hover {
   background-color: var(--color-highlight);
 }
-.section--dark .button--secondary:hover {
-  background-color: var(--color-primary-hover);
+:is(.chapter--lagoon, .section--dark) .button--secondary:hover {
+  background-color: var(--green-deep-lit);
+  color: var(--color-on-dark);
 }
 .button:disabled {
   cursor: not-allowed;
-  border-style: dashed;
   background-color: var(--color-surface-strong);
   color: var(--color-text);
 }
@@ -303,6 +327,33 @@ a:hover {
 }
 
 /* ---- Motion --------------------------------------------------------------- */
+/* Section entrance (src/scripts/reveal.ts): the children rise in turn, 60ms apart. */
+[data-reveal] > * {
+  transition:
+    opacity 400ms ease-out,
+    transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal] > :nth-child(2) {
+  transition-delay: 60ms;
+}
+[data-reveal] > :nth-child(3) {
+  transition-delay: 120ms;
+}
+[data-reveal] > :nth-child(n + 4) {
+  transition-delay: 180ms;
+}
+[data-reveal].is-pending > * {
+  opacity: 0;
+  transform: translateY(16px);
+}
+/* A printed page shows every block, scrolled to or not. */
+@media print {
+  [data-reveal].is-pending > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* biome-ignore-start lint/complexity/noImportantStyles: the user motion preference must win */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -315,6 +366,35 @@ a:hover {
   }
 }
 /* biome-ignore-end lint/complexity/noImportantStyles: the user motion preference must win */
+
+/* ---- Legal pages ----------------------------------------------------------- */
+/* Each heading hangs in the left column, its text runs on the right. */
+.legal {
+  display: grid;
+  gap: var(--space-s) var(--space-2xl);
+}
+.legal > h2 {
+  font-size: var(--step-2);
+}
+/* The space before a section goes on its heading and on the text beside it alike. */
+.legal > h2:not(:first-child),
+.legal > h2:not(:first-child) + * {
+  margin-block-start: var(--space-xl);
+}
+.legal > :not(h2) {
+  max-width: var(--measure);
+}
+@media (min-width: 56rem) {
+  .legal {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  }
+  .legal > * {
+    grid-column: 2;
+  }
+  .legal > h2 {
+    grid-column: 1;
+  }
+}
 
 ::selection {
   background: var(--color-primary);

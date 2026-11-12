@@ -27,13 +27,13 @@ npm ci
 | `npm run lint`    | lint et contrôle du formatage (Biome)                 |
 | `npm run format`  | formate le code (Biome)                               |
 
-## État actuel : maquette
+## État actuel : ébauche avant mise en ligne
 
-La charte graphique est appliquée ; les textes viennent du brief et des documents de
-DT-Thau (catalogue, offre CAP TRANSITION Étudiants) et restent à faire valider. Le bandeau
-bleu en haut de page et les notes (« Note », « Proposition ») expliquent les choix et les
-points à valider ; ils seront retirés avant la mise en ligne. Les formulaires fonctionnent
-et enregistrent les envois (voir plus bas).
+Le site est complet dans sa forme : charte graphique, pages, formulaires (voir plus bas).
+Les textes viennent du brief et des documents de DT-Thau (catalogue, offre CAP TRANSITION
+Étudiants). Les informations encore manquantes s’affichent en jaune, `[À COMPLÉTER : …]`,
+et [A-VALIDER.md](A-VALIDER.md) liste tout ce que DT-Thau doit fournir ou valider avant la
+mise en ligne publique.
 
 ## Modifier le contenu
 
@@ -110,6 +110,20 @@ domaine pour l’hôte, le protocole et l’adresse IP transmis :
 ```bash
 SITE_DOMAIN=dt-thau.fr npm run build
 ```
+
+Par défaut, le site n’est pas indexé par les moteurs de recherche : chaque page porte une
+balise `noindex` et `robots.txt` n’annonce pas le plan du site. C’est voulu tant que des
+mentions obligatoires restent `[À COMPLÉTER]` et sur un serveur de préproduction. Pour la
+mise en ligne publique, construire avec `SITE_INDEXABLE=true` (variable du même nom dans
+`.env` avec Docker) :
+
+```bash
+SITE_DOMAIN=dt-thau.fr SITE_INDEXABLE=true npm run build
+```
+
+Le build produit aussi `sitemap.xml` (liste des pages dans `src/lib/site-pages.ts`), les
+balises de partage Open Graph et, sur l’accueil, la description de l’organisme pour les
+moteurs de recherche (JSON-LD, tirée de `src/data/site.ts`).
 
 ## Formulaires et données
 

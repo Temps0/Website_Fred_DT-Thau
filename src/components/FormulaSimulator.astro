@@ -1,0 +1,253 @@
+---
+/**
+ * The three CAP TRANSITION Étudiants formulas, and what one costs for a given number of
+ * students: choose a formula, enter the size of the group, read the price, the number of
+ * sessions (30 students at most each) and the cost per student.
+ *
+ * Without JavaScript the three formulas stay readable as a list of options with their
+ * price; only the group size and the computed result, which need the script, are hidden.
+ */
+import { studentProgramme } from '../data/cap-transition-etudiants';
+import { formatPrice, quote } from '../lib/price';
+
+const { offers, sessionSize } = studentProgramme;
+// The first formula is chosen by default: the result starts from the smallest commitment.
+const defaultOffer = 0;
+const defaultStudents = sessionSize;
+const initial = quote(offers[defaultOffer].amount, defaultStudents, sessionSize);
+---
+
+<div class="simulator" data-simulator data-session-size={sessionSize}>
+  <fieldset class="simulator__offers">
+    <legend class="simulator__legend">Choisissez une formule</legend>
+    {
+      offers.map((offer, index) => (
+        <label class="offer">
+          <input
+            type="radio"
+            name="formula"
+            value={offer.amount}
+            data-duration={offer.duration}
+            checked={index === defaultOffer}
+          />
+          <span class="offer__name">{offer.name}</span>
+          <span class="offer__content">
+            {offer.content}, {offer.duration}
+          </span>
+          <span class="offer__price">{formatPrice(offer.amount)}</span>
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <div class="simulator__group" data-needs-script>
+    <label class="simulator__label" for="simulator-students">Nombre d’étudiants</label>
+    <input
+      class="simulator__students"
+      id="simulator-students"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      max="600"
+      step="1"
+      value={defaultStudents}
+      aria-describedby="simulator-students-hint"
+    />
+    <p id="simulator-students-hint" class="simulator__hint">
+      De 1 à 600&nbsp;étudiants. {sessionSize}&nbsp;au plus par session&nbsp;: au-delà, une session
+      de plus.
+    </p>
+  </div>
+
+  <output class="simulator__result" for="simulator-students" aria-live="polite" data-needs-script>
+    <span class="simulator__total" data-total>{formatPrice(initial.total)}</span>
+    <span data-detail>
+      {initial.sessions}&nbsp;session · {formatPrice(initial.perStudent)} par étudiant
+    </span>
+    <span class="simulator__note">
+      Estimation indicative&nbsp;: le devis confirme le nombre de sessions et le tarif.
+    </span>
+  </output>
+</div>
+
+<script>
+  import { formatPrice, quote } from '../lib/price';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-simulator]')) {
+    const sessionSize = Number(root.dataset.sessionSize);
+    const students = root.querySelector<HTMLInputElement>('#simulator-students');
+    const total = root.querySelector<HTMLElement>('[data-total]');
+    const detail = root.querySelector<HTMLElement>('[data-detail]');
+    if (!students || !total || !detail) continue;
+
+    const update = () => {
+      const formula = root.querySelector<HTMLInputElement>('input[name="formula"]:checked');
+      const count = Math.min(600, Math.max(1, Math.round(Number(students.value) || 1)));
+      if (!formula) return;
+      const result = quote(Number(formula.value), count, sessionSize);
+      const sessions = `${result.sessions} session${result.sessions > 1 ? 's' : ''}`;
+      total.textContent = formatPrice(result.total);
+      detail.textContent = `${sessions} · ${formatPrice(result.perStudent)} par étudiant`;
+    };
+
+    root.addEventListener('input', update);
+    root.addEventListener('change', update);
+    // Once the visitor leaves the field, show the number the result was computed for.
+    students.addEventListener('change', () => {
+      students.value = String(Math.min(600, Math.max(1, Math.round(Number(students.value) || 1))));
+      update();
+    });
+    update();
+  }
+</script>
+
+<style>
+  .simulator {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 64rem) {
+    .simulator {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-areas:
+        "offers result"
+        "group result";
+      column-gap: var(--space-2xl);
+      align-items: start;
+    }
+
+    .simulator__offers {
+      grid-area: offers;
+    }
+
+    .simulator__group {
+      grid-area: group;
+    }
+
+    .simulator__result {
+      grid-area: result;
+      position: sticky;
+      top: var(--space-l);
+    }
+  }
+
+  .simulator__offers {
+    display: grid;
+    gap: var(--space-2xs);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .simulator__legend,
+  .simulator__label {
+    margin-block-end: var(--space-s);
+    padding: 0;
+    color: var(--color-heading);
+    font-size: var(--step-1);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* Each formula is a whole selectable row, one tone step from the deep green. */
+  .offer {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-2xs) var(--space-m);
+    padding: var(--space-m);
+    background-color: var(--green-deep-raised);
+    cursor: pointer;
+    transition: background-color 160ms ease-out;
+  }
+
+  .offer:hover {
+    background-color: var(--green-deep-lit);
+  }
+
+  .offer:has(input:checked) {
+    background-color: var(--cream);
+    color: var(--green-forest);
+  }
+
+  .offer:has(input:focus-visible) {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .offer input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    accent-color: var(--green-deep);
+  }
+
+  .offer__name {
+    font-size: var(--step-1);
+    font-weight: var(--weight-bold);
+  }
+
+  .offer__content {
+    grid-column: 2;
+  }
+
+  .offer__price {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: var(--weight-medium);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .simulator__group {
+    display: grid;
+    justify-items: start;
+  }
+
+  .simulator__students {
+    width: 9rem;
+    min-height: 3rem;
+    padding: var(--space-2xs) var(--space-s);
+    border: 2px solid var(--cream);
+    border-radius: var(--radius-s);
+    background-color: var(--green-deep);
+    color: var(--cream);
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .simulator__hint {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text-muted);
+  }
+
+  .simulator__result {
+    display: grid;
+    gap: var(--space-s);
+    padding: var(--space-l);
+    background-color: var(--gold);
+    color: var(--anthracite);
+  }
+
+  .simulator__note {
+    font-size: var(--step--1);
+  }
+
+  .simulator__total {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 1.5rem + 5vw, 6.5rem);
+    font-weight: var(--weight-medium);
+    line-height: 0.95;
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The group size and the result need the script; the formulas above do not. */
+  @media (scripting: none) {
+    [data-needs-script] {
+      display: none;
+    }
+  }
+</style>

@@ -72,8 +72,8 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
   .site-header {
     position: relative;
     z-index: var(--z-header);
-    border-block-end: var(--border-width) solid var(--color-border-subtle);
-    background-color: var(--color-bg);
+    /* Takes the colour of the sky of the first screen, with no line between them. */
+    background-color: var(--cream);
   }
 
   .site-header__inner {
@@ -119,9 +119,8 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
     display: none;
     min-height: 2.75rem;
     padding-inline: var(--space-s);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--radius-s);
-    background-color: var(--color-bg);
+    border: 0;
+    background-color: var(--sage);
     font-weight: var(--weight-semibold);
   }
 
@@ -183,8 +182,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
       flex-direction: column;
       gap: 0;
       padding: var(--space-2xs) var(--gutter) var(--space-s);
-      border-block-end: var(--border-width) solid var(--color-border-subtle);
-      background-color: var(--color-bg);
+      background-color: var(--cream-strong);
     }
 
     .site-nav[data-open] .site-nav__list a {

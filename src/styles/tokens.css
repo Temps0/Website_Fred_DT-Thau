@@ -58,17 +58,20 @@
   --space-xl: 3rem;
   --space-2xl: 4rem;
   --space-section: clamp(3rem, 1.8rem + 5.3vw, 6rem);
+  /* Inside a colour chapter, above and below its content. */
+  --space-chapter: clamp(4.5rem, 2.5rem + 8vw, 10rem);
 
   /* ---- Layout ------------------------------------------------------------ */
-  --container-max: 75rem;
+  /* One pair of tight page margins at every width; text blocks keep their own measure. */
+  --container-max: 90rem;
   --container-narrow: 45rem;
   --gutter: clamp(1rem, 0.6rem + 1.8vw, 2rem);
   --measure: 65ch;
   --header-height: 4.5rem;
 
-  /* ---- Shape: slightly rounded blocks, fine gold rules rather than shadows ---- */
-  --radius-s: 4px;
-  --radius-m: 8px;
+  /* ---- Shape: square blocks and buttons; tone steps rather than lines or shadows ---- */
+  --radius-s: 2px; /* form fields only */
+  --radius-m: 0;
   --border-width: 1px;
 
   /* ---- Layers ------------------------------------------------------------ */
@@ -89,6 +92,9 @@
   --grey-green-500: #7d8579; /* form control borders (3.6:1) */
   --grey-green-200: #dcdcd2; /* decorative dividers */
   --white: #ffffff;
+  /* Tone steps of the deep green, for the lagoon drawings and the footer tiles. */
+  --green-deep-raised: #1d4c42;
+  --green-deep-lit: #2a5d51;
 
   /* ---- Colour: semantic (what components use) ----------------------------- */
   --color-bg: var(--cream);
@@ -116,10 +122,7 @@
   --color-on-dark-muted: #c5d0c3;
   --color-accent-on-dark: var(--gold-light);
 
-  /* ---- Colour: wireframe annotations (removed before launch) -------------- */
-  --color-note-bg: #e8f0fb;
-  --color-note-text: #18304f;
-  --color-note-border: #5a7ba6;
+  /* ---- Colour: "[À COMPLÉTER]" markers, until every value is provided ---------- */
   --color-todo-bg: #fff0a6;
   --color-todo-text: var(--anthracite);
 }

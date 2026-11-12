@@ -1,0 +1,97 @@
+---
+/**
+ * Closing call to action of a page: a matt gold band that is one link. One verb, set
+ * across the whole width, says the action; the sentence above says what happens next.
+ * On hover or focus the band turns deep green.
+ */
+import { frenchSpacing } from '../lib/text';
+
+interface Props {
+  href: string;
+  /** The action, a verb of about seven letters, set across the whole width ("Parlons"). */
+  word: string;
+  /** What happens next, one sentence. */
+  sentence: string;
+  /** id of the heading, unique on the page. */
+  titleId?: string;
+}
+
+const { href, word, sentence, titleId = 'cta-title' } = Astro.props;
+---
+
+<section class="cta-band" aria-labelledby={titleId}>
+  <a class="cta-band__link" href={href}>
+    <span class="cta-band__top">
+      <span class="cta-band__sentence">{frenchSpacing(sentence)}</span>
+      <svg class="cta-band__arrow" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <path d="M14 34 L34 14 M18 14 H34 V30" />
+      </svg>
+    </span>
+    <h2 id={titleId} class="cta-band__word">{word}</h2>
+  </a>
+</section>
+
+<style>
+  .cta-band__link {
+    display: grid;
+    align-content: space-between;
+    gap: var(--space-xl);
+    min-height: max(22rem, 56svh);
+    padding: var(--space-l) var(--gutter) var(--space-s);
+    background-color: var(--gold);
+    color: var(--anthracite);
+    text-decoration: none;
+    transition:
+      background-color 180ms ease-out,
+      color 180ms ease-out;
+  }
+
+  .cta-band__link:hover,
+  .cta-band__link:focus-visible {
+    background-color: var(--green-deep);
+    color: var(--cream);
+  }
+
+  /* On the deep green of the focus state, a cream ring. */
+  .cta-band__link:focus-visible {
+    outline: 3px solid var(--cream);
+    outline-offset: -6px;
+  }
+
+  /* The arrow follows the sentence: the word below spans the band. */
+  .cta-band__top {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-m);
+  }
+
+  .cta-band__sentence {
+    max-width: 28rem;
+    font-size: var(--step-1);
+    font-weight: var(--weight-semibold);
+  }
+
+  .cta-band__arrow {
+    flex: none;
+    width: clamp(2rem, 1.4rem + 2vw, 3rem);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    transition: transform 180ms ease-out;
+  }
+
+  .cta-band__link:hover .cta-band__arrow {
+    transform: translate(4px, -4px);
+  }
+
+  .cta-band__word {
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-display);
+    /* Sized so that a word of seven letters ("Parlons") spans the content width. */
+    font-size: calc((100vw - 2 * var(--gutter)) / 3.45);
+    font-weight: var(--weight-medium);
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+  }
+</style>

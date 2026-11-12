@@ -1,8 +1,8 @@
 ---
+import CtaBand from '../components/CtaBand.astro';
 import LinkButton from '../components/LinkButton.astro';
 import PrincipleList from '../components/PrincipleList.astro';
-import WireNote from '../components/WireNote.astro';
-import WirePlaceholder from '../components/WirePlaceholder.astro';
+import Waterline from '../components/Waterline.astro';
 import { area, contactNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -11,48 +11,50 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Notre approche : accessible, concrète, locale, flexible"
   description="Une approche professionnalisante de la transition écologique : accessible, concrète, ancrée dans le Bassin de Thau et adaptée à chaque public."
 >
-  <div class="container section flow flow--m">
-    <h1 class="with-rule">Une approche professionnalisante</h1>
+  <Waterline lines={['Une approche', 'professionnalisante']} titleId="approach-title" size="m">
     <p class="lead">
       Une expertise de la transition écologique et un ancrage local dans le {area}&nbsp;: quatre
       principes guident chacune de nos formations.
     </p>
-    <WireNote>
-      Titre et principes repris du catalogue, explications reprises du brief. Pour couvrir les
-      trois publics, «&nbsp;des étudiants&nbsp;» devient «&nbsp;des participants&nbsp;»&nbsp;;
-      l’explication de «&nbsp;Flexible&nbsp;» est une proposition, d’après les modalités du
-      catalogue.
-    </WireNote>
-  </div>
+  </Waterline>
 
-  <section class="section section--alt" aria-label="Nos quatre principes">
-    <div class="container flow flow--l">
-      <PrincipleList as="h2" detailed />
-      <WireNote proposal>
-        Un exemple concret par principe, tiré d’une formation, rendrait l’approche plus
-        crédible&nbsp;: à fournir par le fondateur.
-      </WireNote>
-      <div class="approach-photo">
-        <WirePlaceholder label="Photo d’une intervention en entreprise ou du territoire – à fournir" />
-      </div>
+  <section class="chapter chapter--paper" aria-label="Nos quatre principes">
+    <div class="container flow flow--l" data-reveal>
+      <PrincipleList as="h2" layout="rows" />
     </div>
   </section>
 
-  <section class="section section--dark" aria-labelledby="next-title">
-    <div class="container flow flow--m">
-      <h2 id="next-title">Et pour votre structure&nbsp;?</h2>
-      <p class="lead">Parlons de votre situation, ou découvrez d’abord nos programmes.</p>
+  <section class="chapter chapter--sage" aria-labelledby="practice-title">
+    <div class="container next" data-reveal>
+      <h2 id="practice-title">Ces principes, en pratique</h2>
+      <p class="lead">
+        Des modules courts, des exercices et des cas d’entreprise&nbsp;: découvrez les
+        programmes proposés aux écoles, aux entreprises et aux collectivités.
+      </p>
       <div class="actions">
-        <LinkButton href={contactNav.href}>Réserver un échange de 30&nbsp;minutes</LinkButton>
-        <LinkButton href="/programmes/" variant="secondary">Découvrir les programmes</LinkButton>
+        <LinkButton href="/programmes/">Découvrir les programmes</LinkButton>
       </div>
     </div>
   </section>
+
+  <CtaBand
+    href={contactNav.href}
+    word="Parlons"
+    sentence="Et pour votre structure ? Un échange de 30 minutes, en visio ou en présentiel."
+  />
 </BaseLayout>
 
 <style>
-  .approach-photo {
-    max-width: 40rem;
-    margin-inline: auto;
+  .next {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  @media (min-width: 56rem) {
+    .next {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 5fr) auto;
+      align-items: baseline;
+      column-gap: var(--space-xl);
+    }
   }
 </style>
