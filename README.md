@@ -17,15 +17,15 @@ npm ci
 
 ## Commandes
 
-| Commande          | Rôle                                                  |
-| ----------------- | ----------------------------------------------------- |
-| `npm run dev`     | serveur de développement sur <http://localhost:4321>  |
-| `npm run build`   | build de production dans `dist/`                      |
-| `npm run preview` | sert le build de production en local                  |
-| `npm start`       | lance le serveur Node du build (`PORT`, `HOST`)       |
-| `npm run check`   | vérification des types (`astro check`)                |
-| `npm run lint`    | lint et contrôle du formatage (Biome)                 |
-| `npm run format`  | formate le code (Biome)                               |
+| Commande          | Rôle                                                 |
+| ----------------- | ---------------------------------------------------- |
+| `npm run dev`     | serveur de développement sur <http://localhost:4321> |
+| `npm run build`   | build de production dans `dist/`                     |
+| `npm run preview` | sert le build de production en local                 |
+| `npm start`       | lance le serveur Node du build (`PORT`, `HOST`)      |
+| `npm run check`   | vérification des types (`astro check`)               |
+| `npm run lint`    | lint et contrôle du formatage (Biome)                |
+| `npm run format`  | formate le code (Biome)                              |
 
 ## État actuel : ébauche avant mise en ligne
 
@@ -53,13 +53,13 @@ La page `/programmes/` présente les trois publics et leurs programmes.
 - **Offre étudiants** (formules, tarifs, conditions) :
   `src/data/cap-transition-etudiants.ts`.
 
-| Champ d’un module | Contenu |
-| --- | --- |
-| `title`, `tagline`, `duration`, `objective`, `skill` | obligatoires ; `skill` est la « compétence acquise » |
-| `theme`, `verb`, `pathStep` | badge (« Climat »), verbe (« Décoder ») et étape du parcours (« Comprendre la menace ») |
-| `topics` | liste des points du programme |
-| `icon` | pictogramme, parmi ceux de `src/lib/icons.ts` |
-| `order` | position dans le parcours (croissante) |
+| Champ d’un module                                                            | Contenu                                                                                     |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `title`, `tagline`, `duration`, `objective`, `skill`                         | obligatoires ; `skill` est la « compétence acquise »                                        |
+| `theme`, `verb`, `pathStep`                                                  | badge (« Climat »), verbe (« Décoder ») et étape du parcours (« Comprendre la menace »)     |
+| `topics`                                                                     | liste des points du programme                                                               |
+| `icon`                                                                       | pictogramme, parmi ceux de `src/lib/icons.ts`                                               |
+| `order`                                                                      | position dans le parcours (croissante)                                                      |
 | `prerequisites`, `access`, `price`, `methods`, `assessment`, `accessibility` | facultatifs : informations exigées par Qualiopi, affichées seulement si elles sont remplies |
 
 Les pictogrammes viennent de [Lucide](https://lucide.dev) (licence ISC). Pour en ajouter
