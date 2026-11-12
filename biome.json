@@ -28,6 +28,11 @@
   "html": {
     "experimentalFullSupportEnabled": true
   },
+  "markdown": {
+    "formatter": {
+      "enabled": false
+    }
+  },
   "assist": {
     "enabled": true,
     "actions": {
