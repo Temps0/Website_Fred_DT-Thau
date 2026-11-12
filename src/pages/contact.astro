@@ -3,10 +3,10 @@ import FormErrorSummary from '../components/FormErrorSummary.astro';
 import FormNotice from '../components/FormNotice.astro';
 import Icon from '../components/Icon.astro';
 import LinkButton from '../components/LinkButton.astro';
+import PageHero from '../components/PageHero.astro';
 import SpamTrap from '../components/SpamTrap.astro';
 import TextField from '../components/TextField.astro';
 import ToComplete from '../components/ToComplete.astro';
-import Waterline from '../components/Waterline.astro';
 import { area, brand, company, founder, phoneHref, surveyNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { type ContactValues, handleContactPost } from '../lib/server/contact';
@@ -53,7 +53,7 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
   description="Une question, un besoin de formation ? Réservez un échange de 30 minutes avec DT-Thau, organisme de formation à Mèze, au service du Bassin de Thau."
 >
   {/* A shorter first screen: the form, the point of the page, starts close to the top. */}
-  <Waterline lines={['Échangeons sur', 'votre projet']} titleId="contact-title" compact>
+  <PageHero lines={['Échangeons sur', 'votre projet']} titleId="contact-title" compact>
     <p class="lead">
       Réservez un échange de 30&nbsp;minutes, en visio ou en présentiel&nbsp;: écrivez-nous vos
       besoins et vos disponibilités, nous vous recontactons pour fixer le rendez-vous.
@@ -65,7 +65,7 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
         </div>
       )
     }
-  </Waterline>
+  </PageHero>
 
   <div class="chapter chapter--paper">
     <div class="container contact-grid">

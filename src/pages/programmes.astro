@@ -6,8 +6,8 @@ import Icon from '../components/Icon.astro';
 import LearningPath from '../components/LearningPath.astro';
 import LinkButton from '../components/LinkButton.astro';
 import ModuleCard from '../components/ModuleCard.astro';
+import PageHero from '../components/PageHero.astro';
 import ToComplete from '../components/ToComplete.astro';
-import Waterline from '../components/Waterline.astro';
 import { audiences, modalities } from '../data/audiences';
 import { studentProgramme } from '../data/cap-transition-etudiants';
 import { contactNav } from '../data/site';
@@ -31,7 +31,7 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
   title="Programmes CAP TRANSITION : écoles, PME, collectivités"
   description="Programmes CAP TRANSITION de DT-Thau : formations courtes et concrètes à la transition écologique pour écoles, TPE/PME et collectivités du Bassin de Thau."
 >
-  <Waterline lines={['CAP TRANSITION']} titleId="programmes-title" size="m">
+  <PageHero lines={['CAP TRANSITION']} titleId="programmes-title" size="m">
     <p class="lead">
       Des formations courtes et concrètes pour comprendre les enjeux écologiques et leurs
       conséquences sur l’entreprise.
@@ -51,7 +51,7 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
         <ToComplete>financement possible, selon la certification Qualiopi</ToComplete>
       </li>
     </ul>
-  </Waterline>
+  </PageHero>
 
   <section class="chapter chapter--paper" aria-labelledby="audiences-title">
     <div class="container split" data-reveal>

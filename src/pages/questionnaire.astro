@@ -4,10 +4,10 @@ import ContentText from '../components/ContentText.astro';
 import FormErrorSummary from '../components/FormErrorSummary.astro';
 import FormNotice from '../components/FormNotice.astro';
 import LinkButton from '../components/LinkButton.astro';
+import PageHero from '../components/PageHero.astro';
 import SpamTrap from '../components/SpamTrap.astro';
 import SurveyQuestion from '../components/SurveyQuestion.astro';
 import TextField from '../components/TextField.astro';
-import Waterline from '../components/Waterline.astro';
 import { area, brand } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { handleSurveyPost, type SurveyValues } from '../lib/server/survey-response';
@@ -69,7 +69,7 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
   description="Entreprise du Bassin de Thau ? Répondez à notre questionnaire sur vos besoins de formation à la transition écologique et à la RSE, sans indiquer votre nom ni celui de votre entreprise."
 >
   {/* A shorter first screen: the questions, the point of the page, start close to the top. */}
-  <Waterline lines={[title]} titleId="survey-title" size="m" compact>
+  <PageHero lines={[title]} titleId="survey-title" size="m" compact>
     {
       isSent ? (
         <p class="lead">Vos réponses ont bien été enregistrées.</p>
@@ -88,7 +88,7 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
         </>
       )
     }
-  </Waterline>
+  </PageHero>
 
   <div class="chapter chapter--paper">
     <div class="container survey-layout">

@@ -1,0 +1,150 @@
+---
+/**
+ * First screen of every page: one deep green field, as the charter's covers, with the
+ * page title set large in cream and centred, then the lead and the actions. Each line of
+ * the title rises into place on load.
+ */
+import { frenchSpacing } from '../lib/text';
+
+interface Props {
+  /** The title, one entry per line (two at most): the line breaks are authored. */
+  lines: string[];
+  /** id of the h1, for the section's aria-labelledby. */
+  titleId: string;
+  /**
+   * Title size: "xl" for the home page, "l" for pages, "m" for titles with a long word
+   * that must still fit a phone screen ("professionnalisante", "confidentialité").
+   */
+  size?: 'xl' | 'l' | 'm';
+  /** Shorter screen, for pages read rather than seen and for the forms. */
+  compact?: boolean;
+}
+
+const { lines, titleId, size = 'l', compact = false } = Astro.props;
+const titleLines = lines.map((line) => frenchSpacing(line));
+---
+
+<section
+  class:list={[
+    'page-hero',
+    'chapter--lagoon',
+    `page-hero--${size}`,
+    { 'page-hero--compact': compact },
+  ]}
+  aria-labelledby={titleId}
+>
+  <div class="container page-hero__inner">
+    <h1 id={titleId} class="page-hero__title">
+      {
+        titleLines.map((line) => (
+          <span class="page-hero__line">
+            <span>{line}</span>
+          </span>
+        ))
+      }
+    </h1>
+    <div class="page-hero__content">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    display: grid;
+    align-items: center;
+    min-height: max(30rem, calc(78svh - var(--header-height)));
+    padding-block: var(--space-chapter);
+  }
+
+  .page-hero--compact {
+    min-height: max(20rem, 46svh);
+    padding-block: var(--space-2xl);
+  }
+
+  .page-hero--xl {
+    --title-size: clamp(3.25rem, 1rem + 10.5vw, 9.5rem);
+  }
+
+  .page-hero--l {
+    --title-size: clamp(2.75rem, 1rem + 8vw, 7.5rem);
+  }
+
+  .page-hero--m {
+    --title-size: clamp(1.75rem, 0.6rem + 6.4vw, 6rem);
+  }
+
+  .page-hero__inner {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-xl);
+    text-align: center;
+  }
+
+  .page-hero__title {
+    margin: 0;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: var(--title-size);
+    font-weight: var(--weight-medium);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    hyphens: auto;
+  }
+
+  .page-hero__line {
+    display: block;
+    overflow: hidden;
+    /* Room for accents and descenders inside the mask of the entrance animation. */
+    padding-block: 0.06em;
+    margin-block: -0.06em;
+  }
+
+  .page-hero__line > span {
+    display: block;
+  }
+
+  .page-hero__content {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-m);
+  }
+
+  /* The lead and every paragraph under the title keep the same reading width. */
+  .page-hero__content > :global(*) {
+    max-width: 44rem;
+  }
+
+  .page-hero__content :global(.actions) {
+    justify-content: center;
+  }
+
+  /* ---- Entrance: each line rises from behind its own baseline ------------ */
+  @media (prefers-reduced-motion: no-preference) {
+    .page-hero__line > span {
+      animation: page-hero-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .page-hero__line:nth-child(2) > span {
+      animation-delay: 110ms;
+    }
+
+    .page-hero__content {
+      animation: page-hero-fade 700ms 380ms ease-out both;
+    }
+  }
+
+  @keyframes page-hero-rise {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  @keyframes page-hero-fade {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+</style>

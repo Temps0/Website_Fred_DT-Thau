@@ -92,7 +92,7 @@
   --grey-green-500: #7d8579; /* form control borders (3.6:1) */
   --grey-green-200: #dcdcd2; /* decorative dividers */
   --white: #ffffff;
-  /* Tone steps of the deep green, for the lagoon drawings and the footer tiles. */
+  /* Tone steps of the deep green, for panels and tiles laid on it. */
   --green-deep-raised: #1d4c42;
   --green-deep-lit: #2a5d51;
 

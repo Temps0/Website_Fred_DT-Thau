@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <title>DT-Thau</title>
-  <rect width="32" height="32" fill="#faf9f4"/>
-  <path d="M15 16c4-1 7-4 10-5s5 1 7 2v3z" fill="#d5ddcc"/>
-  <rect y="16" width="32" height="16" fill="#143d35"/>
-  <path d="M4 16v5M8 16v5M12 16v5" stroke="#2a5d51" stroke-width="2"/>
-  <path d="M5 26h9M18 23h8" stroke="#2a5d51" stroke-width="1.5"/>
+  <rect width="32" height="32" fill="#143d35"/>
+  <text x="16" y="22.5" fill="#faf9f4" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-weight="700" text-anchor="middle" letter-spacing="-0.5">DT</text>
 </svg>
