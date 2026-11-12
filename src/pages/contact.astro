@@ -6,6 +6,7 @@ import LinkButton from '../components/LinkButton.astro';
 import SpamTrap from '../components/SpamTrap.astro';
 import TextField from '../components/TextField.astro';
 import ToComplete from '../components/ToComplete.astro';
+import Waterline from '../components/Waterline.astro';
 import { area, brand, company, founder, phoneHref, surveyNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { type ContactValues, handleContactPost } from '../lib/server/contact';
@@ -51,16 +52,23 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
   title={`${titlePrefix}Contact : échangeons sur votre projet`}
   description="Une question, un besoin de formation ? Réservez un échange de 30 minutes avec DT-Thau, organisme de formation à Mèze, au service du Bassin de Thau."
 >
-  <div class="container section flow flow--l">
-    <header class="flow flow--m">
-      <h1 class="with-rule">Échangeons sur votre projet</h1>
-      <p class="lead">
-        Réservez un échange de 30&nbsp;minutes, en visio ou en présentiel&nbsp;: écrivez-nous vos
-        besoins et vos disponibilités, nous vous recontactons pour fixer le rendez-vous.
-      </p>
-    </header>
+  {/* A shorter first screen: the form, the point of the page, starts close to the top. */}
+  <Waterline lines={['Échangeons sur', 'votre projet']} titleId="contact-title" compact>
+    <p class="lead">
+      Réservez un échange de 30&nbsp;minutes, en visio ou en présentiel&nbsp;: écrivez-nous vos
+      besoins et vos disponibilités, nous vous recontactons pour fixer le rendez-vous.
+    </p>
+    {
+      !isSent && !hasError && (
+        <div class="actions">
+          <LinkButton href="#form-title">Écrire votre message</LinkButton>
+        </div>
+      )
+    }
+  </Waterline>
 
-    <div class="contact-grid">
+  <div class="chapter chapter--paper">
+    <div class="container contact-grid">
       <section aria-labelledby="form-title" class="flow flow--m">
         <h2 id="form-title" class="contact-subtitle">Votre message</h2>
 
@@ -181,8 +189,8 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
 
       </section>
 
-      <aside class="contact-aside flow flow--l" aria-label="Coordonnées et questionnaire">
-        <section aria-labelledby="details-title" class="flow">
+      <aside class="contact-aside flow flow--l" aria-label="Coordonnées et questionnaire" data-reveal>
+        <section aria-labelledby="details-title" class="contact-tile flow">
           <h2 id="details-title" class="contact-subtitle">Coordonnées</h2>
           <address class="flow">
             <p>
@@ -258,7 +266,7 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
   }
 
   .contact-subtitle {
-    font-size: var(--step-2);
+    font-size: var(--step-3);
   }
 
   .form {
@@ -289,9 +297,19 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
     align-items: flex-start;
   }
 
+  /* The details and the survey on colour tiles, one tone step from the page. */
+  .contact-tile,
   .survey-teaser {
-    padding: var(--space-m);
-    border: var(--border-width) solid var(--color-border-subtle);
-    border-radius: var(--radius-m);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  .contact-tile {
+    background-color: var(--sage);
+    --color-accent-text: var(--green-forest);
+  }
+
+  .survey-teaser {
+    --button-secondary-bg: var(--cream);
+    background-color: var(--cream-strong);
   }
 </style>

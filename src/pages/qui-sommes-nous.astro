@@ -1,7 +1,8 @@
 ---
+import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
-import LinkButton from '../components/LinkButton.astro';
 import ToComplete from '../components/ToComplete.astro';
+import Waterline from '../components/Waterline.astro';
 import { area, brand, company, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -19,25 +20,24 @@ const values = [
   title="Qui sommes-nous ? L’origine du projet et son fondateur"
   description="DT-Thau, organisme de formation créé à Mèze en 2026 par Frédéric Dessombs, aide les acteurs du Bassin de Thau à passer à l’action écologique."
 >
-  <div class="container section flow flow--m">
-    <h1 class="with-rule">Qui sommes-nous&nbsp;?</h1>
+  <Waterline lines={['Qui sommes-nous ?']} titleId="about-title">
     <p class="lead">
       {brand.name} est née d’une conviction&nbsp;: rendre la transition écologique compréhensible
       et permettre aux acteurs du {area} de passer de la réflexion à l’action.
     </p>
-  </div>
+  </Waterline>
 
-  <section class="section section--alt" aria-labelledby="origin-title">
-    <div class="container flow">
+  <section class="chapter chapter--sage" aria-labelledby="origin-title">
+    <div class="container split" data-reveal>
       <h2 id="origin-title">L’origine du projet</h2>
-      <p class="lead">
+      <p class="statement">
         <ToComplete>l’histoire du projet en quelques phrases&nbsp;: le déclic, le constat, l’envie</ToComplete>
       </p>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="founder-title">
-    <div class="container founder">
+  <section class="chapter chapter--paper" aria-labelledby="founder-title">
+    <div class="container founder" data-reveal>
       <FounderPortrait />
       <div class="flow flow--m">
         <h2 id="founder-title">Qui porte le projet</h2>
@@ -64,9 +64,9 @@ const values = [
     </div>
   </section>
 
-  <section class="section section--alt" aria-labelledby="values-title">
-    <div class="container flow flow--l">
-      <div class="flow">
+  <section class="chapter chapter--lagoon" aria-labelledby="values-title">
+    <div class="container flow flow--l" data-reveal>
+      <div class="split">
         <h2 id="values-title">Notre engagement</h2>
         <p class="lead">
           Une approche fondée sur trois valeurs, avec un ancrage particulier dans les réalités du
@@ -74,11 +74,11 @@ const values = [
         </p>
       </div>
       {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-      <ul class="values" role="list">
+      <ul class="values" role="list" data-reveal>
         {
           values.map((value) => (
             <li>
-              <h3>{value.title}</h3>
+              <h3 class="values__title">{value.title}</h3>
               <p>{value.text}</p>
             </li>
           ))
@@ -87,8 +87,8 @@ const values = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="facts-title">
-    <div class="container flow">
+  <section class="chapter chapter--sand" aria-labelledby="facts-title">
+    <div class="container split" data-reveal>
       <h2 id="facts-title">{brand.name} en bref</h2>
       {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
       <ul class="facts" role="list">
@@ -102,35 +102,48 @@ const values = [
     </div>
   </section>
 
-  <section class="section section--dark" aria-labelledby="next-title">
-    <div class="container flow flow--m">
-      <h2 id="next-title">Faisons connaissance</h2>
-      <p class="lead">Un échange de 30&nbsp;minutes, en visio ou en présentiel.</p>
-      <div class="actions">
-        <LinkButton href={contactNav.href}>Réserver un échange</LinkButton>
-        <LinkButton href="/approche/" variant="secondary">Découvrir notre approche</LinkButton>
-      </div>
-    </div>
-  </section>
+  <CtaBand
+    href={contactNav.href}
+    word="Parlons"
+    sentence="Faisons connaissance : un échange de 30 minutes, en visio ou en présentiel."
+  />
 </BaseLayout>
 
 <style>
+  /* Heading on the left, what it introduces on the right. */
+  .split {
+    display: grid;
+    gap: var(--space-m) var(--space-xl);
+  }
+
+  @media (min-width: 56rem) {
+    .split {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: baseline;
+    }
+  }
+
+  .statement {
+    font-size: var(--step-2);
+  }
+
   .founder {
     display: grid;
-    gap: var(--space-l);
+    gap: var(--space-xl);
     align-items: start;
   }
 
   @media (min-width: 48rem) {
     .founder {
-      grid-template-columns: 16rem 1fr;
-      gap: var(--space-xl);
+      grid-template-columns: auto minmax(0, 40rem);
+      justify-content: start;
+      column-gap: clamp(3rem, 1rem + 6vw, 8rem);
     }
   }
 
   .founder__facts {
     display: grid;
-    gap: var(--space-s);
+    gap: var(--space-m);
   }
 
   .founder__facts dt {
@@ -144,30 +157,37 @@ const values = [
 
   .values {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    gap: var(--space-l);
+    gap: var(--space-xl);
     padding: 0;
     list-style: none;
   }
 
-  .values li {
-    padding-block-start: var(--space-s);
-    border-block-start: var(--border-width) solid var(--color-accent);
+  @media (min-width: 56rem) {
+    .values {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   .values li > * + * {
-    margin-block-start: var(--space-2xs);
+    margin-block-start: var(--space-xs);
+  }
+
+  .values__title {
+    color: var(--color-accent-text);
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-display);
   }
 
   .facts {
     display: grid;
-    gap: var(--space-2xs);
+    gap: var(--space-m);
     padding: 0;
     list-style: none;
-  }
-
-  .facts li {
-    padding-inline-start: var(--space-s);
-    border-inline-start: 2px solid var(--color-accent);
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: var(--weight-medium);
+    line-height: 1.25;
   }
 </style>

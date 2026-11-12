@@ -1,5 +1,6 @@
 ---
 import ToComplete from '../components/ToComplete.astro';
+import Waterline from '../components/Waterline.astro';
 import { company } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -8,9 +9,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Mentions légales"
   description="Mentions légales du site de DT-Thau : éditeur, organisme de formation, hébergement et propriété intellectuelle."
 >
-  <div class="container section">
-    <article class="prose">
-      <h1>Mentions légales</h1>
+  <Waterline lines={['Mentions légales']} titleId="legal-title" size="m" compact>
+    <p class="lead">Qui édite ce site, qui l’héberge, et à qui appartiennent ses contenus.</p>
+  </Waterline>
+
+  <div class="chapter chapter--paper">
+    <article class="container legal" aria-labelledby="legal-title">
 
       <h2>Éditeur du site</h2>
       <p>

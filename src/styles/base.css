@@ -194,9 +194,6 @@ a:hover {
 .section {
   padding-block: var(--space-section);
 }
-.section--alt {
-  background-color: var(--color-surface-strong);
-}
 
 /*
  * Colour chapters: every section is a full-width field of one charter colour, butted
@@ -262,29 +259,9 @@ a:hover {
   --flow-space: var(--space-l);
 }
 
-.prose {
-  max-width: var(--measure);
-}
-.prose > * + * {
-  margin-block-start: 1em;
-}
-.prose > :is(h2, h3) {
-  margin-block-start: 1.6em;
-}
-
 .lead {
   font-size: var(--step-1);
   max-width: var(--measure);
-}
-
-/* Signature of the charter: a fine matt gold rule under a title. */
-.with-rule::after {
-  content: "";
-  display: block;
-  width: 4rem;
-  height: 2px;
-  margin-block-start: var(--space-s);
-  background-color: var(--color-accent);
 }
 
 /* ---- Buttons -------------------------------------------------------------- */
@@ -389,6 +366,35 @@ a:hover {
   }
 }
 /* biome-ignore-end lint/complexity/noImportantStyles: the user motion preference must win */
+
+/* ---- Legal pages ----------------------------------------------------------- */
+/* Each heading hangs in the left column, its text runs on the right. */
+.legal {
+  display: grid;
+  gap: var(--space-s) var(--space-2xl);
+}
+.legal > h2 {
+  font-size: var(--step-2);
+}
+/* The space before a section goes on its heading and on the text beside it alike. */
+.legal > h2:not(:first-child),
+.legal > h2:not(:first-child) + * {
+  margin-block-start: var(--space-xl);
+}
+.legal > :not(h2) {
+  max-width: var(--measure);
+}
+@media (min-width: 56rem) {
+  .legal {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  }
+  .legal > * {
+    grid-column: 2;
+  }
+  .legal > h2 {
+    grid-column: 1;
+  }
+}
 
 ::selection {
   background: var(--color-primary);
