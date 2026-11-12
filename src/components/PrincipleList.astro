@@ -1,33 +1,36 @@
 ---
 /**
- * The four principles of the approach, laid out as in the catalogue: a 2 × 2 grid of gold
- * pictograms separated by fine gold rules.
+ * The four principles of the approach (catalogue), in two layouts:
+ * - "stairs" (home page, on the deep green): each principle word set large, every line
+ *   starting further right than the one above, so the four descend like stairs, with its
+ *   sentence beside it;
+ * - "rows" (approach page): one row per principle, the word on the left, the summary and
+ *   the longer explanation on the right.
  */
 import { principles } from '../data/approach';
 import { frenchSpacing } from '../lib/text';
-import Icon from './Icon.astro';
 
 interface Props {
   /** Heading level of the principle names, to fit the page outline. */
   as?: 'h2' | 'h3';
-  /** Add the longer explanation of each principle (approach page). */
-  detailed?: boolean;
+  layout?: 'stairs' | 'rows';
 }
 
-const { as: Heading = 'h3', detailed = false } = Astro.props;
+const { as: Heading = 'h3', layout = 'stairs' } = Astro.props;
 ---
 
 {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-<ul class="principles" role="list">
+<ul class:list={['principles', `principles--${layout}`]} role="list" data-reveal>
   {
     principles.map((principle) => (
-      <li class="principle" id={detailed ? principle.id : undefined}>
-        <Icon name={principle.icon} size={detailed ? 'xl' : 'l'} />
+      <li class="principle" id={layout === 'rows' ? principle.id : undefined}>
         <Heading class="principle__title">{principle.title}</Heading>
-        <p class:list={['principle__summary', { lead: detailed }]}>
-          {frenchSpacing(principle.summary)}
-        </p>
-        {detailed && <p class="principle__detail">{frenchSpacing(principle.detail)}</p>}
+        <div class="principle__text">
+          <p class:list={{ lead: layout === 'rows' }}>{frenchSpacing(principle.summary)}</p>
+          {layout === 'rows' && (
+            <p class="principle__detail">{frenchSpacing(principle.detail)}</p>
+          )}
+        </div>
       </li>
     ))
   }
@@ -40,43 +43,91 @@ const { as: Heading = 'h3', detailed = false } = Astro.props;
     list-style: none;
   }
 
-  .principle {
-    display: grid;
-    gap: var(--space-xs);
-    align-content: start;
-    justify-items: center;
-    padding: var(--space-l) var(--space-m);
-    text-align: center;
-  }
-
-  .principle > p {
-    max-width: 32rem;
-  }
-
-  /* Gold rules between principles: one column when narrow, a cross in the 2 × 2 grid. */
-  .principle:not(:first-child) {
-    border-block-start: var(--border-width) solid var(--color-accent);
-  }
-
-  @media (min-width: 48rem) {
-    .principles {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .principle:nth-child(2) {
-      border-block-start: 0;
-    }
-
-    .principle:nth-child(even) {
-      border-inline-start: var(--border-width) solid var(--color-accent);
-    }
-  }
-
   .principle__title {
-    font-size: var(--step-2);
+    color: var(--title-ink, var(--color-heading));
+    font-family: var(--font-display);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  /* ---- Stairs ----------------------------------------------------------- */
+  .principles--stairs {
+    gap: var(--space-l);
+  }
+
+  .principles--stairs .principle {
+    display: grid;
+    gap: var(--space-2xs);
+    padding-inline-start: calc(var(--step) * 5vw);
+  }
+
+  .principles--stairs .principle:nth-child(1) {
+    --step: 0;
+  }
+
+  .principles--stairs .principle:nth-child(2) {
+    --step: 1;
+  }
+
+  .principles--stairs .principle:nth-child(3) {
+    --step: 2;
+  }
+
+  .principles--stairs .principle:nth-child(4) {
+    --step: 3;
+  }
+
+  .principles--stairs .principle__title {
+    font-size: clamp(2.75rem, 1.2rem + 6vw, 6.5rem);
+  }
+
+  /* Lines alternate between the cream and the light gold of the deep green field. */
+  .principles--stairs .principle:nth-child(even) {
+    --title-ink: var(--color-accent-text);
+  }
+
+  .principles--stairs .principle__text {
+    max-width: 24rem;
+  }
+
+  @media (min-width: 56rem) {
+    .principles--stairs .principle {
+      grid-template-columns: max-content minmax(0, 22rem);
+      justify-content: start;
+      align-items: baseline;
+      gap: var(--space-l);
+      padding-inline-start: calc(var(--step) * 8vw);
+    }
+  }
+
+  /* ---- Rows ------------------------------------------------------------- */
+  .principles--rows {
+    gap: var(--space-2xl);
+  }
+
+  .principles--rows .principle {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .principles--rows .principle__title {
+    font-size: var(--step-5);
+  }
+
+  .principles--rows .principle__text > * + * {
+    margin-block-start: var(--space-s);
+  }
+
+  @media (min-width: 56rem) {
+    .principles--rows .principle {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: baseline;
+      gap: var(--space-xl);
+    }
   }
 
   .principle__detail {
-    color: var(--color-text-muted);
+    max-width: var(--measure);
   }
 </style>

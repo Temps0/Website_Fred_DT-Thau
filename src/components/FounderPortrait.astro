@@ -1,22 +1,39 @@
 ---
 /**
- * Portrait of the founder, optimised at build time. Provisional photo from the client's
- * student offer deck, only 257 × 305 px: replace src/assets/frederic-dessombs.png with a
- * larger photo when available.
+ * Portrait of the founder, optimised at build time and cut to an arch, with a sage arch
+ * standing behind it, offset up and to the right. Provisional photo from the client's
+ * student offer deck, only 257 × 305 px, so it is never shown wider than that: replace
+ * src/assets/frederic-dessombs.png with a larger photo when available.
  */
 import { Image } from 'astro:assets';
 import portrait from '../assets/frederic-dessombs.png';
 import { founder } from '../data/site';
 ---
 
-<Image class="portrait" src={portrait} alt={`Portrait de ${founder.name}`} />
+<div class="portrait-arch">
+  <Image class="portrait" src={portrait} alt={`Portrait de ${founder.name}`} />
+</div>
 
 <style>
+  .portrait-arch {
+    position: relative;
+    justify-self: start;
+    padding: var(--space-l) var(--space-l) 0 0;
+  }
+
+  .portrait-arch::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 var(--space-l) var(--space-l);
+    border-radius: 999px 999px 0 0;
+    background-color: var(--sage);
+  }
+
   .portrait {
+    position: relative;
     width: 100%;
     max-width: 16rem;
     height: auto;
-    border: var(--border-width) solid var(--color-accent);
-    border-radius: var(--radius-m);
+    border-radius: 999px 999px 0 0;
   }
 </style>
