@@ -28,11 +28,16 @@
   "html": {
     "experimentalFullSupportEnabled": true
   },
-  "markdown": {
-    "formatter": {
-      "enabled": false
+  "overrides": [
+    {
+      "includes": ["src/content/**/*.md"],
+      "markdown": {
+        "formatter": {
+          "enabled": false
+        }
+      }
     }
-  },
+  ],
   "assist": {
     "enabled": true,
     "actions": {
