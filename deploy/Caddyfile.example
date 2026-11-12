@@ -22,6 +22,20 @@ dt-thau.example {
 		-Server
 	}
 
+	# Browser cache. The Node server marks every file "max-age=0"; deferred, these win.
+	# Build files carry a hash of their content in their name: they never change.
+	@hashed path /_astro/*
+	header @hashed {
+		defer
+		Cache-Control "public, max-age=31536000, immutable"
+	}
+	# Font, icons and share image keep their name when replaced: one week.
+	@static path /fonts/* /og/* /favicon.ico /favicon.svg /apple-touch-icon.png
+	header @static {
+		defer
+		Cache-Control "public, max-age=604800"
+	}
+
 	# Caddy sends Host, X-Forwarded-For and X-Forwarded-Proto; the site trusts them for
 	# SITE_DOMAIN only.
 	reverse_proxy dt-thau-web:4321
