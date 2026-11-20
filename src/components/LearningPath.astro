@@ -6,7 +6,7 @@
  * The module title and the step sit under each tile.
  *
  * Laid out for a sage chapter. An optional "intro" slot (the section heading and lead)
- * fills the empty ground above the two smaller tiles on wide screens.
+ * sits above the path.
  */
 import { getModules } from '../lib/modules';
 import { frenchSpacing } from '../lib/text';
@@ -21,7 +21,7 @@ const modules = await getModules();
 const hasIntro = Astro.slots.has('intro');
 ---
 
-<div class:list={['path-board', { 'path-board--intro': hasIntro }]}>
+<div class="path-board">
   {
     hasIntro && (
       <div class="path-board__intro flow flow--m">
@@ -62,6 +62,7 @@ const hasIntro = Astro.slots.has('intro');
     gap: var(--space-2xl);
     padding: 0;
     list-style: none;
+    container-type: inline-size;
   }
 
   .path__step {
@@ -142,22 +143,12 @@ const hasIntro = Astro.slots.has('intro');
       --tile-height: 32rem;
     }
 
-    /* The heading and lead fill the ground above the two smaller tiles. */
-    .path-board--intro {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: 0;
-    }
-
-    .path-board--intro .path {
-      grid-column: 1 / -1;
-      grid-row: 1;
-    }
-
-    .path-board__intro {
-      grid-column: 1 / span 6;
-      grid-row: 1;
-      align-self: start;
-      position: relative;
+    /*
+     * One size for the three verbs, capped so that "Comprendre" (5.7 em wide, the tightest
+     * fit) stays inside the middle tile: a third of the path, less its padding and room.
+     */
+    .path__verb {
+      font-size: min(var(--step-4), calc((100cqi / 3 - 4rem) / 6));
     }
   }
 </style>

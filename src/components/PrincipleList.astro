@@ -79,7 +79,7 @@ const { as: Heading = 'h3', layout = 'stairs' } = Astro.props;
   }
 
   .principles--stairs .principle__title {
-    font-size: clamp(2.75rem, 1.2rem + 6vw, 6.5rem);
+    font-size: var(--step-4);
   }
 
   /* Lines alternate between the cream and the light gold of the deep green field. */
@@ -112,7 +112,7 @@ const { as: Heading = 'h3', layout = 'stairs' } = Astro.props;
   }
 
   .principles--rows .principle__title {
-    font-size: var(--step-5);
+    font-size: var(--step-4);
   }
 
   .principles--rows .principle__text > * + * {
