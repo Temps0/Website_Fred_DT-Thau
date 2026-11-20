@@ -69,15 +69,21 @@ un, l’importer dans `src/lib/icons.ts` sous son nom Lucide.
 
 Les titres de page utilisent [Fraunces](https://github.com/undercasetype/Fraunces)
 (licence SIL OFL 1.1), hébergée par le site dans `public/fonts/fraunces/` avec sa licence :
-aucune requête vers un service tiers. Le texte utilise les polices système (Aptos ou, à
-défaut, celle de l’appareil).
+aucune requête vers un service tiers. Le texte utilise
+[Atkinson Hyperlegible Next](https://github.com/googlefonts/atkinson-hyperlegible-next)
+(licence SIL OFL 1.1), hébergée de la même façon dans
+`public/fonts/atkinson-hyperlegible-next/`.
 
-Le fichier vient de Google Fonts, en une seule instance : graisse 500, axes `SOFT` 100 et
+Le fichier de Fraunces vient de Google Fonts, en une seule instance : graisse 500, axes `SOFT` 100 et
 `WONK` 0 figés, axe `opsz` conservé, sous-ensemble latin. Pour le régénérer, ouvrir
 `https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,500,100,0`
 dans un navigateur récent et télécharger le fichier `.woff2` du bloc `/* latin */`. Ce
 sous-ensemble n’a pas l’espace fine insécable (U+202F) : utiliser l’espace insécable
 (U+00A0), comme le fait déjà le site.
+
+Celui d’Atkinson Hyperlegible Next est le fichier variable (graisses 200 à 800) du bloc
+`/* latin */` de
+`https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@200..800`.
 
 ### Questionnaire
 

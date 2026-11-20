@@ -243,7 +243,7 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
     color: var(--color-heading);
     font-family: var(--font-display);
     /* A statement: three lines on desktop, four on a phone. */
-    font-size: clamp(1.25rem, 0.9rem + 1.2vw, 1.75rem);
+    font-size: var(--step-1);
     font-weight: var(--weight-medium);
     line-height: 1.25;
   }
@@ -278,13 +278,14 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
 
   .custom-offer__question {
     color: var(--color-heading);
-    font-size: var(--step-2);
+    font-size: var(--step-1);
     font-weight: var(--weight-bold);
   }
 
+  /* Stacked, each offer's button must read as its own, not as a label over the next. */
   .others {
     display: grid;
-    gap: var(--space-chapter);
+    gap: calc(var(--space-chapter) * 1.5);
   }
 
   @media (min-width: 56rem) {
