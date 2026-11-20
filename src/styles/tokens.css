@@ -63,8 +63,11 @@
   --space-xl: 3rem;
   --space-2xl: 4rem;
   --space-section: clamp(3rem, 1.8rem + 5.3vw, 6rem);
-  /* Inside a colour chapter, above and below its content. */
-  --space-chapter: clamp(4.5rem, 2.5rem + 8vw, 10rem);
+  /*
+   * Inside a colour chapter, above and below its content: 48 -> 80px, so two chapters'
+   * contents sit 96 -> 160px apart.
+   */
+  --space-chapter: clamp(3rem, 2.217rem + 3.478vw, 5rem);
 
   /* ---- Layout ------------------------------------------------------------ */
   /* One pair of tight page margins at every width; text blocks keep their own measure. */
