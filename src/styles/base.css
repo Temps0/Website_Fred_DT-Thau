@@ -19,6 +19,20 @@
   src: url("/fonts/fraunces/fraunces-500-soft-latin.woff2") format("woff2");
 }
 
+/*
+ * Atkinson Hyperlegible Next (SIL OFL 1.1, licence next to the file), for text, served
+ * from this site. One variable file from Google Fonts covers weights 200 to 800; latin
+ * subset, which includes U+202F. No italic: the site sets none. Preloaded in BaseLayout.
+ */
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/fonts/atkinson-hyperlegible-next/atkinson-hyperlegible-next-variable-latin.woff2")
+    format("woff2");
+}
+
 /* ---- Reset --------------------------------------------------------------- */
 *,
 *::before,

@@ -14,9 +14,13 @@
    * one instance only (weight 500, fully soft corners). Georgia stands in while it loads.
    */
   --font-display: Fraunces, Georgia, Cambria, "Times New Roman", serif;
-  /* Sans-serif for inner titles and text: Aptos where installed, else the system font. */
+  /*
+   * Sans-serif for inner titles and text: Atkinson Hyperlegible Next, self-hosted (base.css),
+   * drawn for legibility. The system font stands in while it loads.
+   */
   --font-body:
-    Aptos, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    "Atkinson Hyperlegible Next", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue",
+    Arial, sans-serif;
   --font-heading: var(--font-body);
 
   --weight-regular: 400;
