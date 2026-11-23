@@ -83,7 +83,7 @@ const values = [
           </p>
         </div>
         {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-        <ul class="values" role="list">
+        <ul class="values" role="list" data-reveal>
           {
             values.map((value) => (
               <li>
@@ -122,7 +122,7 @@ const values = [
       <div class="flow flow--l">
         <h2 id="facts-title">{brand.name} en bref</h2>
         {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-        <ul class="facts" role="list">
+        <ul class="facts" role="list" data-reveal>
           <li>Organisme de formation et de conseil en développement durable et RSE</li>
           <li>Créée en 2026, basée à {company.address.city}</li>
           <li>

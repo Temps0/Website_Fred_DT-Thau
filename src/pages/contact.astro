@@ -283,10 +283,18 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
   .form {
     display: grid;
     gap: var(--space-m);
-    max-width: 40rem;
   }
 
+  /* Beside the details, the form keeps a reading width; alone, it takes the column. */
+  @media (min-width: 56rem) {
+    .form {
+      max-width: 40rem;
+    }
+  }
+
+  /* The form may take the full column; its notes keep a reading width. */
   .form__privacy {
+    max-width: var(--measure);
     color: var(--color-text-muted);
     font-size: var(--step--1);
   }
