@@ -109,7 +109,7 @@ const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
     /* Keep the label in view when an error summary link jumps to the field. */
     scroll-margin-block-start: 6rem;
     width: 100%;
-    min-height: 2.75rem;
+    min-height: var(--tap-min);
     padding: var(--space-2xs) var(--space-xs);
     border: var(--border-width) solid var(--color-border);
     border-radius: var(--radius-s);

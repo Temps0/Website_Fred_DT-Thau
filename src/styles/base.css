@@ -167,8 +167,8 @@ a:hover {
 
 /* ---- Focus ---------------------------------------------------------------- */
 :focus-visible {
-  outline: 3px solid var(--color-focus);
-  outline-offset: 2px;
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
 }
 
 /* ---- Accessibility helpers ------------------------------------------------ */
@@ -303,8 +303,8 @@ a:hover {
   text-align: center;
   text-decoration: none;
   transition:
-    background-color 160ms ease-out,
-    transform 120ms ease-out;
+    background-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-press) var(--ease-out);
 }
 .button:active {
   transform: translateY(1px);
@@ -353,7 +353,7 @@ a:hover {
 [data-reveal] > * {
   transition:
     opacity 400ms ease-out,
-    transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform 450ms var(--ease-out-strong);
 }
 [data-reveal] > :nth-child(2) {
   transition-delay: 60ms;

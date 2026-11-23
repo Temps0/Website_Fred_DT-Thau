@@ -158,7 +158,7 @@ const initial = quote(offers[defaultOffer].amount, defaultStudents, sessionSize)
     padding: var(--space-m);
     background-color: var(--green-deep-raised);
     cursor: pointer;
-    transition: background-color 160ms ease-out;
+    transition: background-color var(--duration-fast) var(--ease-out);
   }
 
   .offer:hover {
@@ -171,8 +171,8 @@ const initial = quote(offers[defaultOffer].amount, defaultStudents, sessionSize)
   }
 
   .offer:has(input:focus-visible) {
-    outline: 3px solid var(--color-focus);
-    outline-offset: 2px;
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
   }
 
   .offer input {

@@ -86,6 +86,20 @@
   --z-header: 100;
   --z-skip-link: 1000;
 
+  /* ---- Motion ---------------------------------------------------------------- */
+  /* Feedback on a control is quick; the entrances of titles and sections ease out strongly. */
+  --duration-press: 120ms;
+  --duration-fast: 160ms;
+  --duration-base: 180ms;
+  --ease-out: ease-out;
+  --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Interaction ----------------------------------------------------------- */
+  --focus-width: 3px;
+  --focus-offset: 2px;
+  /* Smallest target for a pointer or a finger: WCAG 2.5.8 asks 24px, 44px is comfortable. */
+  --tap-min: 2.75rem;
+
   /* ---- Colour: primitives (charter) --------------------------------------- */
   --green-deep: #143d35; /* covers, banners, contact */
   --green-forest: #103d25; /* titles on light backgrounds, table headers */

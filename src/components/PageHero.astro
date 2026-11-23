@@ -216,7 +216,7 @@ const titleLines = lines.map((line) => frenchSpacing(line));
   /* ---- Entrance: each line rises from behind its own baseline ------------ */
   @media (prefers-reduced-motion: no-preference) {
     .page-hero__line > span {
-      animation: page-hero-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: page-hero-rise 900ms var(--ease-out-strong) both;
     }
 
     .page-hero__line:nth-child(2) > span {
