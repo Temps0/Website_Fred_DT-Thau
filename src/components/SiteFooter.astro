@@ -245,7 +245,7 @@ const year = new Date().getFullYear();
   /* The survey tile is one link. */
   .tile--survey {
     text-decoration: none;
-    transition: background-color 180ms ease-out;
+    transition: background-color var(--duration-base) var(--ease-out);
   }
 
   .tile--survey:hover,
@@ -255,7 +255,7 @@ const year = new Date().getFullYear();
   }
 
   .tile--survey:focus-visible {
-    outline: 3px solid var(--cream);
+    outline: var(--focus-width) solid var(--cream);
     outline-offset: -6px;
   }
 
@@ -265,7 +265,7 @@ const year = new Date().getFullYear();
     fill: none;
     stroke: currentColor;
     stroke-width: 4;
-    transition: transform 180ms ease-out;
+    transition: transform var(--duration-base) var(--ease-out);
   }
 
   .tile--survey:hover .tile__arrow {

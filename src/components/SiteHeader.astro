@@ -21,6 +21,14 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
         data-site-nav-toggle
       >
         Menu
+        <svg
+          class="site-nav__chevron"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M6 9 L12 15 L18 9"></path>
+        </svg>
       </button>
       <ul class="site-nav__list" id="site-nav-list">
         {
@@ -63,6 +71,20 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
       if (event.key === 'Escape' && nav.hasAttribute('data-open')) {
         setOpen(false);
         toggle.focus();
+      }
+    });
+
+    // The menu closes when the visitor clicks or tabs anywhere else on the page.
+    document.addEventListener('click', (event) => {
+      if (nav.hasAttribute('data-open') && !nav.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    });
+
+    nav.addEventListener('focusout', (event) => {
+      const next = event.relatedTarget as Node | null;
+      if (nav.hasAttribute('data-open') && next && !nav.contains(next)) {
+        setOpen(false);
       }
     });
   }
@@ -117,11 +139,33 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
 
   .site-nav__toggle {
     display: none;
-    min-height: 2.75rem;
+    gap: var(--space-2xs);
+    min-height: var(--tap-min);
     padding-inline: var(--space-s);
     border: 0;
     background-color: var(--sage);
     font-weight: var(--weight-semibold);
+    transition: background-color var(--duration-base) var(--ease-out);
+  }
+
+  .site-nav__toggle:hover,
+  .site-nav__toggle[aria-expanded='true'] {
+    background-color: var(--cream-strong);
+  }
+
+  /* The chevron points down while the menu is closed, up while it is open. */
+  .site-nav__chevron {
+    flex: none;
+    width: 1.1em;
+    height: 1.1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .site-nav__toggle[aria-expanded='true'] .site-nav__chevron {
+    transform: rotate(180deg);
   }
 
   .site-nav__list {
@@ -135,7 +179,7 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
   .site-nav__list a {
     display: inline-flex;
     align-items: center;
-    min-height: 2.75rem;
+    min-height: var(--tap-min);
     color: var(--color-text);
     text-decoration: none;
   }
@@ -204,6 +248,16 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
 
     .site-nav {
       gap: var(--space-2xs);
+    }
+
+    /* Room for the chevron: the bar must fit a 320px screen without scrolling sideways. */
+    .site-nav__toggle,
+    .site-nav__cta {
+      padding-inline: var(--space-xs);
+    }
+
+    .site-nav__toggle {
+      gap: var(--space-3xs);
     }
   }
 </style>
