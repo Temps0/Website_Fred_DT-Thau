@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import AudienceList from '../components/AudienceList.astro';
 import CtaBand from '../components/CtaBand.astro';
 import FormulaSimulator from '../components/FormulaSimulator.astro';
@@ -10,6 +11,7 @@ import PageHero from '../components/PageHero.astro';
 import ToComplete from '../components/ToComplete.astro';
 import { audiences, modalities } from '../data/audiences';
 import { studentProgramme } from '../data/cap-transition-etudiants';
+import { type Photo, photos } from '../data/photos';
 import { contactNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getModules } from '../lib/modules';
@@ -21,6 +23,11 @@ if (!schools) {
   throw new Error('Audience "ecoles" is missing from src/data/audiences.ts');
 }
 const otherAudiences = audiences.filter((audience) => audience.id !== 'ecoles');
+// The programmes on quotation: a picture each, to stand beside the detailed one.
+const otherPhotos: Record<string, Photo> = {
+  pme: photos.solarRoof,
+  collectivites: photos.repairCafe,
+};
 // The promise follows the programme name after a colon: lower-case its first letter.
 const studentPromise =
   studentProgramme.promise.charAt(0).toLowerCase() + studentProgramme.promise.slice(1);
@@ -31,7 +38,12 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
   title="Programmes CAP TRANSITION : écoles, PME, collectivités"
   description="Programmes CAP TRANSITION de DT-Thau : formations courtes et concrètes à la transition écologique pour écoles, TPE/PME et collectivités du Bassin de Thau."
 >
-  <PageHero lines={['CAP TRANSITION']} titleId="programmes-title" size="m">
+  <PageHero
+    lines={['CAP TRANSITION']}
+    titleId="programmes-title"
+    size="m"
+    photo={photos.climateFresk}
+  >
     <p class="lead">
       Des formations courtes et concrètes pour comprendre les enjeux écologiques et leurs
       conséquences sur l’entreprise.
@@ -51,11 +63,14 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
         <ToComplete>financement possible, selon la certification Qualiopi</ToComplete>
       </li>
     </ul>
+    <div class="actions">
+      <LinkButton href="#tarifs">Voir les formules et tarifs</LinkButton>
+    </div>
   </PageHero>
 
   <section class="chapter chapter--paper" aria-labelledby="audiences-title">
-    <div class="container split" data-reveal>
-      <div class="flow flow--m">
+    <div class="container flow flow--l">
+      <div class="chapter-intro" data-reveal>
         <h2 id="audiences-title">Pour qui&nbsp;?</h2>
         <p class="lead">Accompagner les acteurs locaux vers un modèle durable et responsable.</p>
       </div>
@@ -154,6 +169,15 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
             class="flow flow--m"
             aria-labelledby={`${audience.id}-title`}
           >
+            {otherPhotos[audience.id] && (
+              <Image
+                class="others__photo"
+                src={otherPhotos[audience.id].src}
+                alt={otherPhotos[audience.id].alt}
+                widths={[480, 720, 960]}
+                sizes="(min-width: 56rem) 45vw, 100vw"
+              />
+            )}
             <h2 id={`${audience.id}-title`}>{audience.name}</h2>
             <p class="lead">{frenchSpacing(audience.summary)}</p>
             <p>Contenu et tarifs sur devis, selon vos enjeux et votre organisation.</p>
@@ -177,7 +201,6 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
   .modalities {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: var(--space-2xs) var(--space-l);
     padding: 0;
     list-style: none;
@@ -190,15 +213,16 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
     gap: var(--space-2xs);
   }
 
-  .split {
+  /* The chapter's heading on the left, its lead on the right, on one baseline. */
+  .chapter-intro {
     display: grid;
-    gap: var(--space-xl);
+    gap: var(--space-m);
   }
 
   @media (min-width: 56rem) {
-    .split {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-      align-items: start;
+    .chapter-intro {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: baseline;
     }
   }
 
@@ -280,6 +304,12 @@ const perStudentBasis = frenchSpacing(studentProgramme.perStudentBasis);
     color: var(--color-heading);
     font-size: var(--step-1);
     font-weight: var(--weight-bold);
+  }
+
+  .others__photo {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
   }
 
   /* Stacked, each offer's button must read as its own, not as a label over the next. */
