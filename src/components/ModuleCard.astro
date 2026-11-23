@@ -83,6 +83,12 @@ const details = [
     background-color: var(--cream);
   }
 
+  /* Reached from a step of the path: a gold frame says which card was asked for. */
+  .module:target {
+    outline: var(--focus-width) solid var(--gold);
+    outline-offset: var(--focus-offset);
+  }
+
   @media (min-width: 64rem) {
     .module {
       grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 4fr);
