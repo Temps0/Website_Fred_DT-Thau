@@ -1,9 +1,17 @@
 ---
 /**
- * First screen of every page: one deep green field, as the charter's covers, with the
- * page title set large in cream and centred, then the lead and the actions. Each line of
- * the title rises into place on load.
+ * First screen of every page: one deep green field, as the charter's covers. The title is
+ * set large and flush left, its two lines in two inks (cream, then light gold), so the
+ * break reads as a change of voice. Each line rises into place on load.
+ *
+ * Two compositions:
+ * - without a photograph, the field is the whole first screen: the title fills its upper
+ *   part and the lead and actions sit in the lower right;
+ * - with a photograph, the title, lead and actions take the left of the field and the
+ *   picture runs to the right edge, the full height of the screen.
  */
+import { Image } from 'astro:assets';
+import type { Photo } from '../data/photos';
 import { frenchSpacing } from '../lib/text';
 
 interface Props {
@@ -18,9 +26,11 @@ interface Props {
   size?: 'xl' | 'l' | 'm';
   /** Shorter screen, for pages read rather than seen and for the forms. */
   compact?: boolean;
+  /** Dominant picture of the page, beside the title. */
+  photo?: Photo;
 }
 
-const { lines, titleId, size = 'l', compact = false } = Astro.props;
+const { lines, titleId, size = 'l', compact = false, photo } = Astro.props;
 const titleLines = lines.map((line) => frenchSpacing(line));
 ---
 
@@ -29,7 +39,7 @@ const titleLines = lines.map((line) => frenchSpacing(line));
     'page-hero',
     'chapter--lagoon',
     `page-hero--${size}`,
-    { 'page-hero--compact': compact },
+    { 'page-hero--compact': compact, 'page-hero--photo': photo },
   ]}
   aria-labelledby={titleId}
 >
@@ -47,23 +57,44 @@ const titleLines = lines.map((line) => frenchSpacing(line));
       <slot />
     </div>
   </div>
+  {
+    photo && (
+      <figure class="page-hero__figure">
+        <Image
+          class="page-hero__photo"
+          src={photo.src}
+          alt={photo.alt}
+          widths={[640, 960, 1280, 1920]}
+          sizes="(min-width: 56rem) 45vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption class="page-hero__caption">{frenchSpacing(photo.caption)}</figcaption>
+      </figure>
+    )
+  }
 </section>
 
 <style>
   .page-hero {
     display: grid;
-    align-items: center;
-    min-height: max(30rem, calc(78svh - var(--header-height)));
-    padding-block: var(--space-chapter);
+    /* Its own width, scrollbar excluded, sets the margins of the text beside a photograph. */
+    container-type: inline-size;
   }
 
-  .page-hero--compact {
-    min-height: max(20rem, 46svh);
-    padding-block: var(--space-2xl);
+  /* On a wide screen the field is the whole first screen; on a phone it ends with its text. */
+  @media (min-width: 56rem) {
+    .page-hero {
+      min-height: max(34rem, calc(100svh - var(--header-height)));
+    }
+
+    .page-hero--compact {
+      min-height: max(20rem, 46svh);
+    }
   }
 
   .page-hero--xl {
-    --title-size: clamp(3.25rem, 1rem + 10.5vw, 9.5rem);
+    --title-size: clamp(3.25rem, 1rem + 13vw, 13rem);
   }
 
   .page-hero--l {
@@ -74,11 +105,16 @@ const titleLines = lines.map((line) => frenchSpacing(line));
     --title-size: clamp(1.75rem, 0.6rem + 6.4vw, 6rem);
   }
 
+  /* The title at the top, the lead and actions at the foot: the field holds both ends. */
   .page-hero__inner {
     display: grid;
-    justify-items: center;
-    gap: var(--space-xl);
-    text-align: center;
+    grid-template-rows: auto 1fr;
+    gap: var(--space-2xl);
+    padding-block: var(--space-2xl) var(--space-chapter);
+  }
+
+  .page-hero--compact .page-hero__inner {
+    padding-block: var(--space-2xl);
   }
 
   .page-hero__title {
@@ -89,8 +125,12 @@ const titleLines = lines.map((line) => frenchSpacing(line));
     font-weight: var(--weight-medium);
     line-height: 0.94;
     letter-spacing: -0.025em;
-    text-wrap: balance;
     hyphens: auto;
+  }
+
+  /* Second line in the light gold: two inks, one voice changing to the other. */
+  .page-hero__line:nth-child(2) {
+    color: var(--color-accent-on-dark);
   }
 
   .page-hero__line {
@@ -107,17 +147,70 @@ const titleLines = lines.map((line) => frenchSpacing(line));
 
   .page-hero__content {
     display: grid;
-    justify-items: center;
+    align-content: end;
+    justify-items: start;
     gap: var(--space-m);
   }
 
   /* The lead and every paragraph under the title keep the same reading width. */
-  .page-hero__content > :global(*) {
-    max-width: 44rem;
+  .page-hero__content > :global(p) {
+    max-width: 38rem;
   }
 
-  .page-hero__content :global(.actions) {
-    justify-content: center;
+  @media (min-width: 56rem) {
+    /* Without a picture, the lead and actions take the lower right of the field. */
+    .page-hero:not(.page-hero--photo) .page-hero__content {
+      justify-self: end;
+      width: min(100%, 44rem);
+    }
+  }
+
+  /* ---- With a photograph ---------------------------------------------------- */
+  .page-hero__figure {
+    margin: 0;
+  }
+
+  .page-hero__photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  /*
+   * On a phone the picture ends the field, so its caption would sit right above the next
+   * chapter's heading and read as a label for it: the alt text and the credits suffice.
+   */
+  .page-hero__caption {
+    display: none;
+    padding: var(--space-2xs) var(--space-s) var(--space-s);
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+
+  @media (min-width: 56rem) {
+    .page-hero--photo {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+
+    /* The text keeps the page's left margin; the picture runs to the right edge. */
+    .page-hero--photo .page-hero__inner {
+      width: auto;
+      margin-inline: max(var(--gutter), (100cqi - var(--container-max)) / 2) var(--space-xl);
+    }
+
+    .page-hero--photo .page-hero__figure {
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+
+    .page-hero--photo .page-hero__photo {
+      height: 100%;
+      aspect-ratio: auto;
+    }
+
+    .page-hero__caption {
+      display: block;
+    }
   }
 
   /* ---- Entrance: each line rises from behind its own baseline ------------ */
@@ -130,7 +223,8 @@ const titleLines = lines.map((line) => frenchSpacing(line));
       animation-delay: 110ms;
     }
 
-    .page-hero__content {
+    .page-hero__content,
+    .page-hero__figure {
       animation: page-hero-fade 700ms 380ms ease-out both;
     }
   }
