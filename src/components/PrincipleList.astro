@@ -4,8 +4,8 @@
  * - "fan" (home page, on the deep green): four cards dealt onto the table, each in its own
  *   charter colour, with the principle's word, a photograph of it in practice and its
  *   sentence; on a wide screen they lie side by side, each slightly turned;
- * - "rows" (approach page): one row per principle, the word on the left, the summary and
- *   the longer explanation on the right.
+ * - "rows" (approach page): one row per principle, its word, summary and longer explanation
+ *   beside its photograph, the picture changing sides from one row to the next.
  */
 import { Image } from 'astro:assets';
 import { principles } from '../data/approach';
@@ -32,7 +32,7 @@ const principlePhotos: Record<string, Photo> = {
 <ul class:list={['principles', `principles--${layout}`]} role="list" data-reveal>
   {
     principles.map((principle) => {
-      const photo = layout === 'fan' ? principlePhotos[principle.id] : undefined;
+      const photo = principlePhotos[principle.id];
       return (
         <li class="principle" id={layout === 'rows' ? principle.id : undefined}>
           <Heading class="principle__title">{principle.title}</Heading>
@@ -42,7 +42,7 @@ const principlePhotos: Record<string, Photo> = {
               src={photo.src}
               alt={photo.alt}
               widths={[320, 480, 720]}
-              sizes="(min-width: 56rem) 22vw, 90vw"
+              sizes={layout === 'fan' ? '(min-width: 56rem) 22vw, 90vw' : '(min-width: 56rem) 40vw, 100vw'}
             />
           )}
           <div class="principle__text">
@@ -179,11 +179,36 @@ const principlePhotos: Record<string, Photo> = {
     margin-block-start: var(--space-s);
   }
 
+  /* Word and text on one side, the photograph on the other, sides alternating. */
   @media (min-width: 56rem) {
     .principles--rows .principle {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-areas:
+        "title photo"
+        "text photo";
+      grid-template-rows: auto 1fr;
+      column-gap: var(--space-2xl);
+      row-gap: var(--space-m);
+    }
+
+    .principles--rows .principle:nth-child(even) {
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      align-items: baseline;
-      gap: var(--space-xl);
+      grid-template-areas:
+        "photo title"
+        "photo text";
+    }
+
+    .principles--rows .principle__title {
+      grid-area: title;
+      align-self: end;
+    }
+
+    .principles--rows .principle__photo {
+      grid-area: photo;
+    }
+
+    .principles--rows .principle__text {
+      grid-area: text;
     }
   }
 
