@@ -35,7 +35,7 @@ const principlePhotos: Record<string, Photo> = {
       const photo = principlePhotos[principle.id];
       return (
         <li class="principle" id={layout === 'rows' ? principle.id : undefined}>
-          <Heading class="principle__title">{principle.title}</Heading>
+          <Heading class="principle__title display">{principle.title}</Heading>
           {photo && (
             <Image
               class="principle__photo"
@@ -66,11 +66,7 @@ const principlePhotos: Record<string, Photo> = {
 
   .principle__title {
     color: var(--color-heading);
-    font-family: var(--font-display);
     font-size: var(--step-4);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
   }
 
   /* ---- Fan -------------------------------------------------------------- */

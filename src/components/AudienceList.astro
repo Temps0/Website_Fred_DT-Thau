@@ -41,7 +41,7 @@ const audiencePhotos: Record<string, Photo> = {
             />
           )}
           <div class="audience__text">
-            <Heading class="audience__name">
+            <Heading class="audience__name display">
               <a class="audience__link" href={`/programmes/#${audience.id}`}>
                 {audience.name}
               </a>
@@ -84,11 +84,7 @@ const audiencePhotos: Record<string, Photo> = {
   }
 
   .audience__name {
-    font-family: var(--font-display);
     font-size: var(--step-4);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
   }
 
   .audience__summary {

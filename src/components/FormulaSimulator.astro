@@ -60,7 +60,7 @@ const initial = quote(offers[defaultOffer].amount, defaultStudents, sessionSize)
   </div>
 
   <output class="simulator__result" for="simulator-students" aria-live="polite" data-needs-script>
-    <span class="simulator__total" data-total>{formatPrice(initial.total)}</span>
+    <span class="simulator__total display" data-total>{formatPrice(initial.total)}</span>
     <span data-detail>
       {initial.sessions}&nbsp;session · {formatPrice(initial.perStudent)} par étudiant
     </span>
@@ -236,11 +236,8 @@ const initial = quote(offers[defaultOffer].amount, defaultStudents, sessionSize)
   }
 
   .simulator__total {
-    font-family: var(--font-display);
     font-size: var(--step-4);
-    font-weight: var(--weight-medium);
     line-height: 0.95;
-    letter-spacing: var(--tracking-display);
     font-variant-numeric: tabular-nums;
   }
 

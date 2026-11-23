@@ -61,7 +61,7 @@ const modulePhotos: Record<string, Photo> = {
                     sizes="(min-width: 56rem) 40vw, 100vw"
                   />
                 )}
-                <span class="path__verb">{module.data.verb}</span>
+                <span class="path__verb display">{module.data.verb}</span>
               </span>
               <span class="path__title">{frenchSpacing(module.data.title)}</span>
             </Step>
@@ -138,11 +138,8 @@ const modulePhotos: Record<string, Photo> = {
 
   .path__verb {
     padding: var(--space-s) var(--space-m) var(--space-m);
-    font-family: var(--font-display);
     font-size: var(--step-4);
-    font-weight: var(--weight-medium);
     line-height: 0.95;
-    letter-spacing: var(--tracking-display);
   }
 
   .path__title {

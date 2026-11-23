@@ -100,18 +100,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-block-start: var(--space-xl);
   }
 
-  /* The chapter's heading on the left, its lead on the right, on one baseline. */
-  .chapter-intro {
-    display: grid;
-    gap: var(--space-m);
-  }
-
-  @media (min-width: 56rem) {
-    .chapter-intro {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      align-items: baseline;
-    }
-  }
 
   .founder {
     display: grid;

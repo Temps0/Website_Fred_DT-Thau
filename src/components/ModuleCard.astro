@@ -30,7 +30,7 @@ const details = [
 
 <article class="module" id={module.id} aria-labelledby={titleId}>
   <header class="module__header">
-    <Heading id={titleId} class="module__title">{frenchSpacing(data.title)}</Heading>
+    <Heading id={titleId} class="module__title display">{frenchSpacing(data.title)}</Heading>
     <p class="module__tagline">{frenchSpacing(data.tagline)}</p>
     <p class="module__theme">
       {data.theme} · {data.verb} · {frenchSpacing(data.duration)}
@@ -98,11 +98,7 @@ const details = [
 
   /* One step under the section titles (h2) of the page. */
   .module__title {
-    font-family: var(--font-display);
     font-size: var(--step-3);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
   }
 
   .module__tagline {
