@@ -1,8 +1,10 @@
 ---
 import { getEntry } from 'astro:content';
+import ConsentField from '../components/ConsentField.astro';
 import ContentText from '../components/ContentText.astro';
 import FormErrorSummary from '../components/FormErrorSummary.astro';
 import FormNotice from '../components/FormNotice.astro';
+import Icon from '../components/Icon.astro';
 import LinkButton from '../components/LinkButton.astro';
 import PageHero from '../components/PageHero.astro';
 import SpamTrap from '../components/SpamTrap.astro';
@@ -61,7 +63,6 @@ if (outcome?.status === 'unreadable') Astro.response.status = 400;
 
 // Any outcome left here is a failure: a successful post was redirected above.
 const titlePrefix = outcome !== undefined ? 'Erreur : ' : isSent ? 'Merci : ' : '';
-const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error` : undefined;
 ---
 
 <BaseLayout
@@ -100,13 +101,19 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
             <ol class="survey-index__list" role="list">
               {sections.map((section, sectionIndex) => (
                 <li>
-                  <a href={`#survey-section-${sectionIndex}`}>{frenchSpacing(section.title)}</a>
+                  <a href={`#survey-section-${sectionIndex}`} data-survey-part>
+                    {frenchSpacing(section.title)}
+                    <span class="survey-index__done">
+                      <Icon name="check" />
+                    </span>
+                  </a>
                 </li>
               ))}
               <li>
                 <a href="#survey-contact-title">Être recontacté (facultatif)</a>
               </li>
             </ol>
+            <p class="survey-index__progress" data-survey-progress hidden></p>
             <p>Les questions marquées «&nbsp;obligatoire&nbsp;» doivent être remplies.</p>
           </nav>
         )
@@ -149,7 +156,14 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
           )}
           <FormErrorSummary errors={errorList} />
 
-          <form class="survey flow flow--l" method="post" action="/questionnaire/">
+          <form
+            class="survey flow flow--l"
+            method="post"
+            action="/questionnaire/"
+            novalidate
+            data-submit-once
+            data-survey-form
+          >
             {sections.map((section, sectionIndex) => (
               <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`} data-reveal>
                 <h2 id={`survey-section-${sectionIndex}`} class="survey__section-title">
@@ -184,27 +198,15 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
                 value={values.email}
                 error={errors[SURVEY_EMAIL_FIELD]}
               />
-              <div class:list={['consent', { 'consent--invalid': consentErrorId }]}>
-                {consentErrorId && (
-                  <p class="consent__error" id={consentErrorId}>
-                    <span class="visually-hidden">Erreur&nbsp;:</span>
-                    {errors[SURVEY_CONSENT_FIELD]}
-                  </p>
-                )}
-                <label class="consent__label" for={consentFieldId}>
-                  <input
-                    id={consentFieldId}
-                    name={SURVEY_CONSENT_FIELD}
-                    type="checkbox"
-                    value="yes"
-                    checked={values.contactConsent}
-                    aria-describedby={consentErrorId}
-                    aria-invalid={consentErrorId ? 'true' : undefined}
-                  />
-                  J’accepte que {brand.name} utilise cette adresse pour me recontacter au sujet
-                  de mes réponses. Je peux retirer mon accord à tout moment.
-                </label>
-              </div>
+              <ConsentField
+                id={consentFieldId}
+                name={SURVEY_CONSENT_FIELD}
+                checked={values.contactConsent}
+                error={errors[SURVEY_CONSENT_FIELD]}
+              >
+                J’accepte que {brand.name} utilise cette adresse pour me recontacter au sujet de
+                mes réponses. Je peux retirer mon accord à tout moment.
+              </ConsentField>
             </section>
 
             <SpamTrap
@@ -228,6 +230,11 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  import '../scripts/submit-once';
+  import '../scripts/survey-progress';
+</script>
 
 <style>
   /* The index of parts on the left (sticky on wide screens), the form on the right. */
@@ -281,6 +288,22 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
     font-weight: var(--weight-semibold);
   }
 
+  /* A part whose questions are all answered gets a check (decorative: the count below the
+     list says the same in words). */
+  .survey-index__done {
+    display: none;
+    vertical-align: middle;
+    margin-inline-start: var(--space-3xs);
+  }
+
+  .survey-index__list a:global(.is-complete) .survey-index__done {
+    display: inline-flex;
+  }
+
+  .survey-index__progress {
+    font-weight: var(--weight-semibold);
+  }
+
   /* Each part on its own sand panel: a tone step instead of a dividing line. */
   .survey__section {
     display: grid;
@@ -293,35 +316,6 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
     font-size: var(--step-3);
   }
 
-  .consent {
-    display: grid;
-    gap: var(--space-2xs);
-  }
-
-  .consent--invalid {
-    padding-inline-start: var(--space-s);
-    border-inline-start: 4px solid var(--color-danger);
-  }
-
-  .consent__error {
-    color: var(--color-danger);
-    font-weight: var(--weight-semibold);
-  }
-
-  .consent__label {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-xs);
-    cursor: pointer;
-  }
-
-  .consent__label input {
-    flex: none;
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-block-start: 0.2em;
-    accent-color: var(--color-primary);
-  }
 
   .survey__privacy {
     color: var(--color-text-muted);

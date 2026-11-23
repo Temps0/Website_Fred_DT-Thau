@@ -113,7 +113,14 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
 
         <p id="form-hint">Tous les champs sont obligatoires, sauf mention «&nbsp;facultatif&nbsp;».</p>
 
-        <form class="form" method="post" action="/contact/" aria-describedby="form-hint">
+        <form
+          class="form"
+          method="post"
+          action="/contact/"
+          aria-describedby="form-hint"
+          novalidate
+          data-submit-once
+        >
           <TextField
             id={fieldIds.name}
             name="name"
@@ -251,6 +258,10 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  import '../scripts/submit-once';
+</script>
 
 <style>
   .contact-grid {
