@@ -179,23 +179,43 @@ const modulePhotos: Record<string, Photo> = {
   @media (min-width: 56rem) {
     .path {
       grid-template-columns: repeat(12, minmax(0, 1fr));
-      align-items: end;
+      align-items: start;
       gap: var(--space-l) var(--space-2xs);
     }
 
     .path__step:nth-child(1) {
       grid-column: 1 / span 3;
       --tile-height: 16rem;
+      --cut: 6rem;
     }
 
     .path__step:nth-child(2) {
       grid-column: 4 / span 4;
       --tile-height: 24rem;
+      --cut: 8rem;
     }
 
     .path__step:nth-child(3) {
       grid-column: 8 / span 5;
       --tile-height: 34rem;
+      --cut: 10rem;
+    }
+
+    /*
+     * Crescendo: one straight line rises from the left of the path to the top right corner
+     * of the last tile. With these heights (16, 24, 34rem) over 3, 4 and 5 columns, the top
+     * right corners of the three tiles already lie on that line (24rem of rise across the
+     * path), so each tile is cut from its own corner down by 24rem times its share of the
+     * width: 6, 8 and 10rem. The verbs, at the foot of the tiles, are never reached.
+     */
+    /*
+     * The steps start on one line and each tile is pushed down to the height of the tallest
+     * (34rem), so the tiles' feet stay level whatever the length of the titles under them.
+     */
+    .path__tile {
+      margin-block-start: calc(34rem - var(--tile-height));
+      height: var(--tile-height);
+      clip-path: polygon(0 var(--cut), 100% 0, 100% 100%, 0 100%);
     }
 
     /*
