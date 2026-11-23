@@ -1,8 +1,13 @@
 ---
 import PageHero from '../components/PageHero.astro';
 import ToComplete from '../components/ToComplete.astro';
+import { photoCredits } from '../data/photos';
 import { company } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+/** CC0 is a dedication to the public domain, not a licence with conditions. */
+const licenceLabel = (license: string) =>
+  license === 'CC0' ? 'versée au domaine public (CC0)' : `licence ${license}`;
 ---
 
 <BaseLayout
@@ -54,9 +59,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p>
         Les contenus de ce site (textes, images, logo) appartiennent à {company.name} ou sont
         utilisés avec l’autorisation de leurs auteurs. Leur reproduction sans autorisation est
-        interdite.
+        interdite, sauf pour les photographies sous licence libre listées ci-dessous, qui
+        restent réutilisables selon leur propre licence.
       </p>
-      <p>Crédits photographiques&nbsp;: <ToComplete>auteurs et sources des photos, dont l’auteur du portrait du fondateur et son accord</ToComplete></p>
+      <p>
+        Portrait du fondateur&nbsp;:
+        <ToComplete>auteur du portrait et son accord</ToComplete>
+      </p>
+      <p id="credits-photos">
+        Les autres photographies illustrent les sujets traités en formation&nbsp;; aucune ne
+        représente {company.name}, ses formateurs ou ses stagiaires. Elles sont recadrées pour la
+        mise en page, sans autre modification&nbsp;:
+      </p>
+      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+      <ul class="photo-credits" role="list">
+        {
+          photoCredits.map((credit) => (
+            <li>
+              <a href={credit.page}>«&nbsp;{credit.title}&nbsp;»</a>, {credit.creator},
+              <a href={credit.licenseUrl}>{licenceLabel(credit.license)}</a>, via {credit.via}.
+            </li>
+          ))
+        }
+      </ul>
       <p>
         Pictogrammes&nbsp;: <a href="https://lucide.dev">Lucide</a>, © Lucide Icons and
         Contributors, sous <a href="https://lucide.dev/license">licence ISC</a>&nbsp;; certains
@@ -83,3 +108,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </article>
   </div>
 </BaseLayout>
+
+<style>
+  /* One credit per line, spaced like the paragraphs around it. */
+  .photo-credits {
+    display: grid;
+    gap: var(--space-2xs);
+    padding: 0;
+    list-style: none;
+  }
+</style>
