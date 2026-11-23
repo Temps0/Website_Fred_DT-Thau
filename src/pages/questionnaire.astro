@@ -149,7 +149,12 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
           )}
           <FormErrorSummary errors={errorList} />
 
-          <form class="survey flow flow--l" method="post" action="/questionnaire/">
+          <form
+            class="survey flow flow--l"
+            method="post"
+            action="/questionnaire/"
+            novalidate
+          >
             {sections.map((section, sectionIndex) => (
               <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`} data-reveal>
                 <h2 id={`survey-section-${sectionIndex}`} class="survey__section-title">

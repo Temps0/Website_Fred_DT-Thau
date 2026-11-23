@@ -113,7 +113,13 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
 
         <p id="form-hint">Tous les champs sont obligatoires, sauf mention «&nbsp;facultatif&nbsp;».</p>
 
-        <form class="form" method="post" action="/contact/" aria-describedby="form-hint">
+        <form
+          class="form"
+          method="post"
+          action="/contact/"
+          aria-describedby="form-hint"
+          novalidate
+        >
           <TextField
             id={fieldIds.name}
             name="name"
