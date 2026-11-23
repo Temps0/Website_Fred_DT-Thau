@@ -2,23 +2,37 @@
 /**
  * The CAP TRANSITION path as in the catalogue: three steps, one per module. Order is
  * carried by size: three flat tiles stand side by side, bottom-aligned, each taller than
- * the one before, with the catalogue's verb (Décoder, Comprendre, Agir) set large inside.
- * The module title and the step sit under each tile.
+ * the one before. Each tile holds a photograph of what its module deals with, above the
+ * catalogue's verb (Décoder, Comprendre, Agir) set large. The module title and the step
+ * sit under each tile.
  *
  * Laid out for a sage chapter. An optional "intro" slot (the section heading and lead)
  * sits above the path.
  */
+import { Image } from 'astro:assets';
+import { type Photo, photos } from '../data/photos';
 import { getModules } from '../lib/modules';
 import { frenchSpacing } from '../lib/text';
 
 interface Props {
-  /** Link each step to its module on the same page. */
-  linkToModules?: boolean;
+  /**
+   * Make each step a link to its module card: "" for the cards on the same page,
+   * "/programmes/" from another page. No links when omitted.
+   */
+  linkTo?: string;
 }
 
-const { linkToModules = false } = Astro.props;
+const { linkTo } = Astro.props;
+/* A linked step is one link: tile, verb and title (its photograph is then decorative). */
+const Step = linkTo !== undefined ? 'a' : 'div';
 const modules = await getModules();
 const hasIntro = Astro.slots.has('intro');
+
+const modulePhotos: Record<string, Photo> = {
+  climat: photos.warmingStripes,
+  rse: photos.strategyWorkshop,
+  carbone: photos.cargoBike,
+};
 ---
 
 <div class="path-board">
@@ -32,21 +46,29 @@ const hasIntro = Astro.slots.has('intro');
   {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
   <ol class="path" role="list" data-reveal>
     {
-      modules.map((module) => (
-        <li class="path__step">
-          <div class="path__tile">
-            <span class="path__verb">{module.data.verb}</span>
-          </div>
-          {linkToModules ? (
-            <a class="path__title" href={`#${module.id}`}>
-              {frenchSpacing(module.data.title)}
-            </a>
-          ) : (
-            <span class="path__title">{frenchSpacing(module.data.title)}</span>
-          )}
-          <span class="path__detail">{frenchSpacing(module.data.pathStep)}</span>
-        </li>
-      ))
+      modules.map((module) => {
+        const photo = modulePhotos[module.id];
+        return (
+          <li class="path__step">
+            <Step class="path__head" href={linkTo !== undefined ? `${linkTo}#${module.id}` : undefined}>
+              <span class="path__tile">
+                {photo && (
+                  <Image
+                    class="path__photo"
+                    src={photo.src}
+                    alt={linkTo !== undefined ? '' : photo.alt}
+                    widths={[400, 640, 960]}
+                    sizes="(min-width: 56rem) 40vw, 100vw"
+                  />
+                )}
+                <span class="path__verb">{module.data.verb}</span>
+              </span>
+              <span class="path__title">{frenchSpacing(module.data.title)}</span>
+            </Step>
+            <span class="path__detail">{frenchSpacing(module.data.pathStep)}</span>
+          </li>
+        );
+      })
     }
   </ol>
 </div>
@@ -71,39 +93,51 @@ const hasIntro = Astro.slots.has('intro');
     align-content: end;
   }
 
+  .path__head {
+    display: grid;
+    gap: var(--space-3xs);
+    color: inherit;
+    text-decoration: none;
+  }
+
   .path__tile {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    min-height: var(--tile-height);
     margin-block-end: var(--space-s);
-    padding: var(--space-m);
     background-color: var(--tile);
     color: var(--tile-ink);
+  }
+
+  /* The picture takes whatever height the verb leaves: it grows with its tile. */
+  .path__photo {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    object-fit: cover;
   }
 
   /* Cream, gold, then deep green: the colour deepens as the path goes on. */
   .path__step:nth-child(1) {
     --tile: var(--cream);
     --tile-ink: var(--green-forest);
-    --tile-height: 9rem;
+    --tile-height: 14rem;
   }
 
   .path__step:nth-child(2) {
     --tile: var(--gold);
     --tile-ink: var(--anthracite);
-    --tile-height: 12rem;
+    --tile-height: 17rem;
   }
 
   .path__step:nth-child(3) {
     --tile: var(--green-deep);
     --tile-ink: var(--cream);
-    --tile-height: 15rem;
-  }
-
-  .path__tile {
-    min-height: var(--tile-height);
+    --tile-height: 20rem;
   }
 
   .path__verb {
+    padding: var(--space-s) var(--space-m) var(--space-m);
     font-family: var(--font-display);
     font-size: var(--step-4);
     font-weight: var(--weight-medium);
@@ -121,6 +155,30 @@ const hasIntro = Astro.slots.has('intro');
     color: var(--color-text-muted);
   }
 
+  /* A linked step answers the pointer on its whole tile, and its title reads as a link. */
+  a.path__head .path__title {
+    color: var(--color-link);
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.15em;
+  }
+
+  a.path__head .path__photo {
+    transition: opacity 180ms ease-out;
+  }
+
+  a.path__head:hover .path__photo {
+    opacity: 0.85;
+  }
+
+  a.path__head:hover .path__title {
+    text-decoration-thickness: 2px;
+  }
+
+  a.path__head:focus-visible {
+    outline-offset: 4px;
+  }
+
   @media (min-width: 56rem) {
     .path {
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -130,17 +188,17 @@ const hasIntro = Astro.slots.has('intro');
 
     .path__step:nth-child(1) {
       grid-column: 1 / span 3;
-      --tile-height: 14rem;
+      --tile-height: 16rem;
     }
 
     .path__step:nth-child(2) {
       grid-column: 4 / span 4;
-      --tile-height: 20rem;
+      --tile-height: 24rem;
     }
 
     .path__step:nth-child(3) {
       grid-column: 8 / span 5;
-      --tile-height: 32rem;
+      --tile-height: 34rem;
     }
 
     /*
