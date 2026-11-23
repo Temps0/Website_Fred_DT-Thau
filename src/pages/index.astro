@@ -27,8 +27,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </PageHero>
 
   <section class="chapter chapter--paper" aria-labelledby="audience-title">
-    <div class="container split" data-reveal>
-      <div class="flow flow--m">
+    <div class="container flow flow--l">
+      <div class="chapter-intro" data-reveal>
         <h2 id="audience-title">Pour qui&nbsp;?</h2>
         <p class="lead">
           Une expertise de la transition écologique et un ancrage local, au service de trois
@@ -96,16 +96,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  /* Heading and lead on the left, the content it introduces on the right. */
-  .split {
+  /* The chapter's heading on the left, its lead on the right, on one baseline. */
+  .chapter-intro {
     display: grid;
-    gap: var(--space-xl);
+    gap: var(--space-m);
   }
 
   @media (min-width: 56rem) {
-    .split {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-      align-items: start;
+    .chapter-intro {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: baseline;
     }
   }
 
