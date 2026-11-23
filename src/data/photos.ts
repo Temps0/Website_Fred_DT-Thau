@@ -1,6 +1,10 @@
 /**
  * Photographs of the site: openly licensed pictures of the work DT-Thau does (workshops,
- * climate data, companies acting) and four of the Thau basin.
+ * climate data, companies acting) and four of the Thau basin. The licences cover the
+ * photographers' rights, not the image rights of the people in a picture: two photographs
+ * show recognisable people (repairCafe, workshop) and are kept by the site owner's
+ * decision, the risk on image rights being accepted; replace them to remove it. Pictures of
+ * recognisable people flagged for personality rights on Commons are not used.
  *
  * None of them shows DT-Thau, its trainers or its trainees: captions say what each picture
  * is, never that it is the client's own. Each one is credited on the legal notice page,
@@ -32,13 +36,13 @@ export interface Photo {
 export const photos = {
   climateFresk: {
     src: fresqueDuClimatAtelier,
-    alt: 'Cartes d’un atelier Fresque du Climat posées sur une grande feuille et reliées par des flèches tracées au feutre.',
-    caption: 'Un atelier Fresque du Climat : relier les causes et les effets du dérèglement.',
+    alt: 'Cartes d’un atelier sur le climat posées sur une grande feuille et reliées par des flèches tracées au feutre.',
+    caption: 'Un atelier de cartes : relier les causes et les effets du dérèglement climatique.',
   },
   climateFreskStudents: {
     src: fresqueDuClimatEnsta,
-    alt: 'Cartes de la Fresque du Climat disposées et reliées sur une table, lors d’un atelier dans une école d’ingénieurs.',
-    caption: 'Une Fresque du Climat menée dans une école d’ingénieurs (ENSTA).',
+    alt: 'Cartes d’un atelier sur le climat disposées et reliées sur une table, dans une école d’ingénieurs.',
+    caption: 'Un atelier sur le climat dans une école d’ingénieurs.',
   },
   warmingStripes: {
     src: warmingStripesFrance,
