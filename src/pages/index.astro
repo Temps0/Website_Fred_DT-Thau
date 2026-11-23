@@ -56,8 +56,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   <section class="chapter chapter--lagoon" aria-labelledby="approach-title">
-    <div class="container flow flow--l" data-reveal>
-      <div class="approach-intro">
+    <div class="container flow flow--l">
+      <div class="chapter-intro" data-reveal>
         <h2 id="approach-title">Notre approche</h2>
         <p class="lead">
           Une approche professionnalisante, ancrée dans les réalités du {area}, sans culpabiliser
@@ -96,6 +96,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
+  .path-more {
+    margin-block-start: var(--space-xl);
+  }
+
   /* The chapter's heading on the left, its lead on the right, on one baseline. */
   .chapter-intro {
     display: grid;
@@ -104,23 +108,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   @media (min-width: 56rem) {
     .chapter-intro {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      align-items: baseline;
-    }
-  }
-
-  .path-more {
-    margin-block-start: var(--space-xl);
-  }
-
-  .approach-intro {
-    display: grid;
-    gap: var(--space-m);
-    margin-block-end: var(--space-xl);
-  }
-
-  @media (min-width: 56rem) {
-    .approach-intro {
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
       align-items: baseline;
     }
