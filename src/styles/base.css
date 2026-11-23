@@ -187,6 +187,10 @@ a:hover {
 .skip-link:focus {
   transform: none;
 }
+/* The skip link moves the focus to the main content; a ring around the whole page is noise. */
+main:focus {
+  outline: none;
+}
 
 .visually-hidden:not(:focus):not(:active) {
   position: absolute;
