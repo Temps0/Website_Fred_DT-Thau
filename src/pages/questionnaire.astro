@@ -154,6 +154,7 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
             method="post"
             action="/questionnaire/"
             novalidate
+            data-submit-once
           >
             {sections.map((section, sectionIndex) => (
               <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`} data-reveal>
@@ -233,6 +234,10 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  import '../scripts/submit-once';
+</script>
 
 <style>
   /* The index of parts on the left (sticky on wide screens), the form on the right. */

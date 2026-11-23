@@ -340,7 +340,8 @@ main:focus {
   background-color: var(--green-deep-lit);
   color: var(--color-on-dark);
 }
-.button:disabled {
+.button:disabled,
+.button[aria-disabled="true"] {
   cursor: not-allowed;
   background-color: var(--color-surface-strong);
   color: var(--color-text);

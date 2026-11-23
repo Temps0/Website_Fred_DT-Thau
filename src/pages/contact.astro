@@ -119,6 +119,7 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
           action="/contact/"
           aria-describedby="form-hint"
           novalidate
+          data-submit-once
         >
           <TextField
             id={fieldIds.name}
@@ -257,6 +258,10 @@ const titlePrefix = hasError ? 'Erreur : ' : isSent ? 'Message envoyé : ' : '';
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  import '../scripts/submit-once';
+</script>
 
 <style>
   .contact-grid {
