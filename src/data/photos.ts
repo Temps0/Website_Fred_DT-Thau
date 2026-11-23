@@ -36,13 +36,13 @@ export interface Photo {
 export const photos = {
   climateFresk: {
     src: fresqueDuClimatAtelier,
-    alt: 'Cartes d’un atelier Fresque du Climat posées sur une grande feuille et reliées par des flèches tracées au feutre.',
-    caption: 'Un atelier Fresque du Climat : relier les causes et les effets du dérèglement.',
+    alt: 'Cartes d’un atelier sur le climat posées sur une grande feuille et reliées par des flèches tracées au feutre.',
+    caption: 'Un atelier de cartes : relier les causes et les effets du dérèglement climatique.',
   },
   climateFreskStudents: {
     src: fresqueDuClimatEnsta,
-    alt: 'Cartes de la Fresque du Climat disposées et reliées sur une table, lors d’un atelier dans une école d’ingénieurs.',
-    caption: 'Une Fresque du Climat menée dans une école d’ingénieurs (ENSTA).',
+    alt: 'Cartes d’un atelier sur le climat disposées et reliées sur une table, dans une école d’ingénieurs.',
+    caption: 'Un atelier sur le climat dans une école d’ingénieurs.',
   },
   warmingStripes: {
     src: warmingStripesFrance,
