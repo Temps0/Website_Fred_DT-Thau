@@ -1,0 +1,71 @@
+---
+/**
+ * A single consent checkbox with its label (the slot) and, after a failed post, its error
+ * above it, tied to the box by aria-describedby, as TextField does for text fields.
+ */
+interface Props {
+  id: string;
+  name: string;
+  checked?: boolean;
+  error?: string;
+}
+
+const { id, name, checked = false, error } = Astro.props;
+const errorId = error ? `${id}__error` : undefined;
+---
+
+<div class:list={['consent', { 'consent--invalid': error }]}>
+  {
+    error && (
+      <p class="consent__error" id={errorId}>
+        <span class="visually-hidden">Erreur&nbsp;:</span>
+        {error}
+      </p>
+    )
+  }
+  {/* biome-ignore lint/a11y/noLabelWithoutControl: the box is nested and named by for; the label's text comes from the slot */}
+  <label class="consent__label" for={id}>
+    <input
+      id={id}
+      name={name}
+      type="checkbox"
+      value="yes"
+      checked={checked}
+      aria-describedby={errorId}
+      aria-invalid={error ? 'true' : undefined}
+    />
+    <slot />
+  </label>
+</div>
+
+<style>
+  .consent {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .consent--invalid {
+    padding-inline-start: var(--space-s);
+    border-inline-start: 4px solid var(--color-danger);
+  }
+
+  .consent__error {
+    color: var(--color-danger);
+    font-weight: var(--weight-semibold);
+  }
+
+  .consent__label {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    cursor: pointer;
+  }
+
+  .consent__label input {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-block-start: 0.2em;
+    accent-color: var(--color-primary);
+  }
+</style>

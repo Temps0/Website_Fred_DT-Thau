@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import ConsentField from '../components/ConsentField.astro';
 import ContentText from '../components/ContentText.astro';
 import FormErrorSummary from '../components/FormErrorSummary.astro';
 import FormNotice from '../components/FormNotice.astro';
@@ -61,7 +62,6 @@ if (outcome?.status === 'unreadable') Astro.response.status = 400;
 
 // Any outcome left here is a failure: a successful post was redirected above.
 const titlePrefix = outcome !== undefined ? 'Erreur : ' : isSent ? 'Merci : ' : '';
-const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error` : undefined;
 ---
 
 <BaseLayout
@@ -190,27 +190,15 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
                 value={values.email}
                 error={errors[SURVEY_EMAIL_FIELD]}
               />
-              <div class:list={['consent', { 'consent--invalid': consentErrorId }]}>
-                {consentErrorId && (
-                  <p class="consent__error" id={consentErrorId}>
-                    <span class="visually-hidden">Erreur&nbsp;:</span>
-                    {errors[SURVEY_CONSENT_FIELD]}
-                  </p>
-                )}
-                <label class="consent__label" for={consentFieldId}>
-                  <input
-                    id={consentFieldId}
-                    name={SURVEY_CONSENT_FIELD}
-                    type="checkbox"
-                    value="yes"
-                    checked={values.contactConsent}
-                    aria-describedby={consentErrorId}
-                    aria-invalid={consentErrorId ? 'true' : undefined}
-                  />
-                  J’accepte que {brand.name} utilise cette adresse pour me recontacter au sujet
-                  de mes réponses. Je peux retirer mon accord à tout moment.
-                </label>
-              </div>
+              <ConsentField
+                id={consentFieldId}
+                name={SURVEY_CONSENT_FIELD}
+                checked={values.contactConsent}
+                error={errors[SURVEY_CONSENT_FIELD]}
+              >
+                J’accepte que {brand.name} utilise cette adresse pour me recontacter au sujet de
+                mes réponses. Je peux retirer mon accord à tout moment.
+              </ConsentField>
             </section>
 
             <SpamTrap
@@ -303,35 +291,6 @@ const consentErrorId = errors[SURVEY_CONSENT_FIELD] ? `${consentFieldId}__error`
     font-size: var(--step-3);
   }
 
-  .consent {
-    display: grid;
-    gap: var(--space-2xs);
-  }
-
-  .consent--invalid {
-    padding-inline-start: var(--space-s);
-    border-inline-start: 4px solid var(--color-danger);
-  }
-
-  .consent__error {
-    color: var(--color-danger);
-    font-weight: var(--weight-semibold);
-  }
-
-  .consent__label {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-xs);
-    cursor: pointer;
-  }
-
-  .consent__label input {
-    flex: none;
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-block-start: 0.2em;
-    accent-color: var(--color-primary);
-  }
 
   .survey__privacy {
     color: var(--color-text-muted);
