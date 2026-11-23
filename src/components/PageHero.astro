@@ -60,15 +60,17 @@ const titleLines = lines.map((line) => frenchSpacing(line));
   {
     photo && (
       <figure class="page-hero__figure">
-        <Image
-          class="page-hero__photo"
-          src={photo.src}
-          alt={photo.alt}
-          widths={[640, 960, 1280, 1920]}
-          sizes="(min-width: 56rem) 45vw, 100vw"
-          loading="eager"
-          fetchpriority="high"
-        />
+        <span class="page-hero__frame">
+          <Image
+            class="page-hero__photo"
+            src={photo.src}
+            alt={photo.alt}
+            widths={[640, 960, 1280, 1920]}
+            sizes="(min-width: 56rem) 45vw, 100vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </span>
         <figcaption class="page-hero__caption">{frenchSpacing(photo.caption)}</figcaption>
       </figure>
     )
@@ -170,6 +172,12 @@ const titleLines = lines.map((line) => frenchSpacing(line));
     margin: 0;
   }
 
+  /* The frame crops the picture while it drifts. */
+  .page-hero__frame {
+    display: block;
+    overflow: hidden;
+  }
+
   .page-hero__photo {
     width: 100%;
     aspect-ratio: 4 / 3;
@@ -203,8 +211,12 @@ const titleLines = lines.map((line) => frenchSpacing(line));
       grid-template-rows: 1fr auto;
     }
 
+    .page-hero--photo .page-hero__frame,
     .page-hero--photo .page-hero__photo {
       height: 100%;
+    }
+
+    .page-hero--photo .page-hero__photo {
       aspect-ratio: auto;
     }
 
@@ -226,6 +238,18 @@ const titleLines = lines.map((line) => frenchSpacing(line));
     .page-hero__content,
     .page-hero__figure {
       animation: page-hero-fade 700ms 380ms ease-out both;
+    }
+
+    /* The photograph settles slowly into place: the page's one moving picture. */
+    .page-hero__photo {
+      /* Done within five seconds, so no motion runs on without a way to stop it (WCAG 2.2.2). */
+      animation: page-hero-drift 4.5s var(--ease-out-strong) both;
+    }
+  }
+
+  @keyframes page-hero-drift {
+    from {
+      transform: scale(1.08);
     }
   }
 
