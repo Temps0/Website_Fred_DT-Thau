@@ -1,97 +1,96 @@
 ---
 /**
- * Closing call to action of a page: a matt gold band that is one link. One verb, set
- * across the whole width, says the action; the sentence above says what happens next.
- * On hover or focus the band turns deep green.
+ * Closing call to action of a page, on the matt gold field: the page's idea returns as a
+ * two-line title set very large, then, on one line along the foot of the field, what
+ * happens next and the button that does it.
  */
 import { frenchSpacing } from '../lib/text';
+import LinkButton from './LinkButton.astro';
 
 interface Props {
   href: string;
-  /** The action, a verb of about seven letters, set across the whole width ("Parlons"). */
-  word: string;
+  /** The title, one entry per line (two at most), echoing the page's own title. */
+  lines: string[];
   /** What happens next, one sentence. */
   sentence: string;
+  /** Label of the button, named for what it does. */
+  action?: string;
   /** id of the heading, unique on the page. */
   titleId?: string;
 }
 
-const { href, word, sentence, titleId = 'cta-title' } = Astro.props;
+const {
+  href,
+  lines,
+  sentence,
+  action = 'Réserver un échange de 30 minutes',
+  titleId = 'cta-title',
+} = Astro.props;
 ---
 
-<section class="cta-band" aria-labelledby={titleId}>
-  <a class="cta-band__link" href={href}>
-    <span class="cta-band__top">
-      <span class="cta-band__sentence">{frenchSpacing(sentence)}</span>
-      <svg class="cta-band__arrow" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path d="M14 34 L34 14 M18 14 H34 V30" />
-      </svg>
-    </span>
-    <h2 id={titleId} class="cta-band__word">{word}</h2>
-  </a>
+<section class="cta-band chapter chapter--gold" aria-labelledby={titleId}>
+  <div class="container cta-band__inner" data-reveal>
+    <h2 id={titleId} class="cta-band__title">
+      {/* A space between the lines keeps the heading's text whole for assistive technologies. */}
+      {
+        lines.map((line, index) => (
+          <span class="cta-band__line">
+            {index > 0 ? ' ' : ''}
+            {frenchSpacing(line)}
+          </span>
+        ))
+      }
+    </h2>
+    <div class="cta-band__foot">
+      <p class="cta-band__sentence">{frenchSpacing(sentence)}</p>
+      <LinkButton href={href}>{action}</LinkButton>
+    </div>
+  </div>
 </section>
 
 <style>
-  .cta-band__link {
+  .cta-band__inner {
     display: grid;
-    align-content: space-between;
-    gap: var(--space-xl);
-    min-height: max(22rem, 56svh);
-    padding: var(--space-l) var(--gutter) var(--space-s);
-    background-color: var(--gold);
-    color: var(--anthracite);
-    text-decoration: none;
-    transition:
-      background-color 180ms ease-out,
-      color 180ms ease-out;
+    grid-template-rows: 1fr auto;
+    gap: var(--space-2xl);
   }
 
-  .cta-band__link:hover,
-  .cta-band__link:focus-visible {
-    background-color: var(--green-deep);
-    color: var(--cream);
+  /* On a wide screen the band is a screen of its own; on a phone it ends with its button. */
+  @media (min-width: 56rem) {
+    .cta-band__inner {
+      min-height: max(22rem, 52svh);
+    }
   }
 
-  /* On the deep green of the focus state, a cream ring. */
-  .cta-band__link:focus-visible {
-    outline: 3px solid var(--cream);
-    outline-offset: -6px;
+  .cta-band__title {
+    color: var(--color-heading);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 1rem + 10vw, 11rem);
+    font-weight: var(--weight-medium);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
   }
 
-  /* The arrow follows the sentence: the word below spans the band. */
-  .cta-band__top {
-    display: flex;
-    align-items: flex-start;
+  .cta-band__line {
+    display: block;
+  }
+
+  .cta-band__foot {
+    display: grid;
     gap: var(--space-m);
+    justify-items: start;
   }
 
   .cta-band__sentence {
-    max-width: 28rem;
+    max-width: 30rem;
     font-size: var(--step-1);
     font-weight: var(--weight-semibold);
   }
 
-  .cta-band__arrow {
-    flex: none;
-    width: clamp(2rem, 1.4rem + 2vw, 3rem);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 3;
-    transition: transform 180ms ease-out;
-  }
-
-  .cta-band__link:hover .cta-band__arrow {
-    transform: translate(4px, -4px);
-  }
-
-  .cta-band__word {
-    margin: 0;
-    color: inherit;
-    font-family: var(--font-display);
-    /* Sized so that a word of seven letters ("Parlons") spans the content width. */
-    font-size: calc((100vw - 2 * var(--gutter)) / 3.45);
-    font-weight: var(--weight-medium);
-    line-height: 0.8;
-    letter-spacing: -0.04em;
+  @media (min-width: 40rem) {
+    .cta-band__foot {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
   }
 </style>
