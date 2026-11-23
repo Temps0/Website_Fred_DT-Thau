@@ -1,10 +1,13 @@
 ---
+import { Image } from 'astro:assets';
 import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
 import PageHero from '../components/PageHero.astro';
 import ToComplete from '../components/ToComplete.astro';
+import { photos } from '../data/photos';
 import { area, brand, company, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { frenchSpacing } from '../lib/text';
 
 const values = [
   { title: 'Pédagogie', text: 'Rendre les sujets complexes accessibles, sans jargon.' },
@@ -20,7 +23,12 @@ const values = [
   title="Qui sommes-nous ? L’origine du projet et son fondateur"
   description="DT-Thau, organisme de formation créé à Mèze en 2026 par Frédéric Dessombs, aide les acteurs du Bassin de Thau à passer à l’action écologique."
 >
-  <PageHero lines={['Qui sommes-nous ?']} titleId="about-title">
+  <PageHero
+    lines={['Qui', 'sommes-nous ?']}
+    titleId="about-title"
+    size="m"
+    photo={photos.oysterParks}
+  >
     <p class="lead">
       {brand.name} est née d’une conviction&nbsp;: rendre la transition écologique compréhensible
       et permettre aux acteurs du {area} de passer de la réflexion à l’action.
@@ -65,47 +73,71 @@ const values = [
   </section>
 
   <section class="chapter chapter--lagoon" aria-labelledby="values-title">
-    <div class="container flow flow--l" data-reveal>
-      <div class="split">
-        <h2 id="values-title">Notre engagement</h2>
-        <p class="lead">
-          Une approche fondée sur trois valeurs, avec un ancrage particulier dans les réalités du
-          {area}.
-        </p>
+    <div class="container engagement" data-reveal>
+      <div class="flow flow--l">
+        <div class="flow flow--m">
+          <h2 id="values-title">Notre engagement</h2>
+          <p class="lead">
+            Une approche fondée sur trois valeurs, avec un ancrage particulier dans les réalités
+            du {area}.
+          </p>
+        </div>
+        {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+        <ul class="values" role="list">
+          {
+            values.map((value) => (
+              <li>
+                <h3 class="values__title">{value.title}</h3>
+                <p>{value.text}</p>
+              </li>
+            ))
+          }
+        </ul>
       </div>
-      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-      <ul class="values" role="list" data-reveal>
-        {
-          values.map((value) => (
-            <li>
-              <h3 class="values__title">{value.title}</h3>
-              <p>{value.text}</p>
-            </li>
-          ))
-        }
-      </ul>
+      <figure class="engagement__figure">
+        <Image
+          class="engagement__photo"
+          src={photos.deadPine.src}
+          alt={photos.deadPine.alt}
+          widths={[480, 720, 960]}
+          sizes="(min-width: 56rem) 38vw, 100vw"
+        />
+        <figcaption class="engagement__caption">{frenchSpacing(photos.deadPine.caption)}</figcaption>
+      </figure>
     </div>
   </section>
 
   <section class="chapter chapter--sand" aria-labelledby="facts-title">
-    <div class="container split" data-reveal>
-      <h2 id="facts-title">{brand.name} en bref</h2>
-      {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-      <ul class="facts" role="list">
-        <li>Organisme de formation et de conseil en développement durable et RSE</li>
-        <li>Créée en 2026, basée à {company.address.city}</li>
-        <li>
-          Au service des entreprises, des établissements d’enseignement et des collectivités du
-          {area}
-        </li>
-      </ul>
+    <div class="container brief" data-reveal>
+      <figure class="brief__figure">
+        <Image
+          class="brief__photo"
+          src={photos.climateFresk.src}
+          alt={photos.climateFresk.alt}
+          widths={[480, 720, 960]}
+          sizes="(min-width: 56rem) 38vw, 100vw"
+        />
+        <figcaption class="brief__caption">{frenchSpacing(photos.climateFresk.caption)}</figcaption>
+      </figure>
+      <div class="flow flow--l">
+        <h2 id="facts-title">{brand.name} en bref</h2>
+        {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+        <ul class="facts" role="list">
+          <li>Organisme de formation et de conseil en développement durable et RSE</li>
+          <li>Créée en 2026, basée à {company.address.city}</li>
+          <li>
+            Au service des entreprises, des établissements d’enseignement et des collectivités du
+            {area}
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
   <CtaBand
     href={contactNav.href}
-    word="Parlons"
-    sentence="Faisons connaissance : un échange de 30 minutes, en visio ou en présentiel."
+    lines={['Faisons', 'connaissance']}
+    sentence="Un échange de 30 minutes, en visio ou en présentiel."
   />
 </BaseLayout>
 
@@ -155,30 +187,82 @@ const values = [
     margin: 0;
   }
 
-  .values {
+  /* The commitments on the left, the territory they answer to on the right. */
+  .engagement {
     display: grid;
-    gap: var(--space-xl);
-    padding: 0;
-    list-style: none;
+    gap: var(--space-2xl);
   }
 
   @media (min-width: 56rem) {
-    .values {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .engagement {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: center;
     }
+  }
+
+  .engagement__figure {
+    margin: 0;
+  }
+
+  .engagement__photo {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .engagement__caption {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
+  }
+
+  .values {
+    display: grid;
+    gap: var(--space-l);
+    padding: 0;
+    list-style: none;
   }
 
   .values li > * + * {
     margin-block-start: var(--space-xs);
   }
 
-  /* The subheading size keeps "Responsabilité" whole in a third of the width. */
   .values__title {
     color: var(--color-accent-text);
     font-family: var(--font-display);
     font-size: var(--step-3);
     font-weight: var(--weight-medium);
     line-height: var(--leading-display);
+  }
+
+  /* The picture of the work on the left, the facts about who does it on the right. */
+  .brief {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 56rem) {
+    .brief {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: center;
+      column-gap: var(--space-2xl);
+    }
+  }
+
+  .brief__figure {
+    margin: 0;
+  }
+
+  .brief__photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .brief__caption {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text-muted);
+    font-size: var(--step--1);
   }
 
   .facts {

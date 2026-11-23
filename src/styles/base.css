@@ -201,14 +201,6 @@ a:hover {
   width: min(100% - 2 * var(--gutter), var(--container-max));
   margin-inline: auto;
 }
-.container--narrow {
-  --container-max: var(--container-narrow);
-}
-
-.section {
-  padding-block: var(--space-section);
-}
-
 /*
  * Colour chapters: every section is a full-width field of one charter colour, butted
  * against the next. The hard edge between two fields does the work of lines, cards and
@@ -234,8 +226,7 @@ a:hover {
   --color-accent-text: var(--green-forest);
 }
 /* Deep green, as the charter's covers and conclusion pages. */
-.chapter--lagoon,
-.section--dark {
+.chapter--lagoon {
   --field: var(--green-deep);
   --button-secondary-bg: var(--green-deep-raised);
   --color-focus: var(--color-accent-on-dark);
@@ -263,9 +254,6 @@ a:hover {
 .flow > * + * {
   margin-block-start: var(--flow-space, 1em);
 }
-.flow--s {
-  --flow-space: var(--space-s);
-}
 .flow--m {
   --flow-space: var(--space-m);
 }
@@ -276,6 +264,26 @@ a:hover {
 .lead {
   font-size: var(--step-1);
   max-width: var(--measure);
+}
+
+/* A chapter's heading on the left, its lead on the right, on one baseline. */
+.chapter-intro {
+  display: grid;
+  gap: var(--space-m);
+}
+@media (min-width: 56rem) {
+  .chapter-intro {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: baseline;
+  }
+}
+
+/* The title serif, for words set large inside components: names, verbs, totals. */
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
 }
 
 /* ---- Buttons -------------------------------------------------------------- */
@@ -316,14 +324,14 @@ a:hover {
   background-color: var(--color-primary);
   color: var(--color-on-primary);
 }
-:is(.chapter--lagoon, .section--dark) .button--primary {
+.chapter--lagoon .button--primary {
   background-color: var(--color-on-dark);
   color: var(--color-primary);
 }
-:is(.chapter--lagoon, .section--dark) .button--primary:hover {
+.chapter--lagoon .button--primary:hover {
   background-color: var(--color-highlight);
 }
-:is(.chapter--lagoon, .section--dark) .button--secondary:hover {
+.chapter--lagoon .button--secondary:hover {
   background-color: var(--green-deep-lit);
   color: var(--color-on-dark);
 }

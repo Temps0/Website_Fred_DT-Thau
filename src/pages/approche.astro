@@ -3,6 +3,7 @@ import CtaBand from '../components/CtaBand.astro';
 import LinkButton from '../components/LinkButton.astro';
 import PageHero from '../components/PageHero.astro';
 import PrincipleList from '../components/PrincipleList.astro';
+import { photos } from '../data/photos';
 import { area, contactNav } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -11,7 +12,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Notre approche : accessible, concrète, locale, flexible"
   description="Une approche professionnalisante de la transition écologique : accessible, concrète, ancrée dans le Bassin de Thau et adaptée à chaque public."
 >
-  <PageHero lines={['Une approche', 'professionnalisante']} titleId="approach-title" size="m">
+  <PageHero
+    lines={['Une approche', 'professionnalisante']}
+    titleId="approach-title"
+    size="m"
+    photo={photos.strategyWorkshop}
+  >
     <p class="lead">
       Une expertise de la transition écologique et un ancrage local dans le {area}&nbsp;: quatre
       principes guident chacune de nos formations.
@@ -39,8 +45,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <CtaBand
     href={contactNav.href}
-    word="Parlons"
-    sentence="Et pour votre structure ? Un échange de 30 minutes, en visio ou en présentiel."
+    lines={['Et chez', 'vous ?']}
+    sentence="Un échange de 30 minutes, en visio ou en présentiel, pour en parler."
   />
 </BaseLayout>
 

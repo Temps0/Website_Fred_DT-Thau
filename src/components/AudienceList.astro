@@ -1,9 +1,13 @@
 ---
 /**
- * The three audiences of the catalogue, as rows of a list: the audience named large, its
- * sentence and a link to its programme. Space separates the rows; no lines, no cards.
+ * The three audiences of the catalogue, as a staircase: each row starts further right
+ * than the one above, with a photograph of its sector, its name set large, its
+ * sentence and a cue to its programme. The name is the link and its target area covers
+ * the whole row. Space separates the rows; no lines, no cards.
  */
+import { Image } from 'astro:assets';
 import { audiences } from '../data/audiences';
+import { type Photo, photos } from '../data/photos';
 import { frenchSpacing } from '../lib/text';
 
 interface Props {
@@ -12,21 +16,44 @@ interface Props {
 }
 
 const { as: Heading = 'h3' } = Astro.props;
+
+const audiencePhotos: Record<string, Photo> = {
+  ecoles: photos.climateFreskStudents,
+  pme: photos.oysterTables,
+  collectivites: photos.lido,
+};
 ---
 
 {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
 <ul class="audiences" role="list" data-reveal>
   {
-    audiences.map((audience) => (
-      <li class="audience">
-        <Heading class="audience__name">{audience.name}</Heading>
-        <p class="audience__summary">{frenchSpacing(audience.summary)}</p>
-        <a class="audience__link" href={`/programmes/#${audience.id}`}>
-          Voir le programme<span class="visually-hidden">&nbsp;: {audience.name}</span>
-          <span aria-hidden="true">&nbsp;→</span>
-        </a>
-      </li>
-    ))
+    audiences.map((audience) => {
+      const photo = audiencePhotos[audience.id];
+      return (
+        <li class="audience">
+          {photo && (
+            <Image
+              class="audience__photo"
+              src={photo.src}
+              alt={photo.alt}
+              widths={[320, 480, 720]}
+              sizes="(min-width: 56rem) 18rem, 100vw"
+            />
+          )}
+          <div class="audience__text">
+            <Heading class="audience__name display">
+              <a class="audience__link" href={`/programmes/#${audience.id}`}>
+                {audience.name}
+              </a>
+            </Heading>
+            <p class="audience__summary">{frenchSpacing(audience.summary)}</p>
+            <span class="audience__more" aria-hidden="true">
+              Voir le programme <span class="audience__arrow">→</span>
+            </span>
+          </div>
+        </li>
+      );
+    })
   }
 </ul>
 
@@ -39,36 +66,99 @@ const { as: Heading = 'h3' } = Astro.props;
   }
 
   .audience {
+    position: relative;
     display: grid;
-    gap: var(--space-xs);
+    gap: var(--space-s);
   }
 
-  @media (min-width: 56rem) {
-    .audience {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr);
-      align-items: baseline;
-      gap: var(--space-l);
-    }
+  .audience__photo {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .audience__text {
+    display: grid;
+    gap: var(--space-2xs);
+    justify-items: start;
   }
 
   .audience__name {
-    font-family: var(--font-display);
-    font-size: var(--step-3);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
+    font-size: var(--step-4);
+  }
+
+  .audience__summary {
+    max-width: 32rem;
   }
 
   .audience__link {
-    font-weight: var(--weight-semibold);
+    color: inherit;
+    text-decoration: none;
   }
 
-  .audience__link span[aria-hidden] {
+  .audience__more {
+    color: var(--color-link);
+    font-weight: var(--weight-semibold);
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.15em;
+  }
+
+  /* The link covers its whole row: picture, name and sentence answer the pointer. */
+  .audience__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .audience__arrow {
     display: inline-block;
+    text-decoration: none;
     transition: transform 160ms ease-out;
   }
 
-  .audience__link:hover span[aria-hidden] {
+  .audience:hover .audience__arrow {
     transform: translateX(4px);
+  }
+
+  .audience:hover .audience__name {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.12em;
+  }
+
+  /* The focus ring of the link outlines the whole row it covers, where :has() is known;
+     elsewhere the link keeps its own ring. */
+  @supports selector(:has(*)) {
+    .audience__link:focus-visible {
+      outline: none;
+    }
+  }
+
+  .audience:has(.audience__link:focus-visible) {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 6px;
+  }
+
+  /* Each row a step further right than the one above. */
+  @media (min-width: 56rem) {
+    .audiences {
+      gap: var(--space-xl);
+    }
+
+    .audience {
+      grid-template-columns: 18rem minmax(0, 34rem);
+      align-items: center;
+      gap: var(--space-xl);
+      margin-inline-start: calc(var(--step, 0) * 8vw);
+    }
+
+    .audience:nth-child(2) {
+      --step: 1;
+    }
+
+    .audience:nth-child(3) {
+      --step: 2;
+    }
   }
 </style>

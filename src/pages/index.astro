@@ -27,8 +27,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </PageHero>
 
   <section class="chapter chapter--paper" aria-labelledby="audience-title">
-    <div class="container split" data-reveal>
-      <div class="flow flow--m">
+    <div class="container flow flow--l">
+      <div class="chapter-intro" data-reveal>
         <h2 id="audience-title">Pour qui&nbsp;?</h2>
         <p class="lead">
           Une expertise de la transition écologique et un ancrage local, au service de trois
@@ -41,7 +41,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <section class="chapter chapter--sage" aria-labelledby="path-title">
     <div class="container" data-reveal>
-      <LearningPath>
+      <LearningPath linkTo="/programmes/">
         <h2 id="path-title" slot="intro">Du constat à l’action</h2>
         <p class="lead" slot="intro">
           Trois modules de 3&nbsp;heures, au cœur du programme CAP TRANSITION Étudiants&nbsp;:
@@ -56,8 +56,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   <section class="chapter chapter--lagoon" aria-labelledby="approach-title">
-    <div class="container flow flow--l" data-reveal>
-      <div class="approach-intro">
+    <div class="container flow flow--l">
+      <div class="chapter-intro" data-reveal>
         <h2 id="approach-title">Notre approche</h2>
         <p class="lead">
           Une approche professionnalisante, ancrée dans les réalités du {area}, sans culpabiliser
@@ -90,41 +90,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <CtaBand
     href={contactNav.href}
-    word="Parlons"
+    lines={['Passons', 'à l’action']}
     sentence="Réservez un échange de 30 minutes, en visio ou en présentiel, pour parler de votre situation."
   />
 </BaseLayout>
 
 <style>
-  /* Heading and lead on the left, the content it introduces on the right. */
-  .split {
-    display: grid;
-    gap: var(--space-xl);
-  }
-
-  @media (min-width: 56rem) {
-    .split {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-      align-items: start;
-    }
-  }
-
   .path-more {
     margin-block-start: var(--space-xl);
   }
 
-  .approach-intro {
-    display: grid;
-    gap: var(--space-m);
-    margin-block-end: var(--space-xl);
-  }
-
-  @media (min-width: 56rem) {
-    .approach-intro {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      align-items: baseline;
-    }
-  }
 
   .founder {
     display: grid;

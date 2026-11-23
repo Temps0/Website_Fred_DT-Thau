@@ -1,38 +1,59 @@
 ---
 /**
  * The four principles of the approach (catalogue), in two layouts:
- * - "stairs" (home page, on the deep green): each principle word set large, every line
- *   starting further right than the one above, so the four descend like stairs, with its
- *   sentence beside it;
- * - "rows" (approach page): one row per principle, the word on the left, the summary and
- *   the longer explanation on the right.
+ * - "fan" (home page, on the deep green): four cards dealt onto the table, each in its own
+ *   charter colour, with the principle's word, a photograph of it in practice and its
+ *   sentence; on a wide screen they lie side by side, each slightly turned;
+ * - "rows" (approach page): one row per principle, its word, summary and longer explanation
+ *   beside its photograph, the picture changing sides from one row to the next.
  */
+import { Image } from 'astro:assets';
 import { principles } from '../data/approach';
+import { type Photo, photos } from '../data/photos';
 import { frenchSpacing } from '../lib/text';
 
 interface Props {
   /** Heading level of the principle names, to fit the page outline. */
   as?: 'h2' | 'h3';
-  layout?: 'stairs' | 'rows';
+  layout?: 'fan' | 'rows';
 }
 
-const { as: Heading = 'h3', layout = 'stairs' } = Astro.props;
+const { as: Heading = 'h3', layout = 'fan' } = Astro.props;
+
+const principlePhotos: Record<string, Photo> = {
+  accessible: photos.climateFresk,
+  concrete: photos.repairCafe,
+  locale: photos.oysterParks,
+  flexible: photos.workshop,
+};
 ---
 
 {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
 <ul class:list={['principles', `principles--${layout}`]} role="list" data-reveal>
   {
-    principles.map((principle) => (
-      <li class="principle" id={layout === 'rows' ? principle.id : undefined}>
-        <Heading class="principle__title">{principle.title}</Heading>
-        <div class="principle__text">
-          <p class:list={{ lead: layout === 'rows' }}>{frenchSpacing(principle.summary)}</p>
-          {layout === 'rows' && (
-            <p class="principle__detail">{frenchSpacing(principle.detail)}</p>
+    principles.map((principle) => {
+      const photo = principlePhotos[principle.id];
+      return (
+        <li class="principle" id={layout === 'rows' ? principle.id : undefined}>
+          <Heading class="principle__title display">{principle.title}</Heading>
+          {photo && (
+            <Image
+              class="principle__photo"
+              src={photo.src}
+              alt={photo.alt}
+              widths={[320, 480, 720]}
+              sizes={layout === 'fan' ? '(min-width: 56rem) 22vw, 90vw' : '(min-width: 56rem) 40vw, 100vw'}
+            />
           )}
-        </div>
-      </li>
-    ))
+          <div class="principle__text">
+            <p class:list={{ lead: layout === 'rows' }}>{frenchSpacing(principle.summary)}</p>
+            {layout === 'rows' && (
+              <p class="principle__detail">{frenchSpacing(principle.detail)}</p>
+            )}
+          </div>
+        </li>
+      );
+    })
   }
 </ul>
 
@@ -44,60 +65,99 @@ const { as: Heading = 'h3', layout = 'stairs' } = Astro.props;
   }
 
   .principle__title {
-    color: var(--title-ink, var(--color-heading));
-    font-family: var(--font-display);
-    font-weight: var(--weight-medium);
-    line-height: var(--leading-display);
-    letter-spacing: var(--tracking-display);
-  }
-
-  /* ---- Stairs ----------------------------------------------------------- */
-  .principles--stairs {
-    gap: var(--space-l);
-  }
-
-  .principles--stairs .principle {
-    display: grid;
-    gap: var(--space-2xs);
-    padding-inline-start: calc(var(--step) * 5vw);
-  }
-
-  .principles--stairs .principle:nth-child(1) {
-    --step: 0;
-  }
-
-  .principles--stairs .principle:nth-child(2) {
-    --step: 1;
-  }
-
-  .principles--stairs .principle:nth-child(3) {
-    --step: 2;
-  }
-
-  .principles--stairs .principle:nth-child(4) {
-    --step: 3;
-  }
-
-  .principles--stairs .principle__title {
+    color: var(--color-heading);
     font-size: var(--step-4);
   }
 
-  /* Lines alternate between the cream and the light gold of the deep green field. */
-  .principles--stairs .principle:nth-child(even) {
-    --title-ink: var(--color-accent-text);
+  /* ---- Fan -------------------------------------------------------------- */
+  .principles--fan {
+    gap: var(--space-m);
   }
 
-  .principles--stairs .principle__text {
-    max-width: 24rem;
+  /* Each card sets the inks that read on its own colour. */
+  .principles--fan .principle {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: var(--space-s);
+    padding: var(--space-m);
+    background-color: var(--card);
+    --color-heading: var(--card-ink);
+    color: var(--card-ink);
+    container-type: inline-size;
   }
 
+  /* "Accessible", the longest word, is about 4.8em wide: the title never outgrows its card. */
+  .principles--fan .principle__title {
+    font-size: min(var(--step-4), 20cqi);
+  }
+
+  .principles--fan .principle:nth-child(1) {
+    --card: var(--cream);
+    --card-ink: var(--green-forest);
+  }
+
+  .principles--fan .principle:nth-child(2) {
+    --card: var(--gold);
+    --card-ink: var(--anthracite);
+  }
+
+  .principles--fan .principle:nth-child(3) {
+    --card: var(--sage);
+    --card-ink: var(--green-forest);
+  }
+
+  .principles--fan .principle:nth-child(4) {
+    --card: var(--green-deep-lit);
+    --card-ink: var(--cream);
+  }
+
+  .principle__photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  /*
+   * Dealt onto the table: each card turned a little and set at its own height. Two by two
+   * first, then the four side by side once a quarter of the width holds "Accessible", the
+   * longest word, at its full size (from 80rem).
+   */
   @media (min-width: 56rem) {
-    .principles--stairs .principle {
-      grid-template-columns: max-content minmax(0, 22rem);
-      justify-content: start;
-      align-items: baseline;
-      gap: var(--space-l);
-      padding-inline-start: calc(var(--step) * 8vw);
+    .principles--fan {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: var(--space-xl) var(--space-l);
+      padding-block: var(--space-l);
+    }
+
+    .principles--fan .principle {
+      transform: translateY(var(--drop, 0)) rotate(var(--turn, 0deg));
+    }
+
+    .principles--fan .principle:nth-child(1) {
+      --turn: -2.5deg;
+      --drop: 1.5rem;
+    }
+
+    .principles--fan .principle:nth-child(2) {
+      --turn: 1.5deg;
+    }
+
+    .principles--fan .principle:nth-child(3) {
+      --turn: -1deg;
+      --drop: 2.5rem;
+    }
+
+    .principles--fan .principle:nth-child(4) {
+      --turn: 2.5deg;
+      --drop: 0.75rem;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .principles--fan {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-s);
     }
   }
 
@@ -111,19 +171,40 @@ const { as: Heading = 'h3', layout = 'stairs' } = Astro.props;
     gap: var(--space-s);
   }
 
-  .principles--rows .principle__title {
-    font-size: var(--step-4);
-  }
-
   .principles--rows .principle__text > * + * {
     margin-block-start: var(--space-s);
   }
 
+  /* Word and text on one side, the photograph on the other, sides alternating. */
   @media (min-width: 56rem) {
     .principles--rows .principle {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-areas:
+        "title photo"
+        "text photo";
+      grid-template-rows: auto 1fr;
+      column-gap: var(--space-2xl);
+      row-gap: var(--space-m);
+    }
+
+    .principles--rows .principle:nth-child(even) {
       grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      align-items: baseline;
-      gap: var(--space-xl);
+      grid-template-areas:
+        "photo title"
+        "photo text";
+    }
+
+    .principles--rows .principle__title {
+      grid-area: title;
+      align-self: end;
+    }
+
+    .principles--rows .principle__photo {
+      grid-area: photo;
+    }
+
+    .principles--rows .principle__text {
+      grid-area: text;
     }
   }
 
