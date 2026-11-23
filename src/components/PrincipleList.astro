@@ -19,6 +19,8 @@ interface Props {
 }
 
 const { as: Heading = 'h3', layout = 'fan' } = Astro.props;
+// The fan enters as one hand of cards; the rows of the approach page enter one by one.
+const listReveal = layout === 'fan' ? '' : undefined;
 
 const principlePhotos: Record<string, Photo> = {
   accessible: photos.climateFresk,
@@ -29,12 +31,16 @@ const principlePhotos: Record<string, Photo> = {
 ---
 
 {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-<ul class:list={['principles', `principles--${layout}`]} role="list" data-reveal>
+<ul class:list={['principles', `principles--${layout}`]} role="list" data-reveal={listReveal}>
   {
     principles.map((principle) => {
       const photo = principlePhotos[principle.id];
       return (
-        <li class="principle" id={layout === 'rows' ? principle.id : undefined}>
+        <li
+          class="principle"
+          id={layout === 'rows' ? principle.id : undefined}
+          data-reveal={layout === 'rows' ? '' : undefined}
+        >
           <Heading class="principle__title display">{principle.title}</Heading>
           {photo && (
             <Image
