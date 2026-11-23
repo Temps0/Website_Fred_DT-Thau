@@ -4,6 +4,7 @@ import ConsentField from '../components/ConsentField.astro';
 import ContentText from '../components/ContentText.astro';
 import FormErrorSummary from '../components/FormErrorSummary.astro';
 import FormNotice from '../components/FormNotice.astro';
+import Icon from '../components/Icon.astro';
 import LinkButton from '../components/LinkButton.astro';
 import PageHero from '../components/PageHero.astro';
 import SpamTrap from '../components/SpamTrap.astro';
@@ -100,13 +101,19 @@ const titlePrefix = outcome !== undefined ? 'Erreur : ' : isSent ? 'Merci : ' : 
             <ol class="survey-index__list" role="list">
               {sections.map((section, sectionIndex) => (
                 <li>
-                  <a href={`#survey-section-${sectionIndex}`}>{frenchSpacing(section.title)}</a>
+                  <a href={`#survey-section-${sectionIndex}`} data-survey-part>
+                    {frenchSpacing(section.title)}
+                    <span class="survey-index__done">
+                      <Icon name="check" />
+                    </span>
+                  </a>
                 </li>
               ))}
               <li>
                 <a href="#survey-contact-title">Être recontacté (facultatif)</a>
               </li>
             </ol>
+            <p class="survey-index__progress" data-survey-progress hidden></p>
             <p>Les questions marquées «&nbsp;obligatoire&nbsp;» doivent être remplies.</p>
           </nav>
         )
@@ -155,6 +162,7 @@ const titlePrefix = outcome !== undefined ? 'Erreur : ' : isSent ? 'Merci : ' : 
             action="/questionnaire/"
             novalidate
             data-submit-once
+            data-survey-form
           >
             {sections.map((section, sectionIndex) => (
               <section class="survey__section" aria-labelledby={`survey-section-${sectionIndex}`} data-reveal>
@@ -225,6 +233,7 @@ const titlePrefix = outcome !== undefined ? 'Erreur : ' : isSent ? 'Merci : ' : 
 
 <script>
   import '../scripts/submit-once';
+  import '../scripts/survey-progress';
 </script>
 
 <style>
@@ -276,6 +285,22 @@ const titlePrefix = outcome !== undefined ? 'Erreur : ' : isSent ? 'Merci : ' : 
   .survey-index__list a {
     display: inline-block;
     padding-block: var(--space-3xs);
+    font-weight: var(--weight-semibold);
+  }
+
+  /* A part whose questions are all answered gets a check (decorative: the count below the
+     list says the same in words). */
+  .survey-index__done {
+    display: none;
+    vertical-align: middle;
+    margin-inline-start: var(--space-3xs);
+  }
+
+  .survey-index__list a:global(.is-complete) .survey-index__done {
+    display: inline-flex;
+  }
+
+  .survey-index__progress {
     font-weight: var(--weight-semibold);
   }
 
