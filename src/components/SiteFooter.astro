@@ -34,10 +34,10 @@ const year = new Date().getFullYear();
         sizes="80px"
         loading="lazy"
       />
-      <p class="site-footer__name">
-        {brand.name}
-        <span class="site-footer__tagline">{brand.tagline}</span>
-      </p>
+      <div class="site-footer__wordmark">
+        <p class="site-footer__name">{brand.name}</p>
+        <p class="site-footer__tagline">{brand.tagline}</p>
+      </div>
       <p class="site-footer__statement">
         Formations à la transition écologique et à la RSE pour les entreprises, les
         établissements d’enseignement et les collectivités du {area}.
@@ -175,10 +175,14 @@ const year = new Date().getFullYear();
     height: auto;
   }
 
-  /* The name and what it stands for, set tight: one wordmark, two lines. */
-  .site-footer__name {
+  /* The name and what it stands for, set tight: one wordmark, two lines, two faces kept in
+     two paragraphs. */
+  .site-footer__wordmark {
     display: grid;
     gap: var(--space-3xs);
+  }
+
+  .site-footer__name {
     font-family: var(--font-display);
     font-size: var(--step-4);
     font-weight: var(--weight-medium);
@@ -188,10 +192,6 @@ const year = new Date().getFullYear();
 
   .site-footer__tagline {
     color: var(--color-accent-on-dark);
-    font-family: var(--font-body);
-    font-size: var(--step-0);
-    font-weight: var(--weight-regular);
-    letter-spacing: normal;
   }
 
   .site-footer__statement {
@@ -212,11 +212,11 @@ const year = new Date().getFullYear();
     background-color: var(--green-deep-raised);
   }
 
+  /* Cream at the size of a lead: the light gold reached only 4.2:1 on the raised green. */
   .site-footer__heading {
-    color: var(--color-accent-on-dark);
-    font-size: var(--step--1);
+    color: var(--cream);
+    font-size: var(--step-1);
     font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-wide);
   }
 
   .site-footer__links {
@@ -249,8 +249,9 @@ const year = new Date().getFullYear();
     transition: background-color var(--duration-base) var(--ease-out);
   }
 
-  .site-footer :global(.site-footer__survey a),
-  .site-footer__survey {
+  /* Two classes, so it wins over the cream given to every link of the footer above
+     (one class and one element): cream on the gold read at 3:1 only. */
+  .site-footer .site-footer__survey {
     color: var(--anthracite);
   }
 
@@ -300,9 +301,8 @@ const year = new Date().getFullYear();
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--space-2xs) var(--space-l);
-    padding-block-start: var(--space-m);
-    /* One step of the green, drawn thin: the field keeps its own colour above and below. */
-    border-block-start: var(--border-width) solid var(--green-deep-lit);
+    /* Space alone sets the legal line apart: no dividing rule. */
+    padding-block-start: var(--space-l);
     color: var(--color-on-dark-muted);
     font-size: var(--step--1);
   }
