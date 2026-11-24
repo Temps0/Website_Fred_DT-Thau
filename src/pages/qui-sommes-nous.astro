@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
 import PageHero from '../components/PageHero.astro';
@@ -95,12 +95,13 @@ const values = [
         </ul>
       </div>
       <figure class="engagement__figure">
-        <Image
+        <Picture
+          formats={['avif', 'webp']}
           class="engagement__photo"
           src={photos.deadPine.src}
           alt={photos.deadPine.alt}
           widths={[480, 720, 960]}
-          sizes="(min-width: 56rem) 38vw, 100vw"
+          sizes="(min-width: 94rem) 37.5rem, (min-width: 56rem) 38vw, 100vw"
         />
         <figcaption class="engagement__caption">{frenchSpacing(photos.deadPine.caption)}</figcaption>
       </figure>
@@ -110,12 +111,13 @@ const values = [
   <section class="chapter chapter--sand" aria-labelledby="facts-title">
     <div class="container brief" data-reveal>
       <figure class="brief__figure">
-        <Image
+        <Picture
+          formats={['avif', 'webp']}
           class="brief__photo"
           src={photos.strategyWorkshop.src}
           alt={photos.strategyWorkshop.alt}
           widths={[480, 720, 960]}
-          sizes="(min-width: 56rem) 38vw, 100vw"
+          sizes="(min-width: 94rem) 37.5rem, (min-width: 56rem) 38vw, 100vw"
         />
         <figcaption class="brief__caption">{frenchSpacing(photos.strategyWorkshop.caption)}</figcaption>
       </figure>

@@ -5,7 +5,7 @@
  * sentence and a cue to its programme. The name is the link and its target area covers
  * the whole row. Space separates the rows; no lines, no cards.
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { audiences } from '../data/audiences';
 import { type Photo, photos } from '../data/photos';
 import { frenchSpacing } from '../lib/text';
@@ -32,7 +32,8 @@ const audiencePhotos: Record<string, Photo> = {
       return (
         <li class="audience">
           {photo && (
-            <Image
+            <Picture
+              formats={['avif', 'webp']}
               class="audience__photo"
               src={photo.src}
               alt={photo.alt}

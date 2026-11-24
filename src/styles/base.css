@@ -73,12 +73,15 @@ main {
 }
 
 img,
-picture,
 video,
 canvas,
 svg {
   display: block;
   max-width: 100%;
+}
+/* A <picture> only offers formats (AVIF, then WebP): its img is the box that is laid out. */
+picture {
+  display: contents;
 }
 img,
 video {
@@ -356,27 +359,34 @@ main:focus {
 
 /* ---- Motion --------------------------------------------------------------- */
 /* Section entrance (src/scripts/reveal.ts): the children rise in turn, 60ms apart. */
-[data-reveal] > * {
+/* A <picture> has no box of its own: its img takes the entrance in its place. */
+[data-reveal] > *,
+[data-reveal] > picture > img {
   transition:
     opacity 400ms ease-out,
     transform 450ms var(--ease-out-strong);
 }
-[data-reveal] > :nth-child(2) {
+[data-reveal] > :nth-child(2),
+[data-reveal] > picture:nth-child(2) > img {
   transition-delay: 60ms;
 }
-[data-reveal] > :nth-child(3) {
+[data-reveal] > :nth-child(3),
+[data-reveal] > picture:nth-child(3) > img {
   transition-delay: 120ms;
 }
-[data-reveal] > :nth-child(n + 4) {
+[data-reveal] > :nth-child(n + 4),
+[data-reveal] > picture:nth-child(n + 4) > img {
   transition-delay: 180ms;
 }
-[data-reveal].is-pending > * {
+[data-reveal].is-pending > *,
+[data-reveal].is-pending > picture > img {
   opacity: 0;
   transform: translateY(16px);
 }
 /* A printed page shows every block, scrolled to or not. */
 @media print {
-  [data-reveal].is-pending > * {
+  [data-reveal].is-pending > *,
+  [data-reveal].is-pending > picture > img {
     opacity: 1;
     transform: none;
   }
