@@ -6,7 +6,7 @@
  *
  * Two compositions:
  * - without a photograph, the field is the whole first screen: the title fills its upper
- *   part and the lead and actions sit in the lower right;
+ *   part and the lead and actions sit at its foot, flush left under the title;
  * - with a photograph, the title, lead and actions take the left of the field and the
  *   picture runs to the right edge, the full height of the screen.
  */
@@ -168,9 +168,9 @@ const titleLines = lines.map((line) => frenchSpacing(line));
   }
 
   @media (min-width: 56rem) {
-    /* Without a picture, the lead and actions take the lower right of the field. */
+    /* Without a picture, the lead and actions sit at the foot of the field, under the
+       first letters of the title: one left edge for the whole screen. */
     .page-hero:not(.page-hero--photo) .page-hero__content {
-      justify-self: end;
       width: min(100%, 44rem);
     }
   }
