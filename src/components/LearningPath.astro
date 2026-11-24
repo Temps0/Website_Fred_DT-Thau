@@ -7,7 +7,8 @@
  * sit under each tile.
  *
  * Laid out for a sage chapter. An optional "intro" slot (the section heading and lead)
- * sits above the path.
+ * sits above the path; on wide screens it reaches down into the empty corner the rising
+ * line leaves above the first tiles.
  */
 import { Image } from 'astro:assets';
 import { type Photo, photos } from '../data/photos';
@@ -224,6 +225,50 @@ const modulePhotos: Record<string, Photo> = {
      */
     .path__verb {
       font-size: min(var(--step-4), calc((100cqi / 3 - 4rem) / 6));
+    }
+  }
+
+  /*
+   * The intro in the corner above the slope. It keeps to the left 42% of the board, where
+   * the free corner is at least 24rem x 58% = 13.9rem deep, and the path is drawn up
+   * 11.5rem under it: the intro only reaches into empty ground, with 2.4rem to spare. Both
+   * stay in the flow, so a longer intro (a larger font, wider text spacing) pushes the path
+   * down instead of running over it. The intro is drawn above the path's links, whose boxes
+   * are empty there, so its text stays selectable.
+   */
+  @media (min-width: 56rem) {
+    .path-board {
+      gap: 0;
+    }
+
+    .path-board__intro {
+      position: relative;
+      z-index: 1;
+      max-width: 42%;
+      /* A short intro still ends below the top of the path, never under it. */
+      min-height: 11.5rem;
+    }
+
+    .path {
+      margin-block-start: -11.5rem;
+    }
+
+    /*
+     * A cut tile shows its focus on what is visible: the link's rectangle would cross the
+     * intro above the slope. An inset ring in the tile's own ink frames the verb's band,
+     * and the title's underline thickens.
+     */
+    a.path__head:focus-visible {
+      outline: none;
+    }
+
+    a.path__head:focus-visible .path__verb {
+      outline: var(--focus-width) solid var(--tile-ink);
+      outline-offset: calc(-2 * var(--focus-width));
+    }
+
+    a.path__head:focus-visible .path__title {
+      text-decoration-thickness: 3px;
     }
   }
 </style>
