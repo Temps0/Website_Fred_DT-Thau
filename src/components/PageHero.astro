@@ -142,9 +142,13 @@ const titleLines = lines.map((line) => frenchSpacing(line));
   .page-hero__line {
     display: block;
     overflow: hidden;
-    /* Room for accents and descenders inside the mask of the entrance animation. */
-    padding-block: 0.06em;
-    margin-block: -0.06em;
+    /*
+     * Room for accents and descenders inside the mask of the entrance animation: the
+     * line box is shorter than the face's ink (line-height 0.94), so the mask has to be
+     * taller than the line or it cuts the "É" and the tail of the "g" and the "q".
+     */
+    padding-block: 0.18em;
+    margin-block: -0.18em;
   }
 
   .page-hero__line > span {
