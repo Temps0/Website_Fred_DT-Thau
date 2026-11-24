@@ -10,7 +10,7 @@
  * sits above the path; on wide screens it reaches down into the empty corner the rising
  * line leaves above the first tiles.
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { type Photo, photos } from '../data/photos';
 import { getModules } from '../lib/modules';
 import { frenchSpacing } from '../lib/text';
@@ -54,7 +54,8 @@ const modulePhotos: Record<string, Photo> = {
             <Step class="path__head" href={linkTo !== undefined ? `${linkTo}#${module.id}` : undefined}>
               <span class="path__tile">
                 {photo && (
-                  <Image
+                  <Picture
+                    formats={['avif', 'webp']}
                     class="path__photo"
                     src={photo.src}
                     alt={linkTo !== undefined ? '' : photo.alt}

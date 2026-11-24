@@ -5,13 +5,18 @@
  * student offer deck, only 257 × 305 px, so it is never shown wider than that: replace
  * src/assets/frederic-dessombs.png with a larger photo when available.
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import portrait from '../assets/frederic-dessombs.png';
 import { founder } from '../data/site';
 ---
 
 <div class="portrait-arch">
-  <Image class="portrait" src={portrait} alt={`Portrait de ${founder.name}`} />
+  <Picture
+    class="portrait"
+    src={portrait}
+    formats={['avif', 'webp']}
+    alt={`Portrait de ${founder.name}`}
+  />
 </div>
 
 <style>

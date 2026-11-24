@@ -7,7 +7,7 @@
  * - "rows" (approach page): one row per principle, its word, summary and longer explanation
  *   beside its photograph, the picture changing sides from one row to the next.
  */
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { principles } from '../data/approach';
 import { type Photo, photos } from '../data/photos';
 import { frenchSpacing } from '../lib/text';
@@ -43,7 +43,8 @@ const principlePhotos: Record<string, Photo> = {
         >
           <Heading class="principle__title display">{principle.title}</Heading>
           {photo && (
-            <Image
+            <Picture
+              formats={['avif', 'webp']}
               class="principle__photo"
               src={photo.src}
               alt={photo.alt}
