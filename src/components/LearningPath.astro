@@ -220,6 +220,35 @@ const modulePhotos: Record<string, Photo> = {
     }
 
     /*
+     * The block's four outer corners are slightly rounded; the joints between tiles stay
+     * square. Three of them are corners of a tile's box (a border radius, with the picture
+     * clipped to it); the top left one is where the slope starts, so the first tile's cut
+     * draws it as a short arc of five points (radius about 0.8rem).
+     */
+    .path__tile {
+      overflow: hidden;
+    }
+
+    .path__step:nth-child(1) .path__tile {
+      border-end-start-radius: 0.75rem;
+      clip-path: polygon(
+        0 calc(var(--cut) + 0.6rem),
+        0.04rem calc(var(--cut) + 0.32rem),
+        0.16rem calc(var(--cut) + 0.12rem),
+        0.35rem calc(var(--cut) - 0.06rem),
+        0.57rem calc(var(--cut) - 0.17rem),
+        100% 0,
+        100% 100%,
+        0 100%
+      );
+    }
+
+    .path__step:nth-child(3) .path__tile {
+      border-start-end-radius: 0.75rem;
+      border-end-end-radius: 0.75rem;
+    }
+
+    /*
      * One size for the three verbs, capped so that "Comprendre" (5.7 em wide, the tightest
      * fit) stays inside the middle tile: a third of the path, less its padding and room.
      */
