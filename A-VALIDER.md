@@ -42,8 +42,10 @@ Politique de confidentialité (`/confidentialite/`) et formulaires :
 - [ ] Des photos réelles : le Bassin de Thau, une intervention en entreprise ou en classe,
       le fondateur sur le territoire. En attendant, le site n’a pas d’autre image que le
       portrait du fondateur : ses sections reposent sur les aplats de couleur de la charte.
-- [ ] Le fichier du logo : le site affiche le nom en texte, la charte interdisant de le
-      redessiner.
+- [ ] Le logo en meilleure définition : la barre de navigation affiche `DTT_logo.png`
+      (782 × 793 px), recadré et réduit à 512 px. Il tient à la taille affichée (48 px),
+      mais un fichier vectoriel ou plus grand serait préférable pour les usages futurs
+      (favicon, impression, réseaux sociaux).
 - [ ] Qui sommes-nous : l’histoire du projet (le déclic, le constat, l’envie), le parcours
       du fondateur, ses compétences, ses diplômes et certifications vérifiables.
 - [ ] Un exemple concret par principe de l’approche, tiré d’une formation.
