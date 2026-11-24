@@ -292,8 +292,8 @@ main:focus {
 }
 
 /* ---- Buttons -------------------------------------------------------------- */
-/* Flat, square blocks of one fill. Primary: deep green, or cream on the deep green
-   fields. Secondary: one tone step from the field it sits on. */
+/* Flat blocks of one fill, their corners softly rounded. Primary: deep green, or cream on
+   the deep green fields. Secondary: one tone step from the field it sits on. */
 .button {
   display: inline-flex;
   align-items: center;
@@ -302,7 +302,7 @@ main:focus {
   min-height: 3rem;
   padding: var(--space-xs) var(--space-m);
   border: 0;
-  border-radius: 0;
+  border-radius: var(--radius-button);
   font-weight: var(--weight-semibold);
   line-height: 1.2;
   text-align: center;

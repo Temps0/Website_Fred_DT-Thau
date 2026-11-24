@@ -77,9 +77,11 @@
   --measure: 65ch;
   --header-height: 4.5rem;
 
-  /* ---- Shape: square blocks and buttons; tone steps rather than lines or shadows ---- */
+  /* ---- Shape: square blocks, softly rounded controls; tone steps rather than lines ---- */
   --radius-s: 2px; /* form fields only */
   --radius-m: 0;
+  /* Buttons alone are rounded, just enough to read as pressable next to the square blocks. */
+  --radius-button: 0.5rem;
   --border-width: 1px;
 
   /* ---- Layers ------------------------------------------------------------ */
