@@ -19,6 +19,10 @@ interface Props {
 }
 
 const { as: Heading = 'h3', layout = 'fan' } = Astro.props;
+// Widths the photographs are drawn at: the fan's cards go two by two from 56rem and four
+// across from 80rem; the rows' picture takes 5 of 12 columns; the container stops at 90rem.
+const fanSizes = '(min-width: 94rem) 20rem, (min-width: 80rem) 22vw, (min-width: 56rem) 45vw, 90vw';
+const rowSizes = '(min-width: 94rem) 37.5rem, (min-width: 56rem) 40vw, 100vw';
 // The fan enters as one hand of cards; the rows of the approach page enter one by one.
 const listReveal = layout === 'fan' ? '' : undefined;
 
@@ -49,7 +53,7 @@ const principlePhotos: Record<string, Photo> = {
               src={photo.src}
               alt={photo.alt}
               widths={[320, 480, 720]}
-              sizes={layout === 'fan' ? '(min-width: 56rem) 22vw, 90vw' : '(min-width: 56rem) 40vw, 100vw'}
+              sizes={layout === 'fan' ? fanSizes : rowSizes}
             />
           )}
           <div class="principle__text">
