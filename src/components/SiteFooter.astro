@@ -1,9 +1,12 @@
 ---
 /**
- * Footer as the last two rows of a board of colour tiles, on the page's cream ground:
- * who DT-Thau is, the site map, where to find it, the name set large, and the survey as
- * a gold tile that is one link.
+ * The last cover of the page: one deep green field, as the charter's conclusion pages.
+ * The logo and the name open it, the site map and the address sit beside them on panels
+ * a tone step above the field, the questionnaire is the one gold thing on it and the one
+ * thing to click, and the legal line closes it.
  */
+import { Image } from 'astro:assets';
+import logo from '../assets/dtt-logo.png';
 import {
   area,
   brand,
@@ -21,32 +24,30 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="site-footer__board">
-    <div class="tile tile--lagoon tile--identity">
-      <p class="tile__statement">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <Image
+        class="site-footer__logo"
+        src={logo}
+        alt=""
+        widths={[80, 160, 240]}
+        sizes="80px"
+        loading="lazy"
+      />
+      <p class="site-footer__name">
+        {brand.name}
+        <span class="site-footer__tagline">{brand.tagline}</span>
+      </p>
+      <p class="site-footer__statement">
         Formations à la transition écologique et à la RSE pour les entreprises, les
         établissements d’enseignement et les collectivités du {area}.
       </p>
-      <div class="tile__legal">
-        <p>© {year} {company.name}</p>
-        <nav aria-label="Informations légales">
-          {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-          <ul class="tile__links tile__links--inline" role="list">
-            {
-              legalNav.map((item) => (
-                <li>
-                  <a href={item.href}>{item.label}</a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
     </div>
 
-    <nav class="tile tile--sage tile--nav" aria-label="Plan du site">
+    <nav class="site-footer__panel" aria-labelledby="footer-map-title">
+      <p class="site-footer__heading" id="footer-map-title">Plan du site</p>
       {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-      <ul class="tile__links" role="list">
+      <ul class="site-footer__links" role="list">
         {
           siteMap.map((item) => (
             <li>
@@ -57,12 +58,12 @@ const year = new Date().getFullYear();
       </ul>
     </nav>
 
-    <div class="tile tile--sand tile--place">
-      <p class="tile__title">{company.address.city}, {area}</p>
+    <div class="site-footer__panel">
+      <p class="site-footer__heading">Nous trouver</p>
       <address>
         {company.address.street}<br />
         {company.address.postalCode}
-        {company.address.city}<br />
+        {company.address.city}, {area}<br />
         {
           company.phone ? (
             <a href={phoneHref(company.phone)}>{company.phone}</a>
@@ -80,195 +81,237 @@ const year = new Date().getFullYear();
       </address>
     </div>
 
-    <div class="tile tile--raised tile--wordmark">
-      <p class="tile__name">{brand.name}</p>
-      <p>{brand.tagline}</p>
-    </div>
-
-    <a class="tile tile--gold tile--survey" href={surveyNav.href}>
-      <span class="tile__title">Entreprise du {area}&nbsp;?</span>
-      <span>Dites-nous vos besoins en répondant au questionnaire.</span>
-      <svg class="tile__arrow" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <path d="M14 34 L34 14 M18 14 H34 V30" />
+    <a class="site-footer__survey" href={surveyNav.href}>
+      <span class="site-footer__survey-title">Entreprise du {area}&nbsp;?</span>
+      <span class="site-footer__survey-text">
+        Dites-nous vos besoins en répondant au questionnaire.
+      </span>
+      <svg class="site-footer__arrow" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <path d="M14 34 L34 14 M18 14 H34 V30"></path>
       </svg>
     </a>
+
+    <div class="site-footer__legal">
+      <p>© {year} {company.name}</p>
+      <nav aria-label="Informations légales">
+        {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+        <ul class="site-footer__legal-links" role="list">
+          {
+            legalNav.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
   </div>
 </footer>
 
 <style>
+  /*
+   * One field, not a patchwork: everything laid on it is a tone step of the same deep
+   * green, so the foot of the page reads as a single block. The gold is spent once, on
+   * the questionnaire.
+   */
   .site-footer {
-    padding: var(--space-2xs) var(--space-2xs) var(--space-2xs);
-    background-color: var(--cream);
+    --color-focus: var(--color-accent-on-dark);
+    padding-block: var(--space-chapter);
+    background-color: var(--green-deep);
+    color: var(--color-on-dark);
   }
 
-  .site-footer__board {
+  .site-footer :global(a) {
+    color: var(--color-on-dark);
+  }
+
+  .site-footer__inner {
     display: grid;
-    gap: var(--space-2xs);
+    /* Stacked on a phone, the blocks need less air between them than side by side. */
+    gap: var(--space-l);
   }
 
-  /* Two columns of tiles on tablets, the full board of twelve columns on wide screens. */
   @media (min-width: 40rem) {
-    .site-footer__board {
+    .site-footer__inner {
+      gap: var(--space-xl) var(--space-l);
+    }
+  }
+
+  /* Tablets: the two panels share a row under the brand. */
+  @media (min-width: 40rem) {
+    .site-footer__inner {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .tile--identity,
-    .tile--wordmark {
+    .site-footer__brand,
+    .site-footer__survey,
+    .site-footer__legal {
       grid-column: 1 / -1;
     }
   }
 
+  /* Wide screens: the brand holds the left, the two panels the right. */
   @media (min-width: 64rem) {
-    .site-footer__board {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      grid-auto-rows: minmax(15rem, auto);
+    .site-footer__inner {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr);
     }
 
-    .tile--identity {
-      grid-column: 1 / span 5;
-    }
-
-    .tile--nav {
-      grid-column: 6 / span 3;
-    }
-
-    .tile--place {
-      grid-column: 9 / span 4;
-    }
-
-    .tile--wordmark {
-      grid-column: 1 / span 8;
-      grid-row-end: span 1;
-      min-height: 20rem;
-    }
-
-    .tile--survey {
-      grid-column: 9 / span 4;
+    .site-footer__brand {
+      grid-column: 1;
     }
   }
 
-  .tile {
+  /* ---- The brand ---------------------------------------------------------- */
+  .site-footer__brand {
     display: grid;
-    align-content: space-between;
-    gap: var(--space-l);
-    padding: var(--space-m);
-    background-color: var(--tile);
-    color: var(--color-text);
+    gap: var(--space-m);
+    justify-items: start;
+    max-width: 34rem;
   }
 
-  .tile--lagoon {
-    --tile: var(--green-deep);
-    --color-text: var(--cream);
-    --color-link: var(--cream);
-    --color-focus: var(--gold-light);
+  .site-footer__logo {
+    width: 5rem;
+    height: auto;
   }
 
-  .tile--raised {
-    --tile: var(--green-deep-raised);
-    --color-text: var(--cream);
-  }
-
-  .tile--sage {
-    --tile: var(--sage);
-  }
-
-  .tile--sand {
-    --tile: var(--cream-strong);
-  }
-
-  .tile--gold {
-    --tile: var(--gold);
-    --color-text: var(--anthracite);
-    --color-focus: var(--anthracite);
-  }
-
-  .tile :global(a) {
-    color: var(--color-link, var(--color-text));
-  }
-
-  .tile__statement {
-    max-width: 30rem;
-    font-size: var(--step-1);
-  }
-
-  .tile__legal {
+  /* The name and what it stands for, set tight: one wordmark, two lines. */
+  .site-footer__name {
     display: grid;
     gap: var(--space-3xs);
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: var(--weight-medium);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
   }
 
-  .tile__title {
-    color: inherit;
-    font-size: var(--step-1);
+  .site-footer__tagline {
+    color: var(--color-accent-on-dark);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    font-weight: var(--weight-regular);
+    letter-spacing: normal;
+  }
+
+  .site-footer__statement {
+    color: var(--color-on-dark-muted);
+  }
+
+  /* ---- The two panels ------------------------------------------------------ */
+  /*
+   * Each panel is as tall as what it holds, not as tall as the row: stretched to a common
+   * height, the shorter of the two would be mostly empty, which is what the foot of the
+   * page looked like before.
+   */
+  .site-footer__panel {
+    display: grid;
+    align-self: start;
+    gap: var(--space-s);
+    padding: var(--space-m);
+    background-color: var(--green-deep-raised);
+  }
+
+  .site-footer__heading {
+    color: var(--color-accent-on-dark);
+    font-size: var(--step--1);
     font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
   }
 
-  address {
-    font-style: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .tile__links {
+  .site-footer__links {
     display: grid;
     gap: var(--space-3xs);
     padding: 0;
     list-style: none;
   }
 
-  .tile__links--inline {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3xs) var(--space-m);
-  }
-
-  .tile__links a {
+  .site-footer__links a {
     display: inline-block;
     padding-block: var(--space-3xs);
   }
 
-  .tile--nav .tile__links {
-    font-size: var(--step-1);
+  address {
+    font-style: normal;
+    line-height: var(--leading-normal);
+    overflow-wrap: anywhere;
   }
 
-  .tile--wordmark {
-    align-content: end;
+  /* ---- The questionnaire, one gold band and one link ----------------------- */
+  .site-footer__survey {
+    display: grid;
     gap: var(--space-2xs);
-  }
-
-  .tile__name {
-    font-family: var(--font-display);
-    font-size: var(--step-4);
-    font-weight: var(--weight-medium);
-    line-height: 0.85;
-    letter-spacing: -0.03em;
-  }
-
-  /* The survey tile is one link. */
-  .tile--survey {
+    padding: var(--space-m);
+    background-color: var(--gold);
+    /* Only anthracite reads on the matt gold at text size (4.7:1). */
+    color: var(--anthracite);
     text-decoration: none;
     transition: background-color var(--duration-base) var(--ease-out);
   }
 
-  .tile--survey:hover,
-  .tile--survey:focus-visible {
-    --tile: var(--green-deep);
-    --color-text: var(--cream);
+  .site-footer :global(.site-footer__survey a),
+  .site-footer__survey {
+    color: var(--anthracite);
   }
 
-  .tile--survey:focus-visible {
-    outline: var(--focus-width) solid var(--cream);
-    outline-offset: -6px;
+  .site-footer__survey-title {
+    font-size: var(--step-1);
+    font-weight: var(--weight-semibold);
   }
 
-  .tile__arrow {
+  .site-footer__arrow {
     justify-self: end;
-    width: 3rem;
+    width: 2.5rem;
     fill: none;
     stroke: currentColor;
     stroke-width: 4;
     transition: transform var(--duration-base) var(--ease-out);
   }
 
-  .tile--survey:hover .tile__arrow {
+  /* From the width where the three parts fit one line, the band becomes one line. */
+  @media (min-width: 48rem) {
+    .site-footer__survey {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--space-m);
+    }
+
+    .site-footer__arrow {
+      width: 2rem;
+    }
+  }
+
+  .site-footer__survey:hover,
+  .site-footer__survey:focus-visible {
+    background-color: var(--cream);
+  }
+
+  .site-footer__survey:hover .site-footer__arrow {
     transform: translate(4px, -4px);
+  }
+
+  .site-footer__survey:focus-visible {
+    outline-color: var(--anthracite);
+  }
+
+  /* ---- The legal line ------------------------------------------------------ */
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-l);
+    padding-block-start: var(--space-m);
+    /* One step of the green, drawn thin: the field keeps its own colour above and below. */
+    border-block-start: var(--border-width) solid var(--green-deep-lit);
+    color: var(--color-on-dark-muted);
+    font-size: var(--step--1);
+  }
+
+  .site-footer__legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-l);
+    padding: 0;
+    list-style: none;
   }
 </style>
