@@ -7,7 +7,10 @@ const currentPath = Astro.url.pathname;
 const isCurrent = (href: string) => currentPath === href || currentPath === href.replace(/\/$/, '');
 ---
 
-<header class="site-header">
+{/* Height zero in the flow: it only tells the script where the top of the page is. */}
+<div class="site-header__sentinel" data-site-header-sentinel aria-hidden="true"></div>
+
+<header class="site-header" data-site-header>
   <div class="container site-header__inner">
     <a class="site-header__brand" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>
       <Image
@@ -69,6 +72,19 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
   const nav = document.querySelector<HTMLElement>('[data-site-nav]');
   const toggle = nav?.querySelector<HTMLButtonElement>('[data-site-nav-toggle]');
 
+  // The bar stays at the top of the screen; while the sentinel is in view, the page is at
+  // its top and the bar needs no edge. Without IntersectionObserver the bar simply has none.
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const sentinel = document.querySelector('[data-site-header-sentinel]');
+
+  if (header && sentinel && 'IntersectionObserver' in window) {
+    const stuckObserver = new IntersectionObserver(
+      ([entry]) => header.toggleAttribute('data-stuck', !entry.isIntersecting),
+      { threshold: 0 },
+    );
+    stuckObserver.observe(sentinel);
+  }
+
   if (nav && toggle) {
     const setOpen = (isOpen: boolean) => {
       toggle.setAttribute('aria-expanded', String(isOpen));
@@ -103,11 +119,29 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
 </script>
 
 <style>
+  /* Zero height once its own pixel is taken back: it is only a mark for the script. */
+  .site-header__sentinel {
+    height: 1px;
+    margin-block-end: -1px;
+  }
+
   .site-header {
-    position: relative;
+    position: sticky;
+    inset-block-start: 0;
     z-index: var(--z-header);
     /* Cream, straight above the deep green first screen: no line between them. */
     background-color: var(--cream);
+  }
+
+  /*
+   * Once the page has scrolled, the bar sits over the content. On the cream and sand
+   * chapters the two share a colour and nothing would say where the page passes under
+   * it, so a hairline draws the edge. It is painted outside the box, so the bar does not
+   * grow by a pixel at the moment it sticks, and it is absent at the top of the page,
+   * where the cream still meets the deep green of the first screen with no line.
+   */
+  .site-header[data-stuck] {
+    box-shadow: 0 var(--border-width) 0 var(--color-border-subtle);
   }
 
   .site-header__inner {
