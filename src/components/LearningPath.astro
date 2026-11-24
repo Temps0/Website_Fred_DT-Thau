@@ -49,6 +49,10 @@ const modulePhotos: Record<string, Photo> = {
     {
       modules.map((module) => {
         const photo = modulePhotos[module.id];
+        // Drawn over 3, 4 and 5 of the 12 columns on wide screens, of a container that
+        // stops at 90rem once the screen is 94rem wide.
+        const share = [25, 34, 42][modules.indexOf(module)] ?? 42;
+        const cap = (90 * share) / 100;
         return (
           <li class="path__step">
             <Step class="path__head" href={linkTo !== undefined ? `${linkTo}#${module.id}` : undefined}>
@@ -60,7 +64,7 @@ const modulePhotos: Record<string, Photo> = {
                     src={photo.src}
                     alt={linkTo !== undefined ? '' : photo.alt}
                     widths={[400, 640, 960]}
-                    sizes="(min-width: 56rem) 40vw, 100vw"
+                    sizes={`(min-width: 94rem) ${cap}rem, (min-width: 56rem) ${share}vw, 100vw`}
                   />
                 )}
                 <span class="path__verb display">{module.data.verb}</span>
