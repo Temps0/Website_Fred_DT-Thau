@@ -264,9 +264,12 @@ const titleLines = lines.map((line) => frenchSpacing(line));
     }
   }
 
+  /*
+   * Movement only, no fade: content that starts at opacity 0 is not painted, which held
+   * back the page's largest paint (LCP) by the length of the delay and the fade.
+   */
   @keyframes page-hero-fade {
     from {
-      opacity: 0;
       transform: translateY(16px);
     }
   }
