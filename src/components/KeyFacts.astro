@@ -1,0 +1,37 @@
+---
+/**
+ * DT-Thau in three facts, from the company's registration: what it is, since when and
+ * where, and for whom. Set in the title serif, as short statements.
+ */
+import { area, company } from '../data/site';
+
+interface Props {
+  /** Label of the list when no visible heading introduces it. */
+  label?: string;
+}
+
+const { label } = Astro.props;
+---
+
+{/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
+<ul class="key-facts" role="list" aria-label={label}>
+  <li>Organisme de formation et de conseil en développement durable et RSE</li>
+  <li>Créée en 2026, basée à {company.address.city}</li>
+  <li>
+    Au service des entreprises, des établissements d’enseignement et des collectivités du
+    {area}
+  </li>
+</ul>
+
+<style>
+  .key-facts {
+    display: grid;
+    gap: var(--space-m);
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: var(--weight-medium);
+    line-height: 1.25;
+  }
+</style>

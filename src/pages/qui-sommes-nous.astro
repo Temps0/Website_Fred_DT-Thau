@@ -2,10 +2,11 @@
 import { Picture } from 'astro:assets';
 import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
+import KeyFacts from '../components/KeyFacts.astro';
 import PageHero from '../components/PageHero.astro';
 import ToComplete from '../components/ToComplete.astro';
 import { photos } from '../data/photos';
-import { area, brand, company, contactNav, founder } from '../data/site';
+import { area, brand, contactNav, founder } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { frenchSpacing } from '../lib/text';
 
@@ -123,15 +124,7 @@ const values = [
       </figure>
       <div class="flow flow--l">
         <h2 id="facts-title">{brand.name} en bref</h2>
-        {/* biome-ignore lint/a11y/noRedundantRoles: Safari drops list semantics when list-style is none */}
-        <ul class="facts" role="list" data-reveal>
-          <li>Organisme de formation et de conseil en développement durable et RSE</li>
-          <li>Créée en 2026, basée à {company.address.city}</li>
-          <li>
-            Au service des entreprises, des établissements d’enseignement et des collectivités du
-            {area}
-          </li>
-        </ul>
+        <KeyFacts />
       </div>
     </div>
   </section>
@@ -267,14 +260,4 @@ const values = [
     font-size: var(--step--1);
   }
 
-  .facts {
-    display: grid;
-    gap: var(--space-m);
-    padding: 0;
-    list-style: none;
-    font-family: var(--font-display);
-    font-size: var(--step-1);
-    font-weight: var(--weight-medium);
-    line-height: 1.25;
-  }
 </style>

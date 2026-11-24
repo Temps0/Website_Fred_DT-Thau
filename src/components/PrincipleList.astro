@@ -1,9 +1,9 @@
 ---
 /**
  * The four principles of the approach (catalogue), in two layouts:
- * - "fan" (home page, on the deep green): four cards dealt onto the table, each in its own
- *   charter colour, with the principle's word, a photograph of it in practice and its
- *   sentence; on a wide screen they lie side by side, each slightly turned;
+ * - "fan" (home page, on the deep green): four cards side by side, each in its own charter
+ *   colour, with the principle's word, a photograph of it in practice and its sentence;
+ *   straight, as the charter is sober;
  * - "rows" (approach page): one row per principle, its word, summary and longer explanation
  *   beside its photograph, the picture changing sides from one row to the next.
  */
@@ -129,39 +129,15 @@ const principlePhotos: Record<string, Photo> = {
   }
 
   /*
-   * Dealt onto the table: each card turned a little and set at its own height. Two by two
-   * first, then the four side by side once a quarter of the width holds "Accessible", the
-   * longest word, at its full size (from 80rem).
+   * Two by two first, then the four side by side once a quarter of the width holds
+   * "Accessible", the longest word, at its full size (from 80rem). Straight and level:
+   * turned cards read as a scrapbook, at odds with a sober charter.
    */
   @media (min-width: 56rem) {
     .principles--fan {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: start;
-      gap: var(--space-xl) var(--space-l);
-      padding-block: var(--space-l);
-    }
-
-    .principles--fan .principle {
-      transform: translateY(var(--drop, 0)) rotate(var(--turn, 0deg));
-    }
-
-    .principles--fan .principle:nth-child(1) {
-      --turn: -2.5deg;
-      --drop: 1.5rem;
-    }
-
-    .principles--fan .principle:nth-child(2) {
-      --turn: 1.5deg;
-    }
-
-    .principles--fan .principle:nth-child(3) {
-      --turn: -1deg;
-      --drop: 2.5rem;
-    }
-
-    .principles--fan .principle:nth-child(4) {
-      --turn: 2.5deg;
-      --drop: 0.75rem;
+      align-items: stretch;
+      gap: var(--space-l);
     }
   }
 

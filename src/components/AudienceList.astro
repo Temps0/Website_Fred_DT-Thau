@@ -38,7 +38,7 @@ const audiencePhotos: Record<string, Photo> = {
               src={photo.src}
               alt={photo.alt}
               widths={[320, 480, 720]}
-              sizes="(min-width: 56rem) 18rem, 100vw"
+              sizes="(min-width: 56rem) 26rem, 100vw"
             />
           )}
           <div class="audience__text">
@@ -147,11 +147,13 @@ const audiencePhotos: Record<string, Photo> = {
       gap: var(--space-xl);
     }
 
+    /* The picture at a readable size and the text taking the rest of the row, so the
+       staircase spans the width instead of leaving its right side empty. */
     .audience {
-      grid-template-columns: 18rem minmax(0, 34rem);
+      grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
       align-items: center;
       gap: var(--space-xl);
-      margin-inline-start: calc(var(--step, 0) * 8vw);
+      margin-inline-start: calc(var(--step, 0) * 6vw);
     }
 
     .audience:nth-child(2) {

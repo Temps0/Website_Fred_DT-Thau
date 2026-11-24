@@ -2,6 +2,7 @@
 import AudienceList from '../components/AudienceList.astro';
 import CtaBand from '../components/CtaBand.astro';
 import FounderPortrait from '../components/FounderPortrait.astro';
+import KeyFacts from '../components/KeyFacts.astro';
 import LearningPath from '../components/LearningPath.astro';
 import LinkButton from '../components/LinkButton.astro';
 import PageHero from '../components/PageHero.astro';
@@ -85,6 +86,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="founder__portrait">
         <FounderPortrait />
       </div>
+      <KeyFacts label="DT-Thau en bref" />
     </div>
   </section>
 
@@ -107,17 +109,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     align-items: end;
   }
 
-  /* The portrait first, the text beside it: the two stay together on the grid. */
+  /* The portrait first, the text beside it; on wide screens the key facts close the row,
+     so the section spans the width instead of leaving its right half empty. */
   @media (min-width: 48rem) {
     .founder {
-      grid-template-columns: auto minmax(0, 40rem);
-      justify-content: start;
-      column-gap: clamp(3rem, 1rem + 6vw, 8rem);
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: clamp(3rem, 1rem + 4vw, 6rem);
     }
 
     .founder__portrait {
       grid-row: 1;
       grid-column: 1;
+    }
+
+    .founder :global(.key-facts) {
+      grid-column: 2;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .founder {
+      grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .founder :global(.key-facts) {
+      grid-column: 3;
+      grid-row: 1;
     }
   }
 
