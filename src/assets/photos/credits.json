@@ -22,52 +22,6 @@
     "saved": "2026-11-23T18:15:57.936Z"
   },
   {
-    "file": "src/assets/photos/solar-panels-roof.jpg",
-    "media": "image",
-    "ref": "commons:152231701",
-    "title": "Solar Panels on Church Roof full",
-    "creator": "Bastique",
-    "creatorUrl": null,
-    "date": "2024-09-04",
-    "license": "CC BY 4.0",
-    "licenseCode": "by",
-    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-    "creditRequired": true,
-    "page": "https://commons.wikimedia.org/wiki/File:Solar_Panels_on_Church_Roof_full.jpg",
-    "via": "Wikimedia Commons",
-    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Solar_Panels_on_Church_Roof_full.jpg/1920px-Solar_Panels_on_Church_Roof_full.jpg",
-    "width": 1920,
-    "height": 1280,
-    "bytes": 993787,
-    "credit": "\"Solar Panels on Church Roof full\" by Bastique, CC BY 4.0, via Wikimedia Commons",
-    "notes": [],
-    "saved": "2026-11-23T18:15:59.458Z"
-  },
-  {
-    "file": "src/assets/photos/cargo-ebike-delivery.jpg",
-    "media": "image",
-    "ref": "commons:179239073",
-    "title": "Cargo eBike",
-    "creator": "Axxter99",
-    "creatorUrl": null,
-    "date": "1 December 2025 (according to Exif data)",
-    "license": "CC BY-SA 4.0",
-    "licenseCode": "by-sa",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "creditRequired": true,
-    "page": "https://commons.wikimedia.org/wiki/File:Cargo_eBike.jpg",
-    "via": "Wikimedia Commons",
-    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Cargo_eBike.jpg/1920px-Cargo_eBike.jpg",
-    "width": 1920,
-    "height": 1440,
-    "bytes": 1078188,
-    "credit": "\"Cargo eBike\" by Axxter99, CC BY-SA 4.0, via Wikimedia Commons",
-    "notes": [
-      "Share-alike: an altered version (recoloured, combined with other pictures) must be shared under the same licence."
-    ],
-    "saved": "2026-11-23T18:16:01.975Z"
-  },
-  {
     "file": "src/assets/photos/fresque-du-climat-atelier.jpg",
     "media": "image",
     "ref": "commons:129476710",
@@ -275,5 +229,53 @@
     "credit": "\"Lido de Thau, Sète cf04\" by Christian Ferrer, CC BY 4.0, via Wikimedia Commons",
     "notes": [],
     "saved": "2026-11-23T20:44:37.294Z"
+  },
+  {
+    "file": "src/assets/photos/velo-cargo-la-poste-lyon.jpg",
+    "media": "image",
+    "ref": "commons:180635370",
+    "title": "Vélo cargo La Poste Lyon",
+    "creator": "TCY",
+    "creatorUrl": null,
+    "date": "23 December 2025 (according to Exif data)",
+    "license": "CC BY-SA 4.0",
+    "licenseCode": "by-sa",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creditRequired": true,
+    "page": "https://commons.wikimedia.org/wiki/File:V%C3%A9lo_cargo_La_Poste_Lyon.jpg",
+    "via": "Wikimedia Commons",
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/V%C3%A9lo_cargo_La_Poste_Lyon.jpg/1920px-V%C3%A9lo_cargo_La_Poste_Lyon.jpg",
+    "width": 1920,
+    "height": 1080,
+    "bytes": 694344,
+    "credit": "\"Vélo cargo La Poste Lyon\" by TCY, CC BY-SA 4.0, via Wikimedia Commons",
+    "notes": [
+      "Share-alike: an altered version (recoloured, combined with other pictures) must be shared under the same licence."
+    ],
+    "saved": "2026-11-24T23:25:14.036Z"
+  },
+  {
+    "file": "src/assets/photos/ombrieres-photovoltaiques-bellerive.jpg",
+    "media": "image",
+    "ref": "commons:136707719",
+    "title": "Parking du stade aquatique couvert par panneaux photovoltaïques (Bellerive-sur-Allier) 2023-08-19",
+    "creator": "Tabl-trai",
+    "creatorUrl": null,
+    "date": "Taken on 19 August 2023, 09:21:06 (UTC+2)",
+    "license": "CC BY-SA 4.0",
+    "licenseCode": "by-sa",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creditRequired": true,
+    "page": "https://commons.wikimedia.org/wiki/File:Parking_du_stade_aquatique_couvert_par_panneaux_photovolta%C3%AFques_(Bellerive-sur-Allier)_2023-08-19.JPG",
+    "via": "Wikimedia Commons",
+    "image": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Parking_du_stade_aquatique_couvert_par_panneaux_photovolta%C3%AFques_%28Bellerive-sur-Allier%29_2023-08-19.JPG/1920px-Parking_du_stade_aquatique_couvert_par_panneaux_photovolta%C3%AFques_%28Bellerive-sur-Allier%29_2023-08-19.JPG",
+    "width": 1920,
+    "height": 1283,
+    "bytes": 743040,
+    "credit": "\"Parking du stade aquatique couvert par panneaux photovoltaïques (Bellerive-sur-Allier) 20…\" by Tabl-trai, CC BY-SA 4.0, via Wikimedia Commons",
+    "notes": [
+      "Share-alike: an altered version (recoloured, combined with other pictures) must be shared under the same licence."
+    ],
+    "saved": "2026-11-24T23:25:14.521Z"
   }
 ]

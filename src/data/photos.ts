@@ -12,17 +12,17 @@
  */
 import type { ImageMetadata } from 'astro';
 import atelierParticipatif from '../assets/photos/atelier-participatif.jpg';
-import cargoEbikeDelivery from '../assets/photos/cargo-ebike-delivery.jpg';
 import credits from '../assets/photos/credits.json';
 import deadAleppoPineThau from '../assets/photos/dead-aleppo-pine-thau.jpg';
 import fresqueDuClimatAtelier from '../assets/photos/fresque-du-climat-atelier.jpg';
 import fresqueDuClimatEnsta from '../assets/photos/fresque-du-climat-ensta.jpg';
 import lidoDeThau from '../assets/photos/lido-de-thau.jpg';
+import ombrieresPhotovoltaiques from '../assets/photos/ombrieres-photovoltaiques-bellerive.jpg';
 import repairCafe from '../assets/photos/repair-cafe.jpg';
-import solarPanelsRoof from '../assets/photos/solar-panels-roof.jpg';
 import strategyWorkshopStickyNotes from '../assets/photos/strategy-workshop-sticky-notes.jpg';
 import thauOysterParksIfremer from '../assets/photos/thau-oyster-parks-ifremer.jpg';
 import thauOysterTablesLoupian from '../assets/photos/thau-oyster-tables-loupian.jpg';
+import veloCargoLaPoste from '../assets/photos/velo-cargo-la-poste-lyon.jpg';
 import warmingStripesFrance from '../assets/photos/warming-stripes-france.png';
 
 export interface Photo {
@@ -55,14 +55,16 @@ export const photos = {
     caption: 'Un mur de post-it en atelier : prioriser les enjeux, répartir les actions.',
   },
   cargoBike: {
-    src: cargoEbikeDelivery,
-    alt: 'Vélo-cargo électrique de livraison, avec son caisson, garé au bord d’un trottoir.',
-    caption: 'Un vélo-cargo de livraison : une décision logistique qui change l’empreinte carbone.',
+    src: veloCargoLaPoste,
+    alt: 'Vélo-cargo électrique de La Poste, avec son grand caisson jaune, garé sur une place de Lyon.',
+    caption:
+      'Un vélo-cargo de La Poste à Lyon : une décision logistique qui change l’empreinte carbone.',
   },
-  solarRoof: {
-    src: solarPanelsRoof,
-    alt: 'Rangées de panneaux solaires installées sur une toiture en pente.',
-    caption: 'Des panneaux solaires sur une toiture.',
+  solarCanopy: {
+    src: ombrieresPhotovoltaiques,
+    alt: 'Parking couvert d’ombrières photovoltaïques, des voitures garées dessous, à Bellerive-sur-Allier.',
+    caption:
+      'Des ombrières photovoltaïques sur un parking de Bellerive-sur-Allier : produire sur place.',
   },
   oysterTables: {
     src: thauOysterTablesLoupian,
