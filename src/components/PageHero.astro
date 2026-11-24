@@ -96,7 +96,11 @@ const titleLines = lines.map((line) => frenchSpacing(line));
   }
 
   .page-hero--xl {
-    --title-size: clamp(3.25rem, 1rem + 13vw, 13rem);
+    /*
+     * Sized so that "transition écologique" holds one line from 320px up: about 7.8em wide
+     * when large, 9.3em at phone sizes, where the face's optical size widens its letters.
+     */
+    --title-size: clamp(1.875rem, -0.5rem + 11vw, 11rem);
   }
 
   .page-hero--l {
