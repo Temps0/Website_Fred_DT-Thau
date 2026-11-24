@@ -1,14 +1,16 @@
 ---
 /**
  * First screen of every page: one deep green field, as the charter's covers. The title is
- * set large and flush left, its two lines in two inks (cream, then light gold), so the
- * break reads as a change of voice. Each line rises into place on load.
+ * set large and flush left in one ink, cream: the contrast comes from its size. Each line
+ * rises into place on load.
  *
- * Two compositions:
- * - without a photograph, the field is the whole first screen: the title fills its upper
- *   part and the lead and actions sit at its foot, flush left under the title;
- * - with a photograph, the title, lead and actions take the left of the field and the
- *   picture runs to the right edge, the full height of the screen.
+ * Three compositions:
+ * - home page (size "xl", no photograph): the field is the whole first screen, the title
+ *   fills its upper part and the lead and actions sit at its foot, flush left under it;
+ * - other pages without a photograph: the title on the left, the lead and actions on the
+ *   right, level with the foot of the title, so neither half of the field is left empty;
+ * - with a photograph: the title, then the lead and actions right under it, centred in the
+ *   height of the left of the field; the picture runs to the right edge.
  */
 import { Picture } from 'astro:assets';
 import type { Photo } from '../data/photos';
@@ -135,11 +137,6 @@ const titleLines = lines.map((line) => frenchSpacing(line));
     hyphens: auto;
   }
 
-  /* Second line in the light gold: two inks, one voice changing to the other. */
-  .page-hero__line:nth-child(2) {
-    color: var(--color-accent-on-dark);
-  }
-
   .page-hero__line {
     display: block;
     overflow: hidden;
@@ -169,10 +166,20 @@ const titleLines = lines.map((line) => frenchSpacing(line));
   }
 
   @media (min-width: 56rem) {
-    /* Without a picture, the lead and actions sit at the foot of the field, under the
-       first letters of the title: one left edge for the whole screen. */
-    .page-hero:not(.page-hero--photo) .page-hero__content {
+    /* Home page: the lead and actions sit at the foot of the field, under the first
+       letters of the title: one left edge for the whole screen. */
+    .page-hero--xl:not(.page-hero--photo) .page-hero__content {
       width: min(100%, 44rem);
+    }
+
+    /* Other pages without a picture: the title on the left, the lead and actions on the
+       right, their foot level with the title's. */
+    .page-hero:not(.page-hero--xl, .page-hero--photo) .page-hero__inner {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      grid-template-rows: auto;
+      align-content: center;
+      align-items: end;
+      column-gap: var(--space-2xl);
     }
   }
 
@@ -209,10 +216,17 @@ const titleLines = lines.map((line) => frenchSpacing(line));
       grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     }
 
-    /* The text keeps the page's left margin; the picture runs to the right edge. */
+    /* The text keeps the page's left margin; the picture runs to the right edge. The lead
+       follows the title, and the two together sit in the middle of the field's height. */
     .page-hero--photo .page-hero__inner {
       width: auto;
       margin-inline: max(var(--gutter), (100cqi - var(--container-max)) / 2) var(--space-xl);
+      grid-template-rows: auto auto;
+      align-content: center;
+    }
+
+    .page-hero--photo .page-hero__content {
+      align-content: start;
     }
 
     .page-hero--photo .page-hero__figure {
