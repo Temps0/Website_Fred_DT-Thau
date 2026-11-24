@@ -295,11 +295,21 @@ const isCurrent = (href: string) => currentPath === href || currentPath === href
     }
   }
 
-  /* The narrowest screens still in use: the logo and the controls give up the last of
-     their padding rather than let the bar scroll sideways. */
+  /* The narrowest screens still in use: "DT-Thau" in the title serif no longer fits
+     beside "Menu" and "Contact", so the logo carries the brand on its own. The name stays
+     in the page, out of sight, as the accessible name of the link to the home page. */
   @media (max-width: 22rem) {
+    .site-header__wordmark {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
     .site-header__logo {
-      width: 2rem;
+      width: 2.25rem;
     }
 
     .site-nav__toggle,
