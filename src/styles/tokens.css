@@ -77,11 +77,16 @@
   --measure: 65ch;
   --header-height: 4.5rem;
 
-  /* ---- Shape: square blocks, softly rounded controls; tone steps rather than lines ---- */
-  --radius-s: 2px; /* form fields only */
-  --radius-m: 0;
-  /* Buttons alone are rounded, just enough to read as pressable next to the square blocks. */
-  --radius-button: 0.5rem;
+  /* ---- Shape: one scale of corners; tone steps rather than lines or shadows ------ */
+  /*
+   * Blocks, bands and panels stay square, as the charter asks. A corner that is rounded is
+   * rounded by one of these three steps and by nothing else, so the corners of the site
+   * read as a scale rather than a collection. A silhouette cut round is another matter:
+   * the arch of the founder's portrait is a shape, not a corner, and keeps its own value.
+   */
+  --radius-field: 2px; /* form fields, and the notices that stand beside them */
+  --radius-control: 0.5rem; /* buttons, and the controls drawn as buttons */
+  --radius-block: 0.75rem; /* the outer corners of a block read as one shape: the path */
   --border-width: 1px;
 
   /* ---- Layers ------------------------------------------------------------ */

@@ -221,16 +221,18 @@ const modulePhotos: Record<string, Photo> = {
 
     /*
      * The block's four outer corners are slightly rounded; the joints between tiles stay
-     * square. Three of them are corners of a tile's box (a border radius, with the picture
+     * square. Three of them are corners of a tile's box (--radius-block, with the picture
      * clipped to it); the top left one is where the slope starts, so the first tile's cut
-     * draws it as a short arc of five points (radius about 0.8rem).
+     * draws it as a short arc of five points. The arc's offsets below are tuned by hand to
+     * meet --radius-block along the slope, where a corner reads wider than on the square:
+     * they are the one place the scale is traced rather than named, and they move with it.
      */
     .path__tile {
       overflow: hidden;
     }
 
     .path__step:nth-child(1) .path__tile {
-      border-end-start-radius: 0.75rem;
+      border-end-start-radius: var(--radius-block);
       clip-path: polygon(
         0 calc(var(--cut) + 0.6rem),
         0.04rem calc(var(--cut) + 0.32rem),
@@ -244,8 +246,8 @@ const modulePhotos: Record<string, Photo> = {
     }
 
     .path__step:nth-child(3) .path__tile {
-      border-start-end-radius: 0.75rem;
-      border-end-end-radius: 0.75rem;
+      border-start-end-radius: var(--radius-block);
+      border-end-end-radius: var(--radius-block);
     }
 
     /*
